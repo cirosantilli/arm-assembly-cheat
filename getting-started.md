@@ -6,7 +6,7 @@
 
 Run:
 
-    sudo apt-get install gcc-arm-linux-gnueabihf qemu-user-static
+    sudo apt-get install gcc-arm-linux-gnueabihf gdb-multiarch qemu-user-static
 
 qemu-arm-static -L /usr/arm-linux-gnueabihf ./a.out
 

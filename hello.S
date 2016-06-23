@@ -3,7 +3,7 @@
         .ascii "hello world\n"
     len = . - msg
 .text
-.globl _start
+.global _start
 _start:
     /* write syscall. */
     mov %r0, $1     /* stdout */
