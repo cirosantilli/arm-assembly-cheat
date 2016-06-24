@@ -1,3 +1,5 @@
+/* C hello world compiled to ARM with libc access. */
+
 #include <stdio.h>
 
 int main(void) {

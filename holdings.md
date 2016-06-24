@@ -59,4 +59,5 @@ Richard Meacham from Infinite is still at ARM, but now in the US: https://www.li
 ## Online presences
 
 - GitHub: <https://github.com/search?o=desc&q=org%3AARM-software&ref=searchresults&s=stars&type=Repositories&utf8=%E2%9C%93>
-- Youtube: <https://www.youtube.com/user/ARMflix>
+- YouTube: <https://www.youtube.com/user/ARMflix>
+- Jive forum: https://community.arm.com

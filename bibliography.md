@@ -14,3 +14,7 @@ Important sections of manual: ARM Architecture Reference Manual ARMv7-A and ARMv
 
 - A4.2 Unified Assembler Language: chapter contains a one line description of instructions, grouped by function.
 - A8.8 Alphabetical list of instructions
+
+Tutorials:
+
+- <http://www.davespace.co.uk/arm/introduction-to-arm/> *very* good

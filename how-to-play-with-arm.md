@@ -17,11 +17,23 @@ To compile arm binaries, we need a cross compiler. Options:
 How to run the compiled binaries? Options:
 
 -   Android:
-    - `adb push` executable, and then `adb shell`. But I can't get it working no matter what: <http://stackoverflow.com/questions/9868309/how-can-i-run-c-binary-executable-file-in-android-from-android-shell>
-    - NDK. Yup, that works.
+
+    -   `adb push` executable, and then `adb shell`. But I can't get it working no matter what: <http://stackoverflow.com/questions/9868309/how-can-i-run-c-binary-executable-file-in-android-from-android-shell>
+
+    -   NDK. Yup, that works.
+
+        The question is how to group all those executables into a single app.
+
+        In particular, we must differentiate between the `asm_main` symbols and call them all.
+
+        `objdump` would likely work.
+
 -   Raspberry PI:
+
     - real device: should be easy?
     - emulation: not simple: <http://raspberrypi.stackexchange.com/questions/165/emulation-on-a-linux-pc>
+
 -   QEMU
+
     - user mode emulation: very simple and magic
     - system mode: if you get your hands on pre-compiled ARM image with Linux, glibc, maybe GCC, should be simple

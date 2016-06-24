@@ -6,6 +6,8 @@
 - architecture
 - core
 
+<http://www.davespace.co.uk/arm/introduction-to-arm/arm-arch123.html> and following chapters have a good summary of the evolution of the architecture.
+
 ## Cortex
 
 Family name of the most recent CPUs.
