@@ -61,3 +61,15 @@ Richard Meacham from Infinite is still at ARM, but now in the US: https://www.li
 - GitHub: <https://github.com/search?o=desc&q=org%3AARM-software&ref=searchresults&s=stars&type=Repositories&utf8=%E2%9C%93>
 - YouTube: <https://www.youtube.com/user/ARMflix>
 - Jive forum: https://community.arm.com
+
+## GPU business
+
+## Mali
+
+Bought from Falanx in 2006. Before that, ARM partnered with Imagination.
+
+http://www.theregister.co.uk/2006/06/23/arm_buys_falanx_mobile_gpus/
+
+FalanX founders:
+
+- https://www.linkedin.com/in/marioblazevic
