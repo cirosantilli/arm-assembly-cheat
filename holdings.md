@@ -73,3 +73,19 @@ http://www.theregister.co.uk/2006/06/23/arm_buys_falanx_mobile_gpus/
 FalanX founders:
 
 - https://www.linkedin.com/in/marioblazevic
+
+Jørn Nystad, Mario Blazevic, Edvard Sørgård and Borgar Ljosland are mentioned at http://www.digi.no/artikler/arm-kjoper-norsk-teknologiselskap/280866 They are centered at: NTNU https://en.wikipedia.org/wiki/Norwegian_University_of_Science_and_Technology
+
+### Open source
+
+- the kernel side source or part of it was released under the GPL:
+    - http://malideveloper.arm.com/resources/drivers/open-source-mali-utgard-gpu-linux-kernel-drivers/
+    - http://malideveloper.arm.com/resources/previous-releases/open-source-mali-gpus-linux-kernel-device-drivers-previous-releases/
+- Phoronix says the driver cannot be accepted into the kernel mainline without an open userspace to support it, as it cannot be used directly without that: https://www.phoronix.com/scan.php?page=news_item&px=MTY3OTM
+
+## Acquisitions
+
+- 2013 display monitor Cadence (bought from Evatronix) http://www.eetimes.com/document.asp?doc_id=1319383
+- Apical
+- Logipard, Lund http://www.eetimes.com/document.asp?doc_id=1253073 , video processing
+- 2004 artisan https://www.arm.com/about/newsroom/7709.php
