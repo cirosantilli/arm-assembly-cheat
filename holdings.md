@@ -61,27 +61,10 @@ Richard Meacham from Infinite is still at ARM, but now in the US: https://www.li
 - GitHub: <https://github.com/search?o=desc&q=org%3AARM-software&ref=searchresults&s=stars&type=Repositories&utf8=%E2%9C%93>
 - YouTube: <https://www.youtube.com/user/ARMflix>
 - Jive forum: https://community.arm.com
-
-## GPU business
-
-## Mali
-
-Bought from Falanx in 2006. Before that, ARM partnered with Imagination.
-
-http://www.theregister.co.uk/2006/06/23/arm_buys_falanx_mobile_gpus/
-
-FalanX founders:
-
-- https://www.linkedin.com/in/marioblazevic
-
-Jørn Nystad, Mario Blazevic, Edvard Sørgård and Borgar Ljosland are mentioned at http://www.digi.no/artikler/arm-kjoper-norsk-teknologiselskap/280866 They are centered at: NTNU https://en.wikipedia.org/wiki/Norwegian_University_of_Science_and_Technology
-
-### Open source
-
-- the kernel side source or part of it was released under the GPL:
-    - http://malideveloper.arm.com/resources/drivers/open-source-mali-utgard-gpu-linux-kernel-drivers/
-    - http://malideveloper.arm.com/resources/previous-releases/open-source-mali-gpus-linux-kernel-device-drivers-previous-releases/
-- Phoronix says the driver cannot be accepted into the kernel mainline without an open userspace to support it, as it cannot be used directly without that: https://www.phoronix.com/scan.php?page=news_item&px=MTY3OTM
+- Twitter:
+    - https://twitter.com/ARMEducation
+    - https://twitter.com/ARMEmbedded
+    - https://twitter.com/ARMCommunity
 
 ## Acquisitions
 
@@ -89,3 +72,9 @@ Jørn Nystad, Mario Blazevic, Edvard Sørgård and Borgar Ljosland are mentioned
 - Apical
 - Logipard, Lund http://www.eetimes.com/document.asp?doc_id=1253073 , video processing
 - 2004 artisan https://www.arm.com/about/newsroom/7709.php
+
+## Money
+
+- <https://en.wikipedia.org/wiki/ARM_Holdings#Licensees> Apple and Qualcomm only buy the ISA license, no RTL.
+- <https://www.arm.com/products/buying-guide/licensing/index.php> manufacturing rights are perpetual, only need license to modify design?
+- <http://ir.arm.com/phoenix.zhtml?c=197211&p=irol-reportsother> quarterly reports say how many licenses there are of each type
