@@ -12,6 +12,8 @@ I think it licenses both designs, but also allowing people to implement the ISA 
 
 ## Founding
 
+## History
+
 https://en.wikipedia.org/wiki/ARM_Holdings#History
 
 Joint venture of:
@@ -19,6 +21,14 @@ Joint venture of:
 - Apple
 - https://en.wikipedia.org/wiki/Acorn_Computers which was split up at IPO time
 - https://en.wikipedia.org/wiki/VLSI_Technology
+
+Acorn died in 1999, and was bought by Element 14: https://www.element14.com/community/welcome
+
+### Shareholders
+
+Wiki says: by February 1999, Apple's shareholding had fallen to 14.8%.[
+
+http://www.4-traders.com/ARM-HOLDINGS-PLC-4001660/company/ mentions a bunch of unknowns.
 
 ## Success
 
@@ -61,3 +71,15 @@ Richard Meacham from Infinite is still at ARM, but now in the US: https://www.li
 - GitHub: <https://github.com/search?o=desc&q=org%3AARM-software&ref=searchresults&s=stars&type=Repositories&utf8=%E2%9C%93>
 - YouTube: <https://www.youtube.com/user/ARMflix>
 - Jive forum: https://community.arm.com
+
+## People
+
+- Simon Segars
+- Warren East CEO from 2001 to 2013, during which ARM had the largest growth. Made CBE.
+- <https://en.wikipedia.org/wiki/Steve_Furber> 2016 interview <https://www.youtube.com/watch?v=_VYxIaw1kBU&list=WL&index=4>
+
+## Acquisition speculation
+
+- http://arstechnica.com/apple/2010/04/whos-buying-arm-not-apple-not-intel-nobody/
+- https://www.quora.com/Why-doesnt-Apple-Inc-buy-ARM
+- https://www.quora.com/Why-has-no-one-tried-to-acquire-ARM
