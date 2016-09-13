@@ -83,3 +83,20 @@ Richard Meacham from Infinite is still at ARM, but now in the US: https://www.li
 - http://arstechnica.com/apple/2010/04/whos-buying-arm-not-apple-not-intel-nobody/
 - https://www.quora.com/Why-doesnt-Apple-Inc-buy-ARM
 - https://www.quora.com/Why-has-no-one-tried-to-acquire-ARM
+- Twitter:
+    - https://twitter.com/ARMEducation
+    - https://twitter.com/ARMEmbedded
+    - https://twitter.com/ARMCommunity
+
+## Acquisitions
+
+- 2013 display monitor Cadence (bought from Evatronix) http://www.eetimes.com/document.asp?doc_id=1319383
+- Apical
+- Logipard, Lund http://www.eetimes.com/document.asp?doc_id=1253073 , video processing
+- 2004 artisan https://www.arm.com/about/newsroom/7709.php
+
+## Money
+
+- <https://en.wikipedia.org/wiki/ARM_Holdings#Licensees> Apple and Qualcomm only buy the ISA license, no RTL.
+- <https://www.arm.com/products/buying-guide/licensing/index.php> manufacturing rights are perpetual, only need license to modify design?
+- <http://ir.arm.com/phoenix.zhtml?c=197211&p=irol-reportsother> quarterly reports say how many licenses there are of each type
