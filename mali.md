@@ -53,3 +53,7 @@ Images: <http://en.t-firefly.com/en/firenow/firefly_rk3288/download/>
 
 - <http://www.arm.com/about/newsroom/24357.php>: 2009, 18
 - <http://www.anandtech.com/show/7112/the-arm-diaries-part-1-how-arms-business-model-works/2>: adds 0.75% - 1.25% royalties
+
+## ARM with non-mali
+
+- <https://en.wikipedia.org/wiki/PlayStation_Vita>: ARM + PowerVR
