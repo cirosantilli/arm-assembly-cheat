@@ -1,4 +1,8 @@
-/* Our first conditional branch. */
+/*
+# beq
+
+Branch if equal.
+*/
 
 #include "common.h"
 

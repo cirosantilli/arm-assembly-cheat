@@ -1,40 +1,71 @@
 # Versions
 
-<https://en.wikipedia.org/wiki/List_of_ARM_microarchitectures> has a good breakdown, and shows the hierarchy:
+## ISA
+
+Name of type:
+
+    ARMv<N>[<EXTRA>]
+
+E.g.:
+
+- ARMv7-A (e.g. Cortex A7, Raspberry Pi 2)
+
+## Implementations
+
+The ARM ISA is much more fragmented / less backwards compatible than X86.
+
+<https://en.wikipedia.org/wiki/List_of_ARM_microarchitectures> has an awesome breakdown, and shows the hierarchy:
 
 - family
-- architecture
-- core
+- architecture: the ISA, API exposed to software programmers
+- core: an specific core name. Licensees can then combine multiple cores into a single SoC.
 
 <http://www.davespace.co.uk/arm/introduction-to-arm/arm-arch123.html> and following chapters have a good summary of the evolution of the architecture.
 
-## Cortex
+### Cortex
 
 Family name of the most recent CPUs.
 
 There are three subdivisions for different markets: A, R and M.
 
-Does a good job from removing the confusing `ARMX` family branding, which looks too similar to the `ARMvX` architecture names.
+Great move by ARM, which greatly clarified branding.
 
+First `ARMX` family branding, which looks too similar to the `ARMvX` architecture names.
 
-### Cortex A
+Next, specific cores are named just as:
+
+- A7
+- A32
+- A53
+
+A35 and up are 64 bit.
+
+Compare that to the insanely long names of older families, e.g. `ARM1176JZF-S`.
+
+#### Cortex A
 
 https://en.wikipedia.org/wiki/ARM_Cortex-A
 
 Has MMU.
 
-### Cortex R
+#### Cortex R
 
 https://en.wikipedia.org/wiki/ARM_Cortex-R
 
 Real time use.
 
-### Cortex M
+#### Cortex M
 
 Low power.
 
 The least powerful line: <http://www.design-reuse.com/articles/26106/cortex-r-versus-cortex-m.html>
 
-## ARMv7
+### ARMv7
 
 Added floating point operations.
+
+### ARM11
+
+<https://en.wikipedia.org/wiki/ARM11>
+
+First release: 2002.

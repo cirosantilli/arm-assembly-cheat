@@ -1,4 +1,7 @@
 /*
+This C driver is used to make it easier to use the C standard library,
+to allow for OS portable portable IO.
+
 https://gcc.gnu.org/onlinedocs/gcc-6.1.0/gcc/ARM-Function-Attributes.html
 thumb seems to be the default.
 
