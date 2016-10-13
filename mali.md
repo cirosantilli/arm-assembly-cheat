@@ -56,4 +56,7 @@ Images: <http://en.t-firefly.com/en/firenow/firefly_rk3288/download/>
 
 ## ARM with non-mali
 
-- <https://en.wikipedia.org/wiki/PlayStation_Vita>: ARM + PowerVR
+PowerVR:
+
+- Apple
+- <https://en.wikipedia.org/wiki/PlayStation_Vita>

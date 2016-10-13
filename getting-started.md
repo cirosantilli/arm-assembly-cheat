@@ -6,7 +6,7 @@ Ubuntu 16.04 amd64:
 
 TODO: Raspbian install.
 
-Build all and examples:
+Build all examples:
 
     make
 

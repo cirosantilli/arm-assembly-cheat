@@ -14,13 +14,13 @@ I think it licenses both designs, but also allowing people to implement the ISA 
 
 ## History
 
-https://en.wikipedia.org/wiki/ARM_Holdings#History
+<https://en.wikipedia.org/wiki/ARM_Holdings#History>
 
 Joint venture of:
 
 - Apple
-- https://en.wikipedia.org/wiki/Acorn_Computers which was split up at IPO time
-- https://en.wikipedia.org/wiki/VLSI_Technology
+- <https://en.wikipedia.org/wiki/Acorn_Computers> which was split up at IPO time
+- <https://en.wikipedia.org/wiki/VLSI_Technology>
 
 Acorn died in 1999, and was bought by Element 14: https://www.element14.com/community/welcome
 
@@ -64,7 +64,7 @@ Continuation of the Infinite Design acquisition:
 
 > Acquisitions Two acquisitions were completed in the first half of the year: the first was Infinite Designs Limited, a nine person design services company in Sheffield, UK. The second was EuroMIPS Systems SAS, a fourteen person design house based in Sophia Antipolis, France. In both cases the primary objective was to establish a base for further expansion into different geographical markets where valuable engineering skills are present. Our establishment of a presence in Sheffield has already begun to bear fruit with half a dozen new recruits within a few months. Our acquisition of EuroMIPS Systems SAS represents an important development to help us better penetrate the market for 'secure' cores used in smart cards and other forms of e-commerce. We plan to increase the size of both of these new offices significantly
 
-Richard Meacham from Infinite is still at ARM, but now in the US: https://www.linkedin.com/in/richardmeacham?authType=name&authToken=IyS0&locale=en_US&srchid=1851484281465416086573&srchindex=2&srchtotal=2194&trk=vsrp_people_res_name&trkInfo=VSRPsearchId:1851484281465416086573,VSRPtargetId:15681735,VSRPcmpt:primary,VSRPnm:false,authType:name
+Richard Meacham from Infinite is still at ARM, but now in the US: <https://www.linkedin.com/in/richardmeacham?authType=name&authToken=IyS0&locale=en_US&srchid=1851484281465416086573&srchindex=2&srchtotal=2194&trk=vsrp_people_res_name&trkInfo=VSRPsearchId:1851484281465416086573,VSRPtargetId:15681735,VSRPcmpt:primary,VSRPnm:false,authType:name>
 
 ## Online presences
 
@@ -80,22 +80,22 @@ Richard Meacham from Infinite is still at ARM, but now in the US: https://www.li
 
 ## Acquisition speculation
 
-- http://arstechnica.com/apple/2010/04/whos-buying-arm-not-apple-not-intel-nobody/
-- https://www.quora.com/Why-doesnt-Apple-Inc-buy-ARM
-- https://www.quora.com/Why-has-no-one-tried-to-acquire-ARM
+- <http://arstechnica.com/apple/2010/04/whos-buying-arm-not-apple-not-intel-nobody/>
+- <https://www.quora.com/Why-doesnt-Apple-Inc-buy-ARM>
+- <https://www.quora.com/Why-has-no-one-tried-to-acquire-ARM>
 - Twitter:
-    - https://twitter.com/ARMEducation
-    - https://twitter.com/ARMEmbedded
-    - https://twitter.com/ARMCommunity
+    - <https://twitter.com/ARMEducation>
+    - <https://twitter.com/ARMEmbedded>
+    - <https://twitter.com/ARMCommunity>
 
 ## Acquisitions
 
-- 2013 display monitor Cadence (bought from Evatronix) http://www.eetimes.com/document.asp?doc_id=1319383
+- 2013 display monitor Cadence (bought from Evatronix) <http://www.eetimes.com/document.asp?doc_id=1319383>
 - Apical
-- Logipard, Lund http://www.eetimes.com/document.asp?doc_id=1253073 , video processing
-- 2004 artisan https://www.arm.com/about/newsroom/7709.php
+- Logipard, Lund <http://www.eetimes.com/document.asp?doc_id=1253073> , video processing
+- 2004 artisan <https://www.arm.com/about/newsroom/7709.php>
 
-## Money
+## Revenue
 
 - <https://en.wikipedia.org/wiki/ARM_Holdings#Licensees> Apple and Qualcomm only buy the ISA license, no RTL.
 - <https://www.arm.com/products/buying-guide/licensing/index.php> manufacturing rights are perpetual, only need license to modify design?

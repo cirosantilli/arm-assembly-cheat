@@ -1,6 +1,8 @@
 # ARM Assembly Cheat
 
-1.  [Getting started](getting-started.m)
+ARM userland minimal examples. Runnable asserts on x86 host with QEMU. Tested on Ubuntu 16.04.
+
+1.  [Getting started](getting-started.md)
 1.  Theory
     1.  [How to play with ARM](how-to-play-with-arm.md)
     1.  [Introduction](introduction.md)
