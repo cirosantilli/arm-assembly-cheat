@@ -7,3 +7,7 @@ ARM has already sued people in the past for implementing ARM ISA: <http://www.ee
 <http://semiengineering.com/an-alternative-to-x86-arm-architectures/>:
 
 > Asanovic joked that the shortest unit of time is not the moment between a traffic light turning green in New York City and the cab driver behind the first vehicle blowing the horn; it’s someone announcing that they have created an open-source, ARM-compatible core and receiving a “cease and desist” letter from a law firm representing ARM.
+
+<https://www.quora.com/Why-is-it-that-you-need-a-license-from-ARM-to-design-an-ARM-CPU-How-are-the-instruction-sets-protected>
+
+Patents for very old ISAs however have expired.

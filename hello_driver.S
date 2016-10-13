@@ -1,6 +1,15 @@
+/*
+Minimal example using driver.
+
+Controls the exit status of the program.
+*/
+
 #include "common.h"
 
-ENTRY
+.text
+.global asm_main
+asm_main:
+
     /* Set the return value according to the ARM calling convention. */
     mov r0, #0
 

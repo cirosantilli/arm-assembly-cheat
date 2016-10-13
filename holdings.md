@@ -1,4 +1,4 @@
-# Holdings
+# ARM Holdings
 
 ARM Holdings, the company behind the ARM Architecture and much more.
 

@@ -15,6 +15,7 @@ https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
 TODO this was making no difference under -mthumb and things still failed
 if the .S did not specify .thumb-function. Why?
 */
+
 int asm_main(void) __attribute__((target("arm")));
 
 int main(void) {

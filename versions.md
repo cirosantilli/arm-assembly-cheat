@@ -2,6 +2,8 @@
 
 ## ISA
 
+The hardware APIs.
+
 Name of type:
 
     ARMv<N>[<EXTRA>]
@@ -9,6 +11,17 @@ Name of type:
 E.g.:
 
 - ARMv7-A (e.g. Cortex A7, Raspberry Pi 2)
+
+TODO backwards compatible?
+
+- <https://community.arm.com/thread/7510>
+- <http://stackoverflow.com/questions/25003133/backwards-compatibility-of-arm-v7-isa-to-arm-v2-isa>
+- <http://stackoverflow.com/questions/19608570/what-parts-of-armv4-5-6-code-will-not-work-on-armv7>
+- <http://stackoverflow.com/questions/6771941/how-to-find-out-if-cpu-is-arm-v5-cpu-instructions-compatible>
+
+### ARMv8
+
+2011, has a 64-bit mode called AArch64, and an armv7 compatible 32-bit mode called AArch32.
 
 ## Implementations
 

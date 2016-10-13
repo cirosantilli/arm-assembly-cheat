@@ -1,4 +1,3 @@
-/* Minimal Linux hello world without driver. */
 .data
     msg:
         .ascii "hello world\n"

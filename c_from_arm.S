@@ -22,5 +22,4 @@ ENTRY
     mov r0, #0
     /*bl exit*/
 
-    mov r0, #0
-    bx lr
+    EXIT
