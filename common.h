@@ -4,7 +4,7 @@
     .text; \
     .global asm_main; \
     asm_main: \
-    push {lr}
+    push {ip, lr} /* push ip to have 8 bytes and keep AAPCS stack alignment */
 
 /*
 Branching to "fail" makes tests fail.
@@ -19,5 +19,5 @@ Meant to be called at the end of ENTRY.
     fail: \
         mov r0, #77; \
     pass: \
-        pop {lr}; \
+        pop {ip, lr}; \
         bx lr;

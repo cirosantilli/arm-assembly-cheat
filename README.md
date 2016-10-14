@@ -35,6 +35,8 @@ ARM userland minimal examples. Runnable asserts on x86 host with QEMU. Tested on
         1.  [mul](mul.S)
     1.  Bitwise
         1.  [and](and.S)
+    1.  Loads and stores
+        1.  [push](push.S)
     1.  [Function](function.S)
     1.  [C from ARM](c_from_arm.c)
     1.  Thumb

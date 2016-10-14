@@ -2,20 +2,46 @@
 # beq
 
 Branch if equal.
+
+# bne
+
+Branch if not equal.
+
+# ble
+
+Less or equal.
+
+# bge
+
+Greater or equal.
+
+# blt
+
+Less than.
+
+# bgt
+
+Greater than.
 */
 
 #include "common.h"
 
 ENTRY
-    /* Will return 0 if we don't change it. */
-    mov r0, #0
-    /* If this is not zero, we end up changing the return value r0.
-     * Change this value to see the test fail. */
+    /* Equality. */
     mov r1, #0
-    /*mov r1, #1*/
-    /* Compare and branch if zero. */
     cmp r1, #0
     beq ok
     b fail
 ok:
+    bne fail
+
+    /* Less / more than. */
+    mov r0, #2
+    cmp r0, #1
+    ble fail
+    blt fail
+    cmp r0, #3
+    bge fail
+    bgt fail
+
     EXIT
