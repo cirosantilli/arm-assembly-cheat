@@ -4,8 +4,6 @@ Ubuntu 16.04 amd64:
 
     sudo apt-get install gcc-arm-linux-gnueabihf gdb-multiarch qemu-user-static
 
-TODO: Raspbian install.
-
 Build all examples:
 
     make
@@ -22,6 +20,10 @@ will run:
 
     hello_driver.S
 
-Run all examples, exit status is non-zero if an example exits with non-zero:
+Test that all examples exit with status 0:
 
     make test
+
+Debug one example with GDB:
+
+    make debug-hello_driver

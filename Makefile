@@ -12,7 +12,7 @@ DRIVER_OBJ ?= $(DRIVER_BASENAME)$(OBJ_EXT)
 
 OUTS := $(addsuffix $(OUT_EXT), $(basename $(wildcard *$(IN_EXT))))
 
-.PHONY: all clean debug run test
+.PHONY: all clean test
 .PRECIOUS: %$(OBJ_EXT)
 
 all: $(OUTS) hello_c$(OUT_EXT)
@@ -37,7 +37,9 @@ debug-%: %$(OUT_EXT)
 	gdb-multiarch -q \
 	  -ex 'set architecture arm' \
 	  -ex 'file $<' \
-	  -ex 'target remote localhost:1234'
+	  -ex 'target remote localhost:1234' \
+	  -ex 'break asm_main' \
+	  -ex 'continue' \
 
 run-%: %$(OUT_EXT)
 	$(RUN_CMD) '$<'

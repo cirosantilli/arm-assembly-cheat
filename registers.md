@@ -2,27 +2,47 @@
 
 <https://en.wikipedia.org/wiki/ARM_architecture#Registers>
 
-## FP
+## Registers with special names
 
-## Frame pointer
+<http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473e/CJAJBFHC.html>
 
-## R11
+### SB
+
+### R9
+
+Static base register.
+
+TODO.
+
+### FP
+
+### Frame pointer
+
+### R11
 
 <https://community.arm.com/thread/7092>
 
-## SP
+### IP
 
-## Stack pointer
+### R12
 
-## R13
+Intra procedure call scratch register
+
+TODO
+
+### SP
+
+### Stack pointer
+
+### R13
 
 Stack pointer, much like Intel's.
 
-## LR
+### LR
 
-## Link register
+### Link register
 
-## R14
+### R14
 
 LR is an alias for `R14`.
 
@@ -33,11 +53,11 @@ For non-leaf function calls, you must save it to memory, often with: TODO check:
     PUSH {,LR}
     POP {,PC}
 
-## PC
+### PC
 
-## Program counter
+### Program counter
 
-## R15
+### R15
 
 PC is an alias for `R15`, which is the program counter.
 

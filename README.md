@@ -1,12 +1,14 @@
 # ARM Assembly Cheat
 
-ARM userland minimal examples. Runnable asserts on x86 host with QEMU. Tested on Ubuntu 16.04.
+ARM userland minimal examples. Runnable asserts on x86 host with QEMU. Tested on Ubuntu 16.04 host.
 
 1.  [Getting started](getting-started.md)
+1.  [About](about.md)
 1.  Theory
     1.  [How to play with ARM](how-to-play-with-arm.md)
     1.  [Introduction](introduction.md)
     1.  [Versions](versions.md)
+        1.  [AArch64](aarch64.md)
     1.  [Calling conventions](calling-conventions.md)
     1.  [Extensions](extensions.md)
         1. [Thumb](thumb.md)
@@ -29,6 +31,7 @@ ARM userland minimal examples. Runnable asserts on x86 host with QEMU. Tested on
         1.  [bl and bx](bl.S)
     1.  Arithmetic
         1.  [add](add.S)
+        1.  [sub](sub.S)
         1.  [mul](mul.S)
     1.  Bitwise
         1.  [and](and.S)
