@@ -2,7 +2,7 @@
 
 Ubuntu 16.04 amd64:
 
-    sudo apt-get install gcc-arm-linux-gnueabihf gdb-multiarch qemu-user-static
+    ./configure
 
 Build all examples:
 

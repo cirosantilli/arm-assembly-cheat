@@ -8,7 +8,7 @@
 all:
 	arm-linux-gnueabihf-gcc -ggdb3 -Wall -Wextra -pedantic -marm -c -o hello.o hello.S
 	arm-linux-gnueabihf-ld -o hello.out hello.o
-	qemu-arm-static -L /usr/arm-linux-gnueabihf hello.out
+	qemu-arm -L /usr/arm-linux-gnueabihf hello.out
 
 clean:
 	rm -f *.o *.out
