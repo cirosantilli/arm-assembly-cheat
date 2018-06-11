@@ -1,10 +1,9 @@
 /* Unconditional branch. jmp in x86. */
 
 #include "common.h"
-
 ENTRY
     mov r0, #0
-    /* If we comment this out, the test fails. */
+    /* Jump over the fail. */
     b ok
     b fail
 ok:

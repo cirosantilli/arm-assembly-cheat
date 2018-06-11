@@ -5,7 +5,7 @@
 .text
 .global _start
 _start:
-    /* write syscall. */
+    /* write syscall */
     mov r0, #1     /* stdout */
     ldr r1, =msg   /* buffer */
     ldr r2, =len   /* len */

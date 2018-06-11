@@ -7,12 +7,12 @@
     push {ip, lr} /* push ip to have 8 bytes and keep AAPCS stack alignment */
 
 /*
-Branching to "fail" makes tests fail.
-
-r0 is ignored. If EXIT is reached, the program ends successfully.
-
-Meant to be called at the end of ENTRY.
-*/
+ * Branching to "fail" makes tests fail with exit status 77.
+ *
+ * If EXIT is reached, the program ends successfully.
+ *
+ * Meant to be called at the end of ENTRY.
+ */
 #define EXIT \
         mov r0, #0; \
         b pass; \

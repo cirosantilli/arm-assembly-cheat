@@ -16,10 +16,9 @@ asm_main:
     /* Try some whacky value to see tests break. */
     /*mov r0, #77*/
 
-    /*
-    Branch to the address at register lr.
-    That is the return value which was put there by the C driver (likely with a bl).
-
-    X means eXchange encoding from thumb back to ARM, which is what the driver uses.
-    */
+    /* Branch to the address at register lr.
+     * That is the return value which was put there by the C driver (likely with a bl).
+     *
+     * X means eXchange encoding from thumb back to ARM, which is what the driver uses.
+     */
     bx lr
