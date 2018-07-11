@@ -45,6 +45,16 @@ will run:
 hello_driver.S
 ....
 
+Alternatively, to help with tab complete, the following all do the same thing:
+
+....
+./run hello_driver
+./run hello_driver.
+./run hello_driver.out
+....
+
+Almost all example don't output anything, they just assert that the computations are as expected and exit 0 is that was the case. Try messing with the examples to see them fail.
+
 Test that all examples exit with status 0:
 
 ....
@@ -79,18 +89,21 @@ These examples show how our tooling works:
 
 Grouping loosely based on that of the manual.
 
-=== Load/store instructions
-
-. link:mov.S[]
-. link:push.S[]
-
-https://stackoverflow.com/questions/14046686/why-use-ldr-over-mov-or-vice-versa-in-arm-assembly
-
 === Branch instructions
 
 . link:beq.S[]
 . link:b.S[]
 . link:bl.S[]
+
+=== Load and store instructions
+
+In ARM, there are only two instruction families that do memory access: `ldr` and `str`:
+
+Example: link:ldr[]
+
+Everything else works on register and immediates.
+
+This is part of the RISC-y beauty of the ARM instruction set, unlike x86 in which several operations can read from memory, and helps to predict how to optimize for a given CPU pipeline.
 
 === Data processing instructions
 
@@ -99,9 +112,47 @@ https://stackoverflow.com/questions/14046686/why-use-ldr-over-mov-or-vice-versa-
 . link:mul.S[]
 . link:sub.S[]
 
+==== mov
+
+Move an immediate to a register.
+
+Example: link:mov.S[]
+
+Since every instruction <<instruction-length,has a fixed 4 byte size>>, there is not enough space to encode arbitrary 32-bit immediates in a single instruction, since some of the bits are needed to actually encode the instruction itself.
+
+The solutions to this problem are mentioned at:
+
+* https://stackoverflow.com/questions/38689886/loading-32-bit-values-to-a-register-in-arm-assembly
+* https://community.arm.com/processors/b/blog/posts/how-to-load-constants-in-assembly-for-arm-architecture
+
+Summary of solutions:
+
+* `movw` and `movt`
+* place it in memory. But then how to load the address, which is also a 32-bit value?
+** use pc-relative addressing if the memory is close enough
+** use `orr` encodable shifted immediates
+
+The blog article summarizes nicely which immediates can be encoded and the design rationale:
+
+____
+An Operand 2 immediate must obey the following rule to fit in the instruction: an 8-bit value rotated right by an even number of bits between 0 and 30 (inclusive). This allows for constants such as 0xFF (0xFF rotated right by 0), 0xFF00 (0xFF rotated right by 24) or 0xF000000F (0xFF rotated right by 4).
+
+In software - especially in languages like C - constants tend to be small. When they are not small they tend to be bit masks. Operand 2 immediates provide a reasonable compromise between constant coverage and encoding space; most common constants can be encoded directly.
+____
+
+Assemblers however support magic memory allocations which may hide what is truly going on: https://stackoverflow.com/questions/14046686/why-use-ldr-over-mov-or-vice-versa-in-arm-assembly Always ask your friendly disassembly for a good confirmation.
+
+==== push
+
+. link:push.S[]
+
 == Instruction encoding
 
+=== Instruction length
+
 Every ARMv7 instruction is 4 bytes long.
+
+This RISC-y design likely makes processor design easier and allows for certain optimizations, at the cost of slightly more complex assembly. Totally worth it.
 
 <<Thumb>> is an alternative encoding.
 
@@ -182,4 +233,31 @@ Unlike most our other examples, which use the C standard library for portability
 . link:system-programming.md[System programming]
 . link:isa-documentation.md[ISA documentation]
 . link:glossary.md[Glossary]
-. link:bibliography.md[Bibliography]
+
+== Bibliography
+
+ISA quick references can be found in some places however:
+
+- <https://web.archive.org/web/20161009122630/http://infocenter.arm.com/help/topic/com.arm.doc.qrc0001m/QRC0001_UAL.pdf>
+
+Getting started tutorials:
+
+* http://www.davespace.co.uk/arm/introduction-to-arm/
+* https://azeria-labs.com/writing-arm-assembly-part-1/
+
+=== Official manuals
+
+The official manuals were stored in http://infocenter.arm.com but as of 2017 they started to slowly move to link:https://developer.arm.com[].
+
+Each revision of a document has a "ARM DDI" unique document identifier.
+
+The "ARM Architecture Reference Manuals" are the official canonical ISA documentation document. In this repository, we always reference the following revisions:
+
+* ARMv8: https://developer.arm.com/docs/ddi0487/latest/arm-architecture-reference-manual-armv8-for-armv8-a-architecture-profile
++
+We use: ARM DDI 0487C.a: https://static.docs.arm.com/ddi0487/ca/DDI0487C_a_armv8_arm.pdf
+* ARMv7: https://developer.arm.com/products/architecture/a-profile/docs/ddi0406/latest/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition
++
+We use: DDI 0406C.d: https://static.docs.arm.com/ddi0406/cd/DDI0406C_d_armv7ar_arm.pdf?_ga=2.64816815.1086219598.1531250756-677810532.1526807026
+
+Bibliography: https://www.quora.com/Where-can-I-find-the-official-documentation-of-ARM-instruction-set-architectures-ISAs

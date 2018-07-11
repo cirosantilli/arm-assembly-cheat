@@ -1,14 +1,17 @@
 .POSIX:
 
-CCC ?= arm-linux-gnueabihf-gcc -ggdb3 -Wall -Wextra -pedantic -marm #-mthumb
-DRIVER_BASENAME ?= main
-IN_EXT ?= .S
-OBJ_EXT ?= .o
-OUT_EXT ?= .out
-RUN_CMD ?= qemu-arm -L /usr/arm-linux-gnueabihf
-RUN ?= hello_driver
-TEST ?= test
-DRIVER_OBJ ?= $(DRIVER_BASENAME)$(OBJ_EXT)
+CC = arm-linux-gnueabihf-gcc
+CFLAGS = -ggdb3 -Wall -Wextra -pedantic -marm #-mthumb
+DRIVER_BASENAME = main
+IN_EXT = .S
+OBJ_EXT = .o
+OUT_EXT = .out
+RUN_CMD = qemu-arm -L /usr/arm-linux-gnueabihf
+RUN = hello_driver
+TEST = test
+DRIVER_OBJ = $(DRIVER_BASENAME)$(OBJ_EXT)
+
+-include params.mk
 
 OUTS := $(addsuffix $(OUT_EXT), $(basename $(wildcard *$(IN_EXT))))
 
@@ -18,16 +21,16 @@ OUTS := $(addsuffix $(OUT_EXT), $(basename $(wildcard *$(IN_EXT))))
 all: $(OUTS) hello_c$(OUT_EXT)
 
 hello_c$(OUT_EXT): hello_c.c
-	$(CCC) -o '$@' '$<'
+	$(CC) $(CFLAGS) -o '$@' '$<'
 
 %$(OUT_EXT): %$(OBJ_EXT) $(DRIVER_OBJ)
-	$(CCC) -o '$@' '$<' $(DRIVER_OBJ)
+	$(CC) $(CFLAGS) -o '$@' '$<' $(DRIVER_OBJ)
 
 %$(OBJ_EXT): %$(IN_EXT) common.h
-	$(CCC) -c -o '$@' '$<'
+	$(CC) $(CFLAGS) -c -o '$@' '$<'
 
 $(DRIVER_OBJ): $(DRIVER_BASENAME).c
-	$(CCC) -c -o '$@' '$<'
+	$(CC) $(CFLAGS) -c -o '$@' '$<'
 
 clean:
 	rm -f *.o *.out
