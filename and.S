@@ -1,4 +1,4 @@
-/* bitwise AND */
+/* Bitwise AND. */
 
 #include "common.h"
 

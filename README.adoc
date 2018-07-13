@@ -27,16 +27,16 @@ Build all examples:
 make
 ....
 
-Run a single example on an emulator:
+Build and run a single example on an emulator:
 
 ....
-make run-<basename-no-extension>
+make test-<basename-no-extension>
 ....
 
 E.g.:
 
 ....
-make run-hello_driver
+make test-hello_driver
 ....
 
 will run:
@@ -48,12 +48,19 @@ hello_driver.S
 Alternatively, to help with tab complete, the following all do the same thing:
 
 ....
-./run hello_driver
-./run hello_driver.
-./run hello_driver.out
+./test hello_driver
+./test hello_driver.
+./test hello_driver.out
 ....
 
-Almost all example don't output anything, they just assert that the computations are as expected and exit 0 is that was the case. Try messing with the examples to see them fail.
+Almost all example don't output anything, they just assert that the computations are as expected and exit 0 is that was the case.
+
+Try messing with the examples to see them fail. You should see the standard `make` failure message of form:
+
+....
+Makefile:61: recipe for target 'test-fail' failed
+make: *** [test-fail] Error 1
+....
 
 Test that all examples exit with status 0:
 
@@ -78,7 +85,7 @@ Even though <<gdb-step-debug>> can already disassemble instructions for us, it i
 Disassemble all examples:
 
 ....
-make objdump
+make -j `nproc` objdump
 ....
 
 Disassemble one example:
@@ -129,7 +136,10 @@ Grouping loosely based on that of the manual.
 
 In ARM, there are only two instruction families that do memory access: `ldr` and `str`:
 
-Example: link:ldr[]
+Examples:
+
+* link:ldr.S[]
+* link:str.S[]
 
 Everything else works on register and immediates.
 

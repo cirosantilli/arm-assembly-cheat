@@ -1,8 +1,4 @@
-/*
-# sub
-
-Subtraction.
-*/
+/* Subtraction. */
 
 #include "common.h"
 

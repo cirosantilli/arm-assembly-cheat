@@ -1,8 +1,7 @@
-/*
-Minimal example using driver.
-
-Controls the exit status of the program.
-*/
+/* Minimal example using driver.
+ *
+ * Controls the exit status of the program.
+ */
 
 #include "common.h"
 

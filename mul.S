@@ -1,8 +1,9 @@
-/* 2 * 3 = 6 */
+/* Multiplication. */
 
 #include "common.h"
 
 ENTRY
+    /* 2 * 3 = 6 */
     mov r0, #0
     mov r1, #2
     mov r2, #3

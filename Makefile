@@ -57,7 +57,7 @@ gdb-%: %$(OUT_EXT)
 	  -ex 'layout split' \
 	;
 
-run-%: %$(OUT_EXT)
+test-%: %$(OUT_EXT)
 	$(RUN_CMD) '$<'
 
 test: all

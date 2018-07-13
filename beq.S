@@ -1,28 +1,10 @@
-/*
-# beq
-
-Branch if equal.
-
-# bne
-
-Branch if not equal.
-
-# ble
-
-Less or equal.
-
-# bge
-
-Greater or equal.
-
-# blt
-
-Less than.
-
-# bgt
-
-Greater than.
-*/
+/* * beq: branch if equal
+ * * bne: branch if not equal
+ * * ble: less or equal
+ * * bge: greater or equal
+ * * blt: less than
+ * * bgt: greater than
+ */
 
 #include "common.h"
 
