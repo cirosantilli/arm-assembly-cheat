@@ -9,7 +9,7 @@
 :toclevels: 6
 :toc-title:
 
-ARM assembly userland minimal examples. Runnable asserts on x86 host with QEMU. Tested on Ubuntu 18.04 host.
+ARMv7 and ARMv8 assembly userland minimal examples. Runnable asserts on x86 host with QEMU. Nice GDB step debug setup. Tested on Ubuntu 18.04 host.
 
 toc::[]
 
@@ -61,11 +61,41 @@ Test that all examples exit with status 0:
 make test
 ....
 
+=== GDB step debug
+
 Debug one example with GDB:
 
 ....
-make debug-hello_driver
+make gdb-add
 ....
+
+Bibliography: https://stackoverflow.com/questions/20590155/how-to-single-step-arm-assembler-in-gdb-on-qemu/51310791#51310791
+
+=== Disassemble
+
+Even though <<gdb-step-debug>> can already disassemble instructions for us, it is sometimes useful to have the disassembly in a text file for further examination.
+
+Disassemble all examples:
+
+....
+make objdump
+....
+
+Disassemble one example:
+
+....
+make add.objdump
+....
+
+Examine one disassembly:
+
+....
+less -p asm_main add.objdump
+....
+
+This jumps directly to `asm_main`, which is what you likely want to see.
+
+Disassembly is still useful even though we are writing assembly because the assembler can do some non-obvious magic that we want to understand.
 
 == About
 

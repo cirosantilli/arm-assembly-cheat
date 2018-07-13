@@ -1,2 +1,4 @@
+*.log
 *.o
+*.objdump
 *.out

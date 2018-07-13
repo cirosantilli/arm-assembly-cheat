@@ -6,8 +6,7 @@
     asm_main: \
     push {ip, lr} /* push ip to have 8 bytes and keep AAPCS stack alignment */
 
-/*
- * Branching to "fail" makes tests fail with exit status 77.
+/* Branching to "fail" makes tests fail with exit status 1.
  *
  * If EXIT is reached, the program ends successfully.
  *
@@ -17,7 +16,7 @@
         mov r0, #0; \
         b pass; \
     fail: \
-        mov r0, #77; \
+        mov r0, #1; \
     pass: \
         pop {ip, lr}; \
         bx lr;
