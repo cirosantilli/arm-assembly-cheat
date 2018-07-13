@@ -1,5 +1,7 @@
 /* https://github.com/cirosantilli/arm-assembly-cheat#calling-convention */
+
 #include "common.h"
+
 .data
     msg:
         .asciz "hello world"
