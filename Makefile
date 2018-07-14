@@ -1,18 +1,30 @@
 .POSIX:
 
-PREFIX = arm-linux-gnueabihf-
-CC = $(PREFIX)gcc
-OBJDUMP = $(PREFIX)objdump
-CFLAGS = -ggdb3 -march=armv7-a -marm -pedantic -static -Wall -Wextra #-mthumb
+CC = $(PREFIX_PATH)-gcc
+# no-pie: https://stackoverflow.com/questions/51310756/how-to-gdb-step-debug-a-dynamically-linked-executable-in-qemu-user-mode
+CFLAGS = -fno-pie -ggdb3 -march=$(MARCH) -marm -pedantic -no-pie -Wall -Wextra #-mthumb
+CTNG =
 DRIVER_BASENAME = main
-IN_EXT = .S
-OBJ_EXT = .o
-OBJDUMP_EXT = .objdump
-OUT_EXT = .out
-RUN_CMD = qemu-arm -L /usr/arm-linux-gnueabihf
-RUN = hello_driver
-TEST = test
 DRIVER_OBJ = $(DRIVER_BASENAME)$(OBJ_EXT)
+IN_EXT = .S
+MARCH = armv7-a
+OBJDUMP = $(PREFIX_PATH)-objdump
+OBJDUMP_EXT = .objdump
+OBJ_EXT = .o
+OUT_EXT = .out
+PREFIX = arm-linux-gnueabihf
+QEMU_EXE = qemu-arm
+RUN_CMD = $(QEMU_EXE) -L $(SYSROOT)
+GDB_PORT = 1234
+TEST = test
+
+ifeq ($(CTNG),)
+  PREFIX_PATH = $(PREFIX)
+  SYSROOT = /usr/arm-linux-gnueabihf
+else
+  PREFIX_PATH = $(CTNG)/$(PREFIX)/bin/$(PREFIX)
+  SYSROOT = $(CTNG)/$(PREFIX)/$(PREFIX)/sysroot
+endif
 
 -include params.mk
 
@@ -46,12 +58,13 @@ clean:
 	rm -f *.o *objdump *.out
 
 gdb-%: %$(OUT_EXT)
-	$(RUN_CMD) -g 1234 '$<' &
+	$(RUN_CMD) -g $(GDB_PORT) '$<' &
 	gdb-multiarch -q \
 	  --nh \
 	  -ex 'set architecture arm' \
+	  -ex 'set sysroot $(SYSROOT)' \
 	  -ex 'file $<' \
-	  -ex 'target remote localhost:1234' \
+	  -ex 'target remote localhost:$(GDB_PORT)' \
 	  -ex 'break asm_main' \
 	  -ex 'continue' \
 	  -ex 'layout split' \

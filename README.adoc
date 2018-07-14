@@ -48,9 +48,9 @@ hello_driver.S
 Alternatively, to help with tab complete, the following all do the same thing:
 
 ....
-./test hello_driver
-./test hello_driver.
-./test hello_driver.out
+./t hello_driver
+./t hello_driver.
+./t hello_driver.out
 ....
 
 Almost all example don't output anything, they just assert that the computations are as expected and exit 0 is that was the case.
@@ -103,6 +103,34 @@ less -p asm_main add.objdump
 This jumps directly to `asm_main`, which is what you likely want to see.
 
 Disassembly is still useful even though we are writing assembly because the assembler can do some non-obvious magic that we want to understand.
+
+=== Get rid of distro packages
+
+If you are like me, and you don't trust distro blobs, or if your distro does not provide working blobs, here goes a working procedure to replace the following distro blobs:
+
+* crosstool-ng: https://stackoverflow.com/revisions/51310756/6
+* qemu:
++
+....
+git clone --recursive git://git.qemu.org/qemu.git
+cd qemu
+git checkout v2.12.0
+./configure --target-list=arm-linux-user
+make -j`nproc`
+....
+
+Then build and run with:
+
+....
+make \
+  CTNG=crosstool-ng/.build/ct_prefix \
+  PREFIX=arm-cortex_a15-linux-gnueabihf \
+  QEMU_EXE=arm-linux-user/qemu-arm \
+  test \
+;
+....
+
+Ideally we should just add submodules here and automate from there, but I've done that like 5 times this month and I'm lazy now.
 
 == About
 
