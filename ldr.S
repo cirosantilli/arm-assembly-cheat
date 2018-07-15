@@ -34,6 +34,15 @@ ENTRY
     cmp r1, r2
     bne fail
 
+    /* Similar to =myvar, but also automatically allocates the constant in memory
+     * at the end of the current section, and then does a PC relative load.
+     */
+    ldr r0, =0x11112222
+    movw r1, #0x2222
+    movt r1, #0x1111
+    cmp r0, r1
+    bne fail
+
     /* More efficiently, use r0 as the address to read, and write to r0 itself. */
     ldr r0, =myvar
     ldr r0, [r0]

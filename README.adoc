@@ -9,7 +9,7 @@
 :toclevels: 6
 :toc-title:
 
-ARMv7 and ARMv8 assembly userland minimal examples. Runnable asserts on x86 host with QEMU. Nice GDB step debug setup. Tested on Ubuntu 18.04 host.
+ARMv7 and ARMv8 assembly userland minimal examples. Runnable asserts on x86 host with QEMU user mode. Nice GDB step debug setup. Tested on Ubuntu 18.04 host.
 
 toc::[]
 
@@ -27,7 +27,7 @@ Build all examples:
 make
 ....
 
-Build and run a single example on an emulator:
+Build and run a single ARMv7 example on QEMU user mode:
 
 ....
 make test-<basename-no-extension>
@@ -43,6 +43,13 @@ will run:
 
 ....
 hello_driver.S
+....
+
+<<armv8>> examples are all located under the link:v8[] directory. They can be run in the same way as ARMv7 examples:
+
+....
+cd v8
+make test-mov
 ....
 
 Alternatively, to help with tab complete, the following all do the same thing:
@@ -149,6 +156,12 @@ These examples show how our tooling works:
 . link:fail.S[]
 . link:hello_c.c[]
 . link:hello_driver.S[]
+
+== Registers
+
+. link:registers.md[Registers]
+
+Bibliography: A2.3 ARM core registers.
 
 == Instructions
 
@@ -283,12 +296,24 @@ Source: link:linux/hello.S[].
 
 Unlike most our other examples, which use the C standard library for portability, this one can only be run on Linux.
 
+== ARMv8
+
+In this repository we will document only points where ARMv8 differs from ARMv7 behaviour: so you should likely learn ARMv7 first.
+
+ARMv8 is the 64 bit version of the ARM architecture.
+
+It has two states:
+
+* AArch32: 32-bit legacy compatibility mode, similar to ARMv7
+* AArch64: 64-bit mode, the main mode of operation
+
+Great summary of differences from AArch32: <https://en.wikipedia.org/wiki/ARM_architecture#AArch64_features>
+
 == Theory
 
 . link:how-to-play-with-arm.md[How to play with ARM]
 . link:introduction.md[Introduction]
 . link:versions.md[Versions]
-.. link:aarch64.md[AArch64]
 . link:calling-conventions.md[Calling conventions]
 . link:extensions.md[Extensions]
 .. link:thumb.md[Thumb]
@@ -296,7 +321,6 @@ Unlike most our other examples, which use the C standard library for portability
 . link:compilers.md[Compilers]
 . link:free-implementations.md[Free implementations]
 . link:gas.md[GAS]
-. link:registers.md[Registers]
 . link:flags.md[Flags]
 . link:system-programming.md[System programming]
 . link:isa-documentation.md[ISA documentation]
