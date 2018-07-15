@@ -23,8 +23,8 @@ ENTRY
 
     /* Read from address in a the r0 register.
      *
-     * First store the address in r0 using a magic =myvar,
-     * which creates a new variable and PC-relative addresses it
+     * First store the address in r0 using a magic =myvar, which creates
+     * a new variable containing the address and PC-relative addresses it
      * https://stackoverflow.com/questions/17214962/what-is-the-difference-between-label-equals-sign-and-label-brackets-in-ar
      */
     ldr r0, =myvar
@@ -34,9 +34,7 @@ ENTRY
     cmp r1, r2
     bne fail
 
-    /* Similar to =myvar, but also automatically allocates the constant in memory
-     * at the end of the current section, and then does a PC relative load.
-     */
+    /* Same as =myvar but with a constant. */
     ldr r0, =0x11112222
     movw r1, #0x2222
     movt r1, #0x1111

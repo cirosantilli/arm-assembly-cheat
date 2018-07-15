@@ -83,6 +83,12 @@ Debug one example with GDB:
 make gdb-add
 ....
 
+Shortcut:
+
+....
+./t -g add
+....
+
 Bibliography: https://stackoverflow.com/questions/20590155/how-to-single-step-arm-assembler-in-gdb-on-qemu/51310791#51310791
 
 === Disassemble
@@ -157,21 +163,41 @@ These examples show how our tooling works:
 . link:hello_c.c[]
 . link:hello_driver.S[]
 
+=== C driver
+
+We link all examples agains a C program: link:main.c[]. Sample simplified commands:
+
+....
+arm-linux-gnueabihf-gcc -c -o 'main.o' 'main.c'
+arm-linux-gnueabihf-gcc -c -o 'sub.o' 'sub.S'
+arm-linux-gnueabihf-gcc -o 'sub.out' 'sub.o' main.o
+....
+
+The C driver then just calls `asm_main`, which each `.S` example implements.
+
+This allows us to easily use the C standard libray portably: from the point of view of GCC, everything looks like a regular C program, which does the required glibc initialization before `main()`.
+
 == Registers
 
-. link:registers.md[Registers]
+Examples: link:regs.S[]
 
-Bibliography: A2.3 ARM core registers.
+Bibliography: [[armarm7]] A2.3 "ARM core registers".
 
 == Instructions
 
-Grouping loosely based on that of the manual.
+Grouping loosely based on that of the [[armarm7]] Chapter A4 "The Instruction Sets".
 
 === Branch instructions
 
-. link:beq.S[]
 . link:b.S[]
+. link:beq.S[]
 . link:bl.S[]
+
+`B` stores PC offsets in 24 bits. The destination must be a multiple of 4, which is easy since all instructions are 4 bytes.
+
+This allows for 26 bit long jumps, that is 64 MiB.
+
+TODO: what happens if we want to jump longer than that?
 
 === Load and store instructions
 
@@ -246,7 +272,7 @@ In general cannot encode conditional instructions, but <<thumb-2>> can.
 Example:
 
 ....
-make run-thumb
+make test-thumb
 ....
 
 Outcome: it does not blow up.
@@ -266,17 +292,24 @@ http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0471i/CHDFEDDB.ht
 
 == Calling convention
 
-http://stackoverflow.com/questions/8422287/calling-c-functions-from-arm-assembly
-
-Call the C `puts("hello world")` and `exit(0)` functions from assembly:
+Call C standard library functions from assembly:
 
 ....
-make run-c_from_arm
+make test-c_from_arm
+....
+
+Output:
+
+....
+hello puts
+hello printf 12345678
 ....
 
 Source: link:c_from_arm.S[]
 
 Don't forget that stack must be 8 byte aligned.
+
+Bibliography: http://stackoverflow.com/questions/8422287/calling-c-functions-from-arm-assembly
 
 == Linux system calls
 
@@ -345,11 +378,18 @@ Each revision of a document has a "ARM DDI" unique document identifier.
 
 The "ARM Architecture Reference Manuals" are the official canonical ISA documentation document. In this repository, we always reference the following revisions:
 
-* ARMv8: https://developer.arm.com/docs/ddi0487/latest/arm-architecture-reference-manual-armv8-for-armv8-a-architecture-profile
-+
-We use: ARM DDI 0487C.a: https://static.docs.arm.com/ddi0487/ca/DDI0487C_a_armv8_arm.pdf
-* ARMv7: https://developer.arm.com/products/architecture/a-profile/docs/ddi0406/latest/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition
-+
+Bibliography: https://www.quora.com/Where-can-I-find-the-official-documentation-of-ARM-instruction-set-architectures-ISAs
+
+[[armarm7]]
+==== ARMv7 architecture reference manual
+
+ARMv7: https://developer.arm.com/products/architecture/a-profile/docs/ddi0406/latest/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition
+
 We use: DDI 0406C.d: https://static.docs.arm.com/ddi0406/cd/DDI0406C_d_armv7ar_arm.pdf?_ga=2.64816815.1086219598.1531250756-677810532.1526807026
 
-Bibliography: https://www.quora.com/Where-can-I-find-the-official-documentation-of-ARM-instruction-set-architectures-ISAs
+[[armarm8]]
+==== ARMv8 architecture reference manual
+
+https://developer.arm.com/docs/ddi0487/latest/arm-architecture-reference-manual-armv8-for-armv8-a-architecture-profile
+
+We use: ARM DDI 0487C.a: https://static.docs.arm.com/ddi0487/ca/DDI0487C_a_armv8_arm.pdf

@@ -1,4 +1,4 @@
-.extern exit, puts
+.extern exit, printf, puts
 
 #define ENTRY \
     .text; \

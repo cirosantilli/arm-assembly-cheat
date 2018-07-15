@@ -3,14 +3,22 @@
 #include "common.h"
 
 .data
-    msg:
-        .asciz "hello world"
+    puts_s:
+        .asciz "hello puts"
+    printf_format:
+        .asciz "hello printf %x\n"
 ENTRY
     /* puts("hello world") */
     /* r0 is first argument. */
-    ldr r0, =msg
+    ldr r0, =puts_s
     bl puts
     /* Check exit statut >= 0 for success. */
+    cmp r0, #0
+    blt fail
+
+    ldr r0, =printf_format
+    ldr r1, =0x12345678
+    bl printf
     cmp r0, #0
     blt fail
 

@@ -2,7 +2,7 @@
 
 ENTRY
 
-    /* Immediate. */
+    /* 13 general purpose registers. */
     mov r0, #0
     mov r1, #1
     mov r2, #2
@@ -13,8 +13,21 @@ ENTRY
     mov r7, #7
     mov r8, #8
     mov r9, #9
-    mov r10, #11
+    mov r10, #10
     mov r11, #11
     mov r12, #12
+
+    /* It is possible to ldr into pc, and it works just like for any other register.
+     *
+     * This is very similar to what b does, except that b only works with constants.
+     */
+    ldr pc, =1f
+    b fail
+1:
+
+    /* pc is just a mnemonic for r15. */
+    ldr r15, =1f
+    b fail
+1:
 
     EXIT

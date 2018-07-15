@@ -5,14 +5,13 @@
 asm_main:
     /* Only available in Thumb. */
 
-        /* CBZ: cmp and branci if zero instruction. Equivalent to CMP + BEQ. */
+        /* CBZ: cmp and branch if zero instruction. Equivalent to CMP + BEQ. */
         cbz r1, 1f
         1:
 
-        /*
-        TODO check if only available in Thumb.
-        Related: http://stackoverflow.com/questions/15587060/return-from-a-procedure-in-arm-assembly
-        */
+        /* TODO check if only available in Thumb.
+         * Related: http://stackoverflow.com/questions/15587060/return-from-a-procedure-in-arm-assembly
+         */
         /*
         PUSH {...} is the Thumb equivalent of the ARM instruction STMDB SP!,{...}
         POP {...} is the Thumb equivalent of the ARM instruction LDMIA SP!,{...}
