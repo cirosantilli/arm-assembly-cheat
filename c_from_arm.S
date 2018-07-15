@@ -14,13 +14,13 @@ ENTRY
     bl puts
     /* Check exit statut >= 0 for success. */
     cmp r0, #0
-    FAIL(blt)
+    FAIL_IF(blt)
 
     ldr r0, =printf_format
     ldr r1, =0x12345678
     bl printf
     cmp r0, #0
-    FAIL(blt)
+    FAIL_IF(blt)
 
     /* exit(0) */
     mov r0, #0

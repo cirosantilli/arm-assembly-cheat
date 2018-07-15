@@ -10,7 +10,7 @@ ENTRY
     movw r1, #0x5678
     movt r1, #0x1234
     cmp r0, r1
-    FAIL(bne)
+    FAIL_IF(bne)
 
     /* PC relative load with an offset.
      * Load myvar2 instead of myvar.
@@ -19,7 +19,7 @@ ENTRY
     movw r1, #0xDEF0
     movt r1, #0x9ABC
     cmp r0, r1
-    FAIL(bne)
+    FAIL_IF(bne)
 
     /* Read from address in a the r0 register.
      *
@@ -32,14 +32,14 @@ ENTRY
     movw r2, #0x5678
     movt r2, #0x1234
     cmp r1, r2
-    FAIL(bne)
+    FAIL_IF(bne)
 
     /* Same as =myvar but with a constant. */
     ldr r0, =0x11112222
     movw r1, #0x2222
     movt r1, #0x1111
     cmp r0, r1
-    FAIL(bne)
+    FAIL_IF(bne)
 
     /* More efficiently, use r0 as the address to read, and write to r0 itself. */
     ldr r0, =myvar
@@ -47,7 +47,7 @@ ENTRY
     movw r1, #0x5678
     movt r1, #0x1234
     cmp r0, r1
-    FAIL(bne)
+    FAIL_IF(bne)
 
     /* Read from address in a the r0 register.
      *
@@ -63,7 +63,7 @@ ENTRY
     movw r2, #0x5678
     movt r2, #0x1234
     cmp r1, r2
-    FAIL(bne)
+    FAIL_IF(bne)
 
     /* Read from address from the r0 register and add an offset of 4 to it,
      * which ends up reading myvar2 instead of myvar.
@@ -74,7 +74,7 @@ ENTRY
     movw r2, #0xDEF0
     movt r2, #0x9ABC
     cmp r1, r2
-    FAIL(bne)
+    FAIL_IF(bne)
 
 EXIT
 myvar:

@@ -4,5 +4,5 @@
 
 ENTRY
     /* Uncomment this to see it fail. */
-    /*FAIL(b)*/
+    /*FAIL_IF(b)*/
 EXIT

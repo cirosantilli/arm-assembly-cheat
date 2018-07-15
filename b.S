@@ -5,6 +5,6 @@ ENTRY
     mov r0, #0
     /* Jump over the fail. */
     b ok
-    FAIL(b)
+    FAIL_IF(b)
 ok:
 EXIT

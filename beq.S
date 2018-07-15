@@ -13,19 +13,19 @@ ENTRY
     mov r1, #0
     cmp r1, #0
     beq ok
-    FAIL(b)
+    FAIL_IF(b)
 ok:
-    FAIL(bne)
+    FAIL_IF(bne)
 
     /* Less / more than. */
     /*
     mov r0, #2
     cmp r0, #1
-    FAIL(ble)
-    FAIL(blt)
+    FAIL_IF(ble)
+    FAIL_IF(blt)
     cmp r0, #3
-    FAIL(bge)
-    FAIL(bgt)
+    FAIL_IF(bge)
+    FAIL_IF(bgt)
     */
 
 EXIT

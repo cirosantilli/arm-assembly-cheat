@@ -22,12 +22,12 @@ ENTRY
      * This is very similar to what B does, except that B only works with constants.
      */
     ldr pc, =10f
-    FAIL(b)
+    FAIL_IF(b)
 10:
 
     /* pc is just a mnemonic for r15. */
     ldr r15, =10f
-    FAIL(b)
+    FAIL_IF(b)
 10:
 
 EXIT

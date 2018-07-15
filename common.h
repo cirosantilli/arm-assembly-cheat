@@ -40,7 +40,7 @@ pass: \
     bx lr; \
 ;
 
-#define FAIL(condition) \
+#define FAIL_IF(condition) \
     condition 1f; \
     b 2f; \
 1: \
