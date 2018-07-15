@@ -62,12 +62,16 @@ Alternatively, to help with tab complete, the following all do the same thing:
 
 Almost all example don't output anything, they just assert that the computations are as expected and exit 0 is that was the case.
 
-Try messing with the examples to see them fail. You should see the standard `make` failure message of form:
+Try messing with the examples to see them fail, e.g. link:fail.S[]. You should see something like:
 
 ....
-Makefile:61: recipe for target 'test-fail' failed
-make: *** [test-fail] Error 1
+error 1 at line 7
+TEST FAILED: fail.out
+Makefile:78: recipe for target 'test' failed
+make: *** [test] Error 1
 ....
+
+So look how nice we are: we even gave you the line number of the failing assert!
 
 Test that all examples exit with status 0:
 
@@ -393,3 +397,11 @@ We use: DDI 0406C.d: https://static.docs.arm.com/ddi0406/cd/DDI0406C_d_armv7ar_a
 https://developer.arm.com/docs/ddi0487/latest/arm-architecture-reference-manual-armv8-for-armv8-a-architecture-profile
 
 We use: ARM DDI 0487C.a: https://static.docs.arm.com/ddi0487/ca/DDI0487C_a_armv8_arm.pdf
+
+==== Programmer’s Guide for ARMv8-A
+
+https://developer.arm.com/docs/den0024/latest/preface
+
+A more terse human readable introduction to the ARM architecture than the reference manuals.
+
+We use: DEN0024A https://static.docs.arm.com/den0024/a/DEN0024A_v8_architecture_PG.pdf

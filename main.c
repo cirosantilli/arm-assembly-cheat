@@ -1,26 +1,13 @@
 #include "stdio.h"
+#include "stdint.h"
 
-int asm_main(void) __attribute__((target("arm")));
-
-int main(void) {
-	int ret;
-	ret = asm_main();
-    return ret;
-}
-
-#if 0
-
-#include "stdio.h"
-
-int asm_main(int *line) __attribute__((target("arm")));
+int asm_main(uint32_t *line) __attribute__((target("arm")));
 
 int main(void) {
-	int ret, line;
-	ret = asm_main(&line);
-	if (ret) {
-		printf("error %d at line %d\n", ret, line);
-	}
+    uint32_t ret, line;
+    ret = asm_main(&line);
+    if (ret) {
+        printf("error %d at line %d\n", ret, line);
+    }
     return ret;
 }
-
-#endif

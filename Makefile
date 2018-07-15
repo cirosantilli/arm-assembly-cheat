@@ -2,7 +2,7 @@
 
 CC = $(PREFIX_PATH)-gcc
 # no-pie: https://stackoverflow.com/questions/51310756/how-to-gdb-step-debug-a-dynamically-linked-executable-in-qemu-user-mode
-CFLAGS = -fno-pie -ggdb3 -march=$(MARCH) -marm -pedantic -no-pie -Wall -Wextra #-mthumb
+CFLAGS = -fno-pie -ggdb3 -march=$(MARCH) -marm -pedantic -no-pie -std=c99 -Wall -Wextra #-mthumb
 CTNG =
 DRIVER_BASENAME = main
 DRIVER_OBJ = $(DRIVER_BASENAME)$(OBJ_EXT)
