@@ -35,14 +35,14 @@ ENTRY
     mov r4, #0
     pop {r3, r4}
     cmp r3, #1
-    bne fail
+    FAIL(bne)
     cmp r4, #2
-    bne fail
+    FAIL(bne)
 
     /* Check that stack pointer moved down by 8 bytes
      * (2 registers x 4 bytes each). */
     sub r0, r1
     cmp r0, #8
-    bne fail
+    FAIL(bne)
 
 EXIT

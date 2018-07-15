@@ -41,8 +41,12 @@ pass: \
 ;
 
 #define FAIL(condition) \
+    condition 1f; \
+    b 2f; \
+1: \
     ldr r0, =__LINE__; \
-    condition fail; \
+    b fail; \
+2: \
 ;
 
 #endif

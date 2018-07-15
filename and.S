@@ -8,18 +8,18 @@ ENTRY
 
     and r2, r1, #0
     cmp r2, #0
-    bne fail
+    FAIL(bne)
 
     and r2, r1, #1
     cmp r2, #1
-    bne fail
+    FAIL(bne)
 
     and r2, r1, #4
     cmp r2, #4
-    bne fail
+    FAIL(bne)
 
     and r2, r1, #0xFF
     cmp r2, #5
-    bne fail
+    FAIL(bne)
 
 EXIT

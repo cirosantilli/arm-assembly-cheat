@@ -8,5 +8,5 @@ ENTRY
     mov r1, #2
     sub r0, r1
     cmp r0, #1
-    bne fail
+    FAIL(bne)
 EXIT

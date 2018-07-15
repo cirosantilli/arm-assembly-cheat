@@ -21,13 +21,13 @@ ENTRY
      *
      * This is very similar to what B does, except that B only works with constants.
      */
-    ldr pc, =1f
-    b fail
-1:
+    ldr pc, =10f
+    FAIL(b)
+10:
 
     /* pc is just a mnemonic for r15. */
-    ldr r15, =1f
-    b fail
-1:
+    ldr r15, =10f
+    FAIL(b)
+10:
 
 EXIT
