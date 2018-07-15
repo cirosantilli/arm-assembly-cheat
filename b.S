@@ -7,4 +7,4 @@ ENTRY
     b ok
     b fail
 ok:
-    EXIT
+EXIT

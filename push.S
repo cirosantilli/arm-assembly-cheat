@@ -45,4 +45,4 @@ ENTRY
     cmp r0, #8
     bne fail
 
-    EXIT
+EXIT

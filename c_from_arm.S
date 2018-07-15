@@ -27,4 +27,4 @@ ENTRY
     bl exit
 
     /* Never reached, just for the fail symbol. */
-    EXIT
+EXIT

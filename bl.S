@@ -24,8 +24,7 @@ ENTRY
     bl inc
     cmp r0, #2
     bne fail
-    EXIT
-
+EXIT
 inc:
     add r0, #1
     bx lr

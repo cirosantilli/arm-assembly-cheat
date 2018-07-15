@@ -26,4 +26,4 @@ ok:
     bge fail
     bgt fail
 
-    EXIT
+EXIT

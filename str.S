@@ -33,7 +33,7 @@ ENTRY
     movt r2, #0x9ABC
     cmp r1, r2
 
-    EXIT
+EXIT
 .data;
     /* Must be in the .data section, since we want to modify it. */
 myvar:

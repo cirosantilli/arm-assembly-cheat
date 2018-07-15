@@ -22,4 +22,4 @@ ENTRY
     cmp r2, #5
     bne fail
 
-    EXIT
+EXIT

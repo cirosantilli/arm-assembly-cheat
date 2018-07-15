@@ -76,7 +76,7 @@ ENTRY
     cmp r1, r2
     bne fail
 
-    EXIT
+EXIT
 myvar:
     .word 0x12345678
 myvar2:

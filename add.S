@@ -15,4 +15,4 @@ ENTRY
     cmp r1, #3
     bne fail
 
-    EXIT
+EXIT

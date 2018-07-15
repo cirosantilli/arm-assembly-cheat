@@ -19,7 +19,7 @@ ENTRY
 
     /* It is possible to ldr into pc, and it works just like for any other register.
      *
-     * This is very similar to what b does, except that b only works with constants.
+     * This is very similar to what B does, except that B only works with constants.
      */
     ldr pc, =1f
     b fail
@@ -30,4 +30,4 @@ ENTRY
     b fail
 1:
 
-    EXIT
+EXIT

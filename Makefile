@@ -55,7 +55,7 @@ $(DRIVER_OBJ): $(DRIVER_BASENAME).c
 	$(CC) $(CFLAGS) -c -o '$@' '$<'
 
 clean:
-	rm -f *.o *objdump *.out
+	rm -f *.o *.objdump *.out
 
 gdb-%: %$(OUT_EXT)
 	$(RUN_CMD) -g $(GDB_PORT) '$<' &

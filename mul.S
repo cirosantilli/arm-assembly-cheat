@@ -10,4 +10,4 @@ ENTRY
     mul r1, r1, r2
     cmp r1, #6
     bne fail
-    EXIT
+EXIT
