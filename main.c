@@ -1,7 +1,7 @@
 #include "stdio.h"
 #include "stdint.h"
 
-int asm_main(uint32_t *line) __attribute__((target("arm")));
+int asm_main(uint32_t *line);
 
 int main(void) {
     uint32_t ret, line;

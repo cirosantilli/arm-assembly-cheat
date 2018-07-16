@@ -93,6 +93,10 @@ Shortcut:
 ./t -g add
 ....
 
+This leaves us right at the end of `asm_main`, and at the start of the assembly code in the `.S` file.
+
+TODO: possible to restart the running program from GDB as in `gdbserver --multi`? Convenient as you can reuse breakpoints easily.
+
 Bibliography: https://stackoverflow.com/questions/20590155/how-to-single-step-arm-assembler-in-gdb-on-qemu/51310791#51310791
 
 === Disassemble
@@ -164,8 +168,8 @@ Non OS portable examples will be clearly labeled with their OS.
 These examples show how our tooling works:
 
 . link:fail.S[]
-. link:hello_c.c[]
 . link:hello_driver.S[]
+. link:hello_common.S[]
 
 === C driver
 
@@ -334,6 +338,8 @@ Source: link:linux/hello.S[].
 Unlike most our other examples, which use the C standard library for portability, this one can only be run on Linux.
 
 == ARMv8
+
+TODO I'm setting this up now, but it is segfaulting. Almost there I think.
 
 In this repository we will document only points where ARMv8 differs from ARMv7 behaviour: so you should likely learn ARMv7 first.
 

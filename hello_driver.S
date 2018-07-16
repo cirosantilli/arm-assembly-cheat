@@ -3,8 +3,6 @@
  * Controls the exit status of the program.
  */
 
-#include "common.h"
-
 .text
 .global asm_main
 asm_main:

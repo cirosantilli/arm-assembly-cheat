@@ -1,9 +1,11 @@
 .POSIX:
 
+ARCH = arm
 CC = $(PREFIX_PATH)-gcc
 # no-pie: https://stackoverflow.com/questions/51310756/how-to-gdb-step-debug-a-dynamically-linked-executable-in-qemu-user-mode
-CFLAGS = -fno-pie -ggdb3 -march=$(MARCH) -marm -pedantic -no-pie -std=c99 -Wall -Wextra #-mthumb
+CFLAGS = -fno-pie -ggdb3 -march=$(MARCH) -pedantic -no-pie -std=c99 -Wall -Wextra $(CFLAGS_EXTRA)
 CTNG =
+DEFAULT_SYSROOT = /usr/$(PREFIX)
 DRIVER_BASENAME = main
 DRIVER_OBJ = $(DRIVER_BASENAME)$(OBJ_EXT)
 IN_EXT = .S
@@ -13,14 +15,14 @@ OBJDUMP_EXT = .objdump
 OBJ_EXT = .o
 OUT_EXT = .out
 PREFIX = arm-linux-gnueabihf
-QEMU_EXE = qemu-arm
+QEMU_EXE = qemu-$(ARCH)
 RUN_CMD = $(QEMU_EXE) -L $(SYSROOT)
 GDB_PORT = 1234
 TEST = test
 
 ifeq ($(CTNG),)
   PREFIX_PATH = $(PREFIX)
-  SYSROOT = /usr/arm-linux-gnueabihf
+  SYSROOT = $(DEFAULT_SYSROOT)
 else
   PREFIX_PATH = $(CTNG)/$(PREFIX)/bin/$(PREFIX)
   SYSROOT = $(CTNG)/$(PREFIX)/$(PREFIX)/sysroot
@@ -35,12 +37,9 @@ OBJDUMPS := $(addsuffix $(OBJDUMP_EXT), $(INS_NOEXT))
 .PHONY: all clean objdump test
 .PRECIOUS: %$(OBJ_EXT)
 
-all: $(OUTS) hello_c$(OUT_EXT)
+all: $(OUTS)
 
 objdump: $(OBJDUMPS)
-
-hello_c$(OUT_EXT): hello_c.c
-	$(CC) $(CFLAGS) -o '$@' '$<'
 
 %$(OUT_EXT): %$(OBJ_EXT) $(DRIVER_OBJ)
 	$(CC) $(CFLAGS) -o '$@' '$<' $(DRIVER_OBJ)
@@ -62,11 +61,11 @@ gdb-%: %$(OUT_EXT)
 	gdb-multiarch -q \
 	  -nh \
 	  -ex 'set confirm off'  \
-	  -ex 'set architecture arm' \
+	  -ex 'set architecture $(ARCH)' \
 	  -ex 'set sysroot $(SYSROOT)' \
 	  -ex 'file $<' \
 	  -ex 'target remote localhost:$(GDB_PORT)' \
-	  -ex 'break asm_main' \
+	  -ex 'break asm_main_end' \
 	  -ex 'continue' \
 	  -ex 'layout split' \
 	;
