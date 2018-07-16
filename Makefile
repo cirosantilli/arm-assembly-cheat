@@ -8,6 +8,7 @@ CTNG =
 DEFAULT_SYSROOT = /usr/$(PREFIX)
 DRIVER_BASENAME = main
 DRIVER_OBJ = $(DRIVER_BASENAME)$(OBJ_EXT)
+GDB_PORT = 1234
 IN_EXT = .S
 MARCH = armv7-a
 OBJDUMP = $(PREFIX_PATH)-objdump
@@ -15,10 +16,11 @@ OBJDUMP_EXT = .objdump
 OBJ_EXT = .o
 OUT_EXT = .out
 PREFIX = arm-linux-gnueabihf
+PHONY_MAKES =
 QEMU_EXE = qemu-$(ARCH)
 RUN_CMD = $(QEMU_EXE) -L $(SYSROOT)
-GDB_PORT = 1234
 TEST = test
+
 
 ifeq ($(CTNG),)
   PREFIX_PATH = $(PREFIX)
@@ -34,12 +36,13 @@ INS_NOEXT := $(basename $(wildcard *$(IN_EXT)))
 OUTS := $(addsuffix $(OUT_EXT), $(INS_NOEXT))
 OBJDUMPS := $(addsuffix $(OBJDUMP_EXT), $(INS_NOEXT))
 
-.PHONY: all clean objdump test
+.PHONY: all clean objdump test $(PHONY_MAKES)
 .PRECIOUS: %$(OBJ_EXT)
 
 all: $(OUTS)
-
-objdump: $(OBJDUMPS)
+	for phony in $(PHONY_MAKES); do \
+	  $(MAKE) -C $${phony}; \
+	done
 
 %$(OUT_EXT): %$(OBJ_EXT) $(DRIVER_OBJ)
 	$(CC) $(CFLAGS) -o '$@' '$<' $(DRIVER_OBJ)
@@ -55,6 +58,9 @@ $(DRIVER_OBJ): $(DRIVER_BASENAME).c
 
 clean:
 	rm -f *.o *.objdump *.out
+	for phony in $(PHONY_MAKES); do \
+	  $(MAKE) -C $${phony} clean; \
+	done
 
 gdb-%: %$(OUT_EXT)
 	$(RUN_CMD) -g $(GDB_PORT) '$<' &
@@ -69,6 +75,10 @@ gdb-%: %$(OUT_EXT)
 	  -ex 'continue' \
 	  -ex 'layout split' \
 	;
+objdump: $(OBJDUMPS)
+	for phony in $(PHONY_MAKES); do \
+	  $(MAKE) -C $${phony} objdump; \
+	done
 
 test-%: %$(OUT_EXT)
 	$(RUN_CMD) '$<'
@@ -93,3 +103,6 @@ test: all
 	    exit 0 ;\
 	  fi ;\
 	fi ;\
+	for phony in $(PHONY_MAKES); do \
+	  $(MAKE) -C $${phony} test; \
+	done
