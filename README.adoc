@@ -339,8 +339,6 @@ Unlike most our other examples, which use the C standard library for portability
 
 == ARMv8
 
-TODO I'm setting this up now, but it is segfaulting. Almost there I think.
-
 In this repository we will document only points where ARMv8 differs from ARMv7 behaviour: so you should likely learn ARMv7 first.
 
 ARMv8 is the 64 bit version of the ARM architecture.
@@ -351,6 +349,22 @@ It has two states:
 * AArch64: 64-bit mode, the main mode of operation
 
 Great summary of differences from AArch32: <https://en.wikipedia.org/wiki/ARM_architecture#AArch64_features>
+
+Some random ones, TODO create clean examples of them:
+
+* the stack has to 16-byte aligned. Therefore, the main way to push things to stack is `ldp` and  `stp`, which push two 8 byte registers at a time
+
+=== ARMv8 movk
+
+Fill a 64 bit register with 4 16-bit instructions one at a time.
+
+Example: link:v8/movk.S[]
+
+Bibliography: https://stackoverflow.com/questions/27938768/moving-a-32-bit-constant-in-arm-arch64-register
+
+=== ARMv8 registers
+
+Example: link:v8/regs.S[]
 
 == Theory
 
