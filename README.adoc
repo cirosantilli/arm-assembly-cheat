@@ -95,7 +95,7 @@ Shortcut:
 
 This leaves us right at the end of `asm_main`, and at the start of the assembly code in the `.S` file.
 
-TODO: possible to restart the running program from GDB as in `gdbserver --multi`? Convenient as you can reuse breakpoints easily.
+It is not possible to restart the running program from GDB as in `gdbserver --multi` unfortunately: https://stackoverflow.com/questions/51357124/how-to-restart-qemu-user-mode-programs-from-the-gdb-stub-as-in-gdbserver-multi
 
 Bibliography: https://stackoverflow.com/questions/20590155/how-to-single-step-arm-assembler-in-gdb-on-qemu/51310791#51310791
 
