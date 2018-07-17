@@ -45,7 +45,7 @@ will run:
 hello_driver.S
 ....
 
-<<armv8>> examples are all located under the link:v8[] directory. They can be run in the same way as ARMv7 examples:
+<<armv8>> examples are all located under the link:v8/[] directory. They can be run in the same way as ARMv7 examples:
 
 ....
 cd v8
@@ -155,21 +155,17 @@ Ideally we should just add submodules here and automate from there, but I've don
 
 == About
 
-Top level examples target the armv7 ISA (32-bit). New AArch64 features will be put in subdirectory.
-
-`qemu-arm-static` is used for emulation. It translates ARM to x86, and forwards system calls to the kernel.
+`qemu-arm-static` is used for emulation on x86 hosts. It translates ARM to x86, and forwards system calls to the host kernel.
 
 OS portability is achieved with the C standard library which makes system calls for us.
 
-Non OS portable examples will be clearly labeled with their OS.
+Non OS portable examples will be clearly labeled with their OS, e.g.: <<linux-system-calls>>.
 
-== Infrastructure
+These examples show how our insfrastructure works:
 
-These examples show how our tooling works:
-
-. link:fail.S[]
-. link:hello_driver.S[]
-. link:hello_common.S[]
+* link:fail.S[]
+* link:hello_driver.S[]
+* link:hello_common.S[]
 
 === C driver
 
@@ -185,15 +181,22 @@ The C driver then just calls `asm_main`, which each `.S` example implements.
 
 This allows us to easily use the C standard libray portably: from the point of view of GCC, everything looks like a regular C program, which does the required glibc initialization before `main()`.
 
+=== Build documentation
+
+....
+make doc
+xdg-open README.html
+....
+
 == Registers
 
 Examples: link:regs.S[]
 
-Bibliography: [[armarm7]] A2.3 "ARM core registers".
+Bibliography: <<armarm7>> A2.3 "ARM core registers".
 
 == Instructions
 
-Grouping loosely based on that of the [[armarm7]] Chapter A4 "The Instruction Sets".
+Grouping loosely based on that of the <<armarm7>> Chapter A4 "The Instruction Sets".
 
 === Branch instructions
 
@@ -324,7 +327,7 @@ Bibliography: http://stackoverflow.com/questions/8422287/calling-c-functions-fro
 Do a `write` and `exit` raw Linux system calls:
 
 ....
-make -C linux
+make -C linux test
 ....
 
 Outcome:

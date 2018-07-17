@@ -36,7 +36,7 @@ INS_NOEXT := $(basename $(wildcard *$(IN_EXT)))
 OUTS := $(addsuffix $(OUT_EXT), $(INS_NOEXT))
 OBJDUMPS := $(addsuffix $(OBJDUMP_EXT), $(INS_NOEXT))
 
-.PHONY: all clean objdump test $(PHONY_MAKES)
+.PHONY: all clean doc objdump test $(PHONY_MAKES)
 .PRECIOUS: %$(OBJ_EXT)
 
 all: $(OUTS)
@@ -57,10 +57,15 @@ $(DRIVER_OBJ): $(DRIVER_BASENAME).c
 	$(CC) $(CFLAGS) -c -o '$@' '$<'
 
 clean:
-	rm -f *.o *.objdump *.out
+	rm -f *.html *.o *.objdump *.out
 	for phony in $(PHONY_MAKES); do \
 	  $(MAKE) -C $${phony} clean; \
 	done
+
+doc: README.html
+
+README.html: README.adoc
+	asciidoctor -b html5 -v '$<' > '$@'
 
 gdb-%: %$(OUT_EXT)
 	$(RUN_CMD) -g $(GDB_PORT) '$<' &
