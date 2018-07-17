@@ -9,7 +9,7 @@
 :toclevels: 6
 :toc-title:
 
-ARMv7 and ARMv8 assembly userland minimal examples. Runnable asserts on x86 host with QEMU user mode. Nice GDB step debug setup. Tested on Ubuntu 18.04 host.
+ARMv7 and ARMv8 assembly userland minimal examples tutorial. Runnable asserts on x86 host with QEMU user mode. Nice GDB step debug setup. Tested on Ubuntu 18.04 host.
 
 toc::[]
 
