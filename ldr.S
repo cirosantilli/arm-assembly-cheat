@@ -1,4 +1,4 @@
-/* Load values from memory into registers. */
+/* https://github.com/cirosantilli/arm-assembly-cheat#load-and-store-instructions */
 
 #include "common.h"
 

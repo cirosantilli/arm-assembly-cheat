@@ -1,10 +1,4 @@
-/* * beq: branch if equal
- * * bne: branch if not equal
- * * ble: less or equal
- * * bge: greater or equal
- * * blt: less than
- * * bgt: greater than
- */
+/* https://github.com/cirosantilli/arm-assembly-cheat#beq */
 
 #include "common.h"
 

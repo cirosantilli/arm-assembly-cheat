@@ -1,7 +1,4 @@
-/* Move an immediate to a register, or a register to another register.
- *
- * Cannot access memory, only ldr and str can do that.
- */
+/* https://github.com/cirosantilli/arm-assembly-cheat#mov */
 
 #include "common.h"
 

@@ -3,23 +3,27 @@
 #include "common.h"
 
 ENTRY
-    mov r0, #77
-    mov r1, #5
-
-    and r2, r1, #0
-    cmp r2, #0
+    /* 0x00 && 0xFF == 0x00 */
+    mov r0, #0x00
+    and r0, #0xFF
+    cmp r0, #0x00
     ASSERT(beq)
 
-    and r2, r1, #1
-    cmp r2, #1
+    /* 0x0F && 0xF0 == 0x00 */
+    mov r0, #0x0F
+    and r0, #0xF0
+    cmp r0, #0x00
     ASSERT(beq)
 
-    and r2, r1, #4
-    cmp r2, #4
+    /* 0x0F && 0xFF == 0x0F */
+    mov r0, #0x0F
+    and r0, #0xFF
+    cmp r0, #0x0F
     ASSERT(beq)
 
-    and r2, r1, #0xFF
-    cmp r2, #5
+    /* 0xF0 && 0xFF == 0xF0 */
+    mov r0, #0xF0
+    and r0, #0xFF
+    cmp r0, #0xF0
     ASSERT(beq)
-
 EXIT

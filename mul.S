@@ -7,7 +7,7 @@ ENTRY
     mov r0, #0
     mov r1, #2
     mov r2, #3
-    mul r1, r1, r2
+    mul r1, r2
     cmp r1, #6
     ASSERT(beq)
 EXIT

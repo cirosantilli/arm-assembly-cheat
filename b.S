@@ -1,8 +1,7 @@
-/* Unconditional branch. jmp in x86. */
+/* https://github.com/cirosantilli/arm-assembly-cheat#b */
 
 #include "common.h"
 ENTRY
-    mov r0, #0
     /* Jump over the fail. */
     b ok
     FAIL

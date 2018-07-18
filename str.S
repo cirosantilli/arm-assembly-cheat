@@ -1,15 +1,16 @@
-/* Store values from memory into registers. */
+/* https://github.com/cirosantilli/arm-assembly-cheat#load-and-store-instructions */
 
 #include "common.h"
 
 ENTRY
-    /* Cannot use PC relative addressing, or else it fails with:
+    /* Cannot use PC relative addressing to a different segment,
+     * or else it fails with:
      *
      * ....
      * Error: internal_relocation (type: OFFSET_IMM) not fixed up
      * ....
      *
-     * TODO link to SO question.
+     * https://stackoverflow.com/questions/10094282/internal-relocation-not-fixed-up
      */
     /*ldr r0, myvar*/
 
