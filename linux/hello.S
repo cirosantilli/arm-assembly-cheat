@@ -1,7 +1,3 @@
-.data
-    msg:
-        .ascii "hello world\n"
-    len = . - msg
 .text
 .global _start
 _start:
@@ -16,3 +12,6 @@ _start:
     mov r0, #0 /* Status. */
     mov r7, #1 /* Syscall ID. */
     swi #0
+msg:
+    .ascii "hello world\n"
+len = . - msg
