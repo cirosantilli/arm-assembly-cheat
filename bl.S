@@ -23,7 +23,7 @@ ENTRY
     mov r0, #1
     bl inc
     cmp r0, #2
-    FAIL_IF(bne)
+    ASSERT(beq)
 EXIT
 inc:
     add r0, #1

@@ -7,5 +7,5 @@ ENTRY
     movk x0, 0x1111, lsl 48
     ldr x1, =0x1111222233334444
     cmp x0, x1
-    FAIL_IF(bne)
+    ASSERT(beq)
 EXIT

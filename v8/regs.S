@@ -40,5 +40,5 @@ ENTRY
     ldr x2, =0x0000000077778888
     mov w0, w1
     cmp x0, x2
-    FAIL_IF(bne)
+    ASSERT(beq)
 EXIT

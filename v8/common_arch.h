@@ -38,13 +38,9 @@ pass: \
     ret; \
 ;
 
-#define FAIL_IF(condition) \
-    condition 1f; \
-    b 2f; \
-1: \
+#define FAIL \
     ldr w0, =__LINE__; \
     b fail; \
-2: \
 ;
 
 #endif

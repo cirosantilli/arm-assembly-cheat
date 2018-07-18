@@ -10,17 +10,17 @@ ENTRY
     /* Immediate. */
     mov r0, #0
     cmp r0, #0
-    FAIL_IF(bne)
+    ASSERT(beq)
     mov r0, #1
     cmp r0, #1
-    FAIL_IF(bne)
+    ASSERT(beq)
 
     /* Register. */
     mov r0, #0
     mov r1, #1
     mov r1, r0
     cmp r1, #0
-    FAIL_IF(bne)
+    ASSERT(beq)
 
     /* movt (top) and movw set the higher and lower 16 bits of the register. */
     movw r0, #0xFFFF
@@ -28,7 +28,7 @@ ENTRY
     add r0, #1
     ldr r1, =0x12350000
     cmp r0, r1
-    FAIL_IF(bne)
+    ASSERT(beq)
 
     /* movt also zeroes out the top bits, allowing small 16-bit
      * C constants to be assigned in a single instruction.
@@ -37,6 +37,6 @@ ENTRY
     movw r0, 0x1111
     ldr r1, =0x00001111
     cmp r0, r1
-    FAIL_IF(bne)
+    ASSERT(beq)
 
 EXIT

@@ -8,18 +8,18 @@ ENTRY
 
     and r2, r1, #0
     cmp r2, #0
-    FAIL_IF(bne)
+    ASSERT(beq)
 
     and r2, r1, #1
     cmp r2, #1
-    FAIL_IF(bne)
+    ASSERT(beq)
 
     and r2, r1, #4
     cmp r2, #4
-    FAIL_IF(bne)
+    ASSERT(beq)
 
     and r2, r1, #0xFF
     cmp r2, #5
-    FAIL_IF(bne)
+    ASSERT(beq)
 
 EXIT

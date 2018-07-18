@@ -9,23 +9,24 @@
 #include "common.h"
 
 ENTRY
-    /* Equality. */
+    /* Smaller*/
+    mov r0, #1
+    cmp r0, #2
+    ASSERT(ble)
+    ASSERT(blt)
+    ASSERT(bne)
+
+    /* Equal. */
     mov r1, #0
     cmp r1, #0
-    beq ok
-    FAIL_IF(b)
-ok:
-    FAIL_IF(bne)
+    ASSERT(beq)
+    ASSERT(bge)
+    ASSERT(ble)
 
-    /* Less / more than. */
-    /*
+    /* Greater. */
     mov r0, #2
     cmp r0, #1
-    FAIL_IF(ble)
-    FAIL_IF(blt)
-    cmp r0, #3
-    FAIL_IF(bge)
-    FAIL_IF(bgt)
-    */
-
+    ASSERT(bge)
+    ASSERT(bgt)
+    ASSERT(bne)
 EXIT

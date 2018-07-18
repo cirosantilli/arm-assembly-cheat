@@ -21,7 +21,6 @@ QEMU_EXE = qemu-$(ARCH)
 RUN_CMD = $(QEMU_EXE) -L $(SYSROOT)
 TEST = test
 
-
 ifeq ($(CTNG),)
   PREFIX_PATH = $(PREFIX)
   SYSROOT = $(DEFAULT_SYSROOT)
@@ -80,6 +79,7 @@ gdb-%: %$(OUT_EXT)
 	  -ex 'continue' \
 	  -ex 'layout split' \
 	;
+
 objdump: $(OBJDUMPS)
 	for phony in $(PHONY_MAKES); do \
 	  $(MAKE) -C $${phony} objdump; \

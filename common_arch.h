@@ -36,13 +36,10 @@ pass: \
     bx lr; \
 ;
 
-#define FAIL_IF(condition) \
-    condition 1f; \
-    b 2f; \
-1: \
+/* Always fail. */
+#define FAIL \
     ldr r0, =__LINE__; \
     b fail; \
-2: \
 ;
 
 #endif
