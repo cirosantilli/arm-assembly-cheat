@@ -392,6 +392,8 @@ Example: link:v8/regs.S[]
 
 == Theory
 
+TODO review all of those and move them into the main README. They are from a previous life.
+
 . link:how-to-play-with-arm.md[How to play with ARM]
 . link:introduction.md[Introduction]
 . link:versions.md[Versions]
