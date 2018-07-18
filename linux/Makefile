@@ -1,8 +1,4 @@
 .POSIX:
-
-# TODO generalize and factor out with the top-level Makefile.
-# Leaving this simplified copy paste for now that there is a single example.
-
 .PHONY: all test clean
 
 all: hello.out
@@ -21,4 +17,4 @@ objdump: hello.out
 	arm-linux-gnueabihf-objdump -S '$<' > hello.objdump
 
 test: all
-	qemu-arm -L /usr/arm-linux-gnueabihf hello.out
+	qemu-arm hello.out
