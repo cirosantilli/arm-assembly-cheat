@@ -113,7 +113,7 @@ test: all
 	  ./$(TEST) '$(OUT_EXT)' ;\
 	else\
 	  fail=false ;\
-	  for t in *"$(OUT_EXT)"; do\
+	  for t in $(OUTS); do\
 	    if ! $(RUN_CMD) "$$t"; then \
 	      fail=true ;\
 	      break ;\
@@ -122,11 +122,9 @@ test: all
 	  if $$fail; then \
 	    echo "TEST FAILED: $$t" ;\
 	    exit 1 ;\
-	  else \
-	    echo 'ALL TESTS PASSED' ;\
-	    exit 0 ;\
 	  fi ;\
 	fi ;\
 	for phony in $(PHONY_MAKES); do \
 	  $(MAKE) -C $${phony} test; \
-	done
+	done; \
+	echo 'ALL TESTS PASSED'
