@@ -280,10 +280,18 @@ This is part of the RISC-y beauty of the ARM instruction set, unlike x86 in whic
 
 === Data processing instructions
 
+Arithmetic:
+
 * link:v7/add.S[]
-* link:v7/and.S[]
 * link:v7/mul.S[]
 * link:v7/sub.S[]
+
+Bitwise:
+
+* link:v7/and.S[]
+** `eor`: exclusive OR
+** `oor`: OR
+* link:v7/bic.S[]
 
 ==== mov
 
@@ -417,6 +425,15 @@ Bibliography:
 * https://stackoverflow.com/questions/12946958/what-is-the-interface-for-arm-system-calls-and-where-is-it-defined-in-the-linux
 * https://stackoverflow.com/questions/45742869/linux-syscall-conventions-for-armv8
 * https://reverseengineering.stackexchange.com/questions/16917/arm64-syscalls-table
+
+== VFP
+
+Vector Floating Point extension.
+
+Bibliography:
+
+* [[armarm7]] Appendix D6 "Common VFP Subarchitecture Specification". It is not part of the ISA, but just an extension.
+* https://mindplusplus.wordpress.com/2013/06/25/arm-vfp-vector-programming-part-1-introduction/ 
 
 == ARMv8
 
