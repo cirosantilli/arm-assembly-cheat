@@ -251,6 +251,14 @@ The current ARM / Thumb mode is encoded in the least significant bit of lr.
 
 Since `bl` encodes the current ARM / Thumb in the register, `bx` keeps the mode unchanged by default.
 
+==== cbz
+
+Compare and branch if zero.
+
+Example: link:v8/cbz.S[]
+
+Only in ARMv8 and ARMv7 Thumb mode, not in armv7 ARM mode.
+
 === Load and store instructions
 
 In ARM, there are only two instruction families that do memory access: `ldr`  to load and `str` to store.
