@@ -216,7 +216,7 @@ The encoding stores `pc` offsets in 24 bits. The destination must be a multiple 
 
 This allows for 26 bit long jumps, which is 64 MiB.
 
-TODO: what happens if we want to jump longer than that?
+TODO: what to do if we want to jump longer than that?
 
 ==== beq
 
