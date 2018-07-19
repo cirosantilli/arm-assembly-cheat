@@ -15,16 +15,13 @@ toc::[]
 
 == Getting started
 
-Ubuntu 16.04 amd64:
+Clone, configure, run all examples, and assert that they exit with status 0:
 
 ....
+git clone --recursive https://github.com/cirosantilli/arm-assembly-cheat
+cd arm-assembly-cheat
 ./configure
-....
-
-Build all examples:
-
-....
-make
+make test
 ....
 
 Build and run a single ARMv7 example on QEMU user mode:
@@ -79,10 +76,22 @@ make: *** [test] Error 1
 
 So look how nice we are: we even gave you the line number of the failing assert!
 
-Test that all examples exit with status 0:
+Just build the examples without running:
 
 ....
-make test
+make
+....
+
+Clean the examples:
+
+....
+make clean
+....
+
+This does not clean QEMU builds themselves. To do that run:
+
+....
+make qemu-clean
 ....
 
 === GDB step debug

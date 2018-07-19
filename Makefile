@@ -101,6 +101,9 @@ $(QEMU_EXE):
 
 qemu-clean:
 	rm -rf '$(QEMU_OUT_DIR)'
+	for phony in $(QEMU_PHONY_MAKES); do \
+	  $(MAKE) -C $${phony} qemu-clean; \
+	done
 
 test-%: %$(OUT_EXT) $(QEMU_EXE)
 	$(RUN_CMD) '$<'
