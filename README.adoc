@@ -131,33 +131,23 @@ This jumps directly to `asm_main`, which is what you likely want to see.
 
 Disassembly is still useful even though we are writing assembly because the assembler can do some non-obvious magic that we want to understand.
 
-=== Get rid of distro packages
+=== Build your own toolchain
 
-If you are like me, and you don't trust distro blobs, or if your distro does not provide working blobs, here goes a working procedure to replace the following distro blobs:
+If you are like me, and you don't trust distro blobs, or if your distro does not provide working blobs, here goes a working procedure to use your own pristine cross toolchain. 
 
-* crosstool-ng: https://stackoverflow.com/revisions/51310756/6
-* qemu:
-+
-....
-git clone --recursive git://git.qemu.org/qemu.git
-cd qemu
-git checkout v2.12.0
-./configure --target-list=arm-linux-user
-make -j`nproc`
-....
+Build the toolchain with crosstool-ng as explained at: https://stackoverflow.com/revisions/51310756/6
 
-Then build and run with:
+Then run with:
 
 ....
 make \
   CTNG=crosstool-ng/.build/ct_prefix \
   PREFIX=arm-cortex_a15-linux-gnueabihf \
-  QEMU_EXE=arm-linux-user/qemu-arm \
   test \
 ;
 ....
 
-Ideally we should just add submodules here and automate from there, but I've done that like 5 times this month and I'm lazy now.
+Ideally we should just add crosstool-ng as a submodule here and automate from there, but I've done that like 5 times this month and I'm lazy now.
 
 == About
 

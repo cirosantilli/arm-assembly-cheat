@@ -17,7 +17,10 @@ OBJ_EXT = .o
 OUT_EXT = .out
 PREFIX = arm-linux-gnueabihf
 PHONY_MAKES =
-QEMU_EXE = qemu-$(ARCH)
+ROOT_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+QEMU_DIR = $(ROOT_DIR)/qemu
+QEMU_OUT_DIR = $(ROOT_DIR)/out/qemu/$(ARCH)
+QEMU_EXE = $(QEMU_OUT_DIR)/$(ARCH)-linux-user/qemu-$(ARCH)
 RUN_CMD = $(QEMU_EXE) -L $(SYSROOT)
 TEST = test
 
@@ -35,10 +38,10 @@ INS_NOEXT := $(basename $(wildcard *$(IN_EXT)))
 OUTS := $(addsuffix $(OUT_EXT), $(INS_NOEXT))
 OBJDUMPS := $(addsuffix $(OBJDUMP_EXT), $(INS_NOEXT))
 
-.PHONY: all clean doc objdump test $(PHONY_MAKES)
+.PHONY: all clean doc objdump qemu qemu-clean test $(PHONY_MAKES)
 .PRECIOUS: %$(OBJ_EXT)
 
-all: $(OUTS)
+all: $(OUTS) qemu
 	for phony in $(PHONY_MAKES); do \
 	  $(MAKE) -C $${phony}; \
 	done
@@ -66,7 +69,7 @@ doc: README.html
 README.html: README.adoc
 	asciidoctor -b html5 -v '$<' > '$@'
 
-gdb-%: %$(OUT_EXT)
+gdb-%: %$(OUT_EXT) $(QEMU_EXE)
 	$(RUN_CMD) -g $(GDB_PORT) '$<' &
 	gdb-multiarch -q \
 	  -nh \
@@ -85,7 +88,21 @@ objdump: $(OBJDUMPS)
 	  $(MAKE) -C $${phony} objdump; \
 	done
 
-test-%: %$(OUT_EXT)
+qemu: $(QEMU_EXE)
+
+$(QEMU_EXE):
+	mkdir -p '$(QEMU_OUT_DIR)'
+	cd '$(QEMU_OUT_DIR)' && \
+	"$(QEMU_DIR)/configure" \
+	  --enable-debug \
+	  --target-list="$(ARCH)-linux-user" \
+	&& \
+	make -j`nproc`
+
+qemu-clean:
+	rm -rf '$(QEMU_OUT_DIR)'
+
+test-%: %$(OUT_EXT) $(QEMU_EXE)
 	$(RUN_CMD) '$<'
 
 test: all

@@ -4,5 +4,4 @@ sudo apt-get install \
   gcc-aarch64-linux-gnu \
   gcc-arm-linux-gnueabihf \
   gdb-multiarch \
-  qemu-user \
 ;
