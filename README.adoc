@@ -495,7 +495,7 @@ Bibliography: https://www.quora.com/Where-can-I-find-the-official-documentation-
 
 ARMv7: https://developer.arm.com/products/architecture/a-profile/docs/ddi0406/latest/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition
 
-We use: DDI 0406C.d: https://static.docs.arm.com/ddi0406/cd/DDI0406C_d_armv7ar_arm.pdf?_ga=2.64816815.1086219598.1531250756-677810532.1526807026
+We use: DDI 0406C.d: https://static.docs.arm.com/ddi0406/cd/DDI0406C_d_armv7ar_arm.pdf
 
 [[armarm8]]
 ==== ARMv8 architecture reference manual
