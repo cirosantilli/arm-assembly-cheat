@@ -1,4 +1,4 @@
-/* Minimal example using common.h. */
+/* https://github.com/cirosantilli/arm-assembly-cheat#about */
 
 #include "common.h"
 

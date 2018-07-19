@@ -6,6 +6,7 @@
 .text
 .global asm_main
 asm_main:
+asm_main_end:
 
     /* Set the return value according to the ARM calling convention. */
     mov r0, #0

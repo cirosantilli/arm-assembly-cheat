@@ -15,7 +15,7 @@ toc::[]
 
 == Getting started
 
-Clone, configure, run all examples, and assert that they exit with status 0:
+Clone, configure, build and run all ARMv7 and ARMv8 examples through QEMU user, and assert that they exit with status 0:
 
 ....
 git clone --recursive https://github.com/cirosantilli/arm-assembly-cheat
@@ -24,31 +24,26 @@ cd arm-assembly-cheat
 make test
 ....
 
-Build and run a single ARMv7 example on QEMU user mode:
+The armv7 examples are all located under the link:v7[] directory. Run one of them:
 
 ....
+cd v7
 make test-<basename-no-extension>
 ....
 
 E.g.:
 
 ....
-make test-hello_driver
+make test-add
 ....
 
 will run:
 
 ....
-hello_driver.S
+add.S
 ....
 
-Build and run all tests in current and child directories:
-
-....
-make test
-....
-
-<<armv8>> examples are all located under the link:v8/[] directory. They can be run in the same way as ARMv7 examples:
+<<armv8>> examples are all located under the link:v8[] directory. They can be run in the same way as ARMv7 examples:
 
 ....
 cd v8
@@ -110,6 +105,18 @@ Shortcut:
 
 This leaves us right at the end of `asm_main`, and at the start of the assembly code in the `.S` file.
 
+Stop on a different symbol instead:
+
+....
+make GDB_BREAK=main gdb-add
+....
+
+Shortcut:
+
+....
+./t -b main -g add
+....
+
 It is not possible to restart the running program from GDB as in `gdbserver --multi` unfortunately: https://stackoverflow.com/questions/51357124/how-to-restart-qemu-user-mode-programs-from-the-gdb-stub-as-in-gdbserver-multi
 
 Bibliography: https://stackoverflow.com/questions/20590155/how-to-single-step-arm-assembler-in-gdb-on-qemu/51310791#51310791
@@ -169,7 +176,7 @@ Non OS portable examples will be clearly labeled with their OS, e.g.: <<linux-sy
 These examples show how our insfrastructure works:
 
 * link:fail.S[]
-* link:hello_driver.S[]
+* link:v7/hello_driver.S[]
 * link:hello_common.S[]
 
 === C driver
@@ -195,7 +202,7 @@ xdg-open README.html
 
 == Registers
 
-Examples: link:regs.S[]
+Examples: link:v7/regs.S[]
 
 Bibliography: <<armarm7>> A2.3 "ARM core registers".
 
@@ -209,7 +216,7 @@ Grouping loosely based on that of the <<armarm7>> Chapter A4 "The Instruction Se
 
 Unconditional branch.
 
-Example: link:b.S[]
+Example: link:v7/b.S[]
 
 The encoding stores `pc` offsets in 24 bits. The destination must be a multiple of 4, which is easy since all instructions are 4 bytes.
 
@@ -221,7 +228,7 @@ TODO: what to do if we want to jump longer than that?
 
 Branch if equal based on the status registers.
 
-Example: link:beq.S[].
+Example: link:v7/beq.S[].
 
 The family of instructions includes:
 
@@ -236,7 +243,7 @@ The family of instructions includes:
 
 Branch with link, i.e. branch and store the return address on the `rl` register.
 
-Example: link:bl.S[]
+Example: link:v7/bl.S[]
 
 This is the major way to make function calls.
 
@@ -264,8 +271,8 @@ In ARM, there are only two instruction families that do memory access: `ldr`  to
 
 Examples:
 
-* link:ldr.S[]
-* link:str.S[]
+* link:v7/ldr.S[]
+* link:v7/str.S[]
 
 Everything else works on register and immediates.
 
@@ -273,10 +280,10 @@ This is part of the RISC-y beauty of the ARM instruction set, unlike x86 in whic
 
 === Data processing instructions
 
-* link:add.S[]
-* link:and.S[]
-* link:mul.S[]
-* link:sub.S[]
+* link:v7/add.S[]
+* link:v7/and.S[]
+* link:v7/mul.S[]
+* link:v7/sub.S[]
 
 ==== mov
 
@@ -284,7 +291,7 @@ Move an immediate to a register, or a register to another register.
 
 Cannot load from or to memory, since only the `ldr` and `str` instruction families can do that in ARM: <<load-and-store-instructions>>
 
-Example: link:mov.S[]
+Example: link:v7/mov.S[]
 
 Since every instruction <<instruction-length,has a fixed 4 byte size>>, there is not enough space to encode arbitrary 32-bit immediates in a single instruction, since some of the bits are needed to actually encode the instruction itself.
 
@@ -314,7 +321,7 @@ Assemblers however support magic memory allocations which may hide what is truly
 
 Push one ore more registers to the value contained in the stack.
 
-Example: link:push.S[]
+Example: link:v7/push.S[]
 
 Mnemonics for:
 
@@ -347,26 +354,15 @@ Variable bit encoding where instructions are either 4 or 2 bytes.
 
 In general cannot encode conditional instructions, but <<thumb-2>> can.
 
-Example:
+Example: link:v7/thumb.S[]
 
-....
-make test-thumb
-....
-
-Outcome: it does not blow up.
-
-Source:
-
-* link:driver_thumb.c[]
-* link:thumb.S[]
-
-https://stackoverflow.com/questions/28669905/what-is-the-difference-between-the-arm-thumb-and-thumb-2-instruction-encodings
+Bibliography: https://stackoverflow.com/questions/28669905/what-is-the-difference-between-the-arm-thumb-and-thumb-2-instruction-encodings
 
 === Thumb-2
 
 Newer version of thumb that allows encoding almost all instructions, TODO example.
 
-http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0471i/CHDFEDDB.html
+Bibliography: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0471i/CHDFEDDB.html
 
 == Calling convention
 
@@ -383,7 +379,7 @@ hello puts
 hello printf 12345678
 ....
 
-Source: link:c_from_arm.S[]
+Source: link:v7/c_from_arm.S[]
 
 Don't forget that stack must be 8 byte aligned.
 
@@ -394,7 +390,7 @@ Bibliography: http://stackoverflow.com/questions/8422287/calling-c-functions-fro
 Do a `write` and `exit` raw Linux system calls:
 
 ....
-make -C linux test
+make -C v7/linux test
 make -C v8/linux test
 ....
 
@@ -406,7 +402,7 @@ hello world
 
 Sources:
 
-* link:linux/hello.S[]
+* link:v7/linux/hello.S[]
 * link:v8/linux/hello.S[]
 
 Unlike most our other examples, which use the C standard library for portability, this one can only be run on Linux.

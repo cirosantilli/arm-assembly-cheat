@@ -1,6 +1,5 @@
 .POSIX:
 
-ARCH = arm
 CC = $(PREFIX_PATH)-gcc
 # no-pie: https://stackoverflow.com/questions/51310756/how-to-gdb-step-debug-a-dynamically-linked-executable-in-qemu-user-mode
 CFLAGS = -fno-pie -ggdb3 -march=$(MARCH) -pedantic -no-pie -std=c99 -Wall -Wextra $(CFLAGS_EXTRA)
@@ -8,14 +7,13 @@ CTNG =
 DEFAULT_SYSROOT = /usr/$(PREFIX)
 DRIVER_BASENAME = main
 DRIVER_OBJ = $(DRIVER_BASENAME)$(OBJ_EXT)
+GDB_BREAK = asm_main_end
 GDB_PORT = 1234
 IN_EXT = .S
-MARCH = armv7-a
 OBJDUMP = $(PREFIX_PATH)-objdump
 OBJDUMP_EXT = .objdump
 OBJ_EXT = .o
 OUT_EXT = .out
-PREFIX = arm-linux-gnueabihf
 PHONY_MAKES =
 ROOT_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 QEMU_DIR = $(ROOT_DIR)/qemu
@@ -32,11 +30,12 @@ else
   SYSROOT = $(CTNG)/$(PREFIX)/$(PREFIX)/sysroot
 endif
 
--include params.mk
+INS = $(wildcard *$(IN_EXT))
+INS_NOEXT = $(basename $(INS))
+OUTS = $(addsuffix $(OUT_EXT), $(INS_NOEXT))
+OBJDUMPS = $(addsuffix $(OBJDUMP_EXT), $(INS_NOEXT))
 
-INS_NOEXT := $(basename $(wildcard *$(IN_EXT)))
-OUTS := $(addsuffix $(OUT_EXT), $(INS_NOEXT))
-OBJDUMPS := $(addsuffix $(OBJDUMP_EXT), $(INS_NOEXT))
+-include params.mk
 
 .PHONY: all clean doc objdump qemu qemu-clean test $(PHONY_MAKES)
 .PRECIOUS: %$(OBJ_EXT)
@@ -78,7 +77,7 @@ gdb-%: %$(OUT_EXT) $(QEMU_EXE)
 	  -ex 'set sysroot $(SYSROOT)' \
 	  -ex 'file $<' \
 	  -ex 'target remote localhost:$(GDB_PORT)' \
-	  -ex 'break asm_main_end' \
+	  -ex 'break $(GDB_BREAK)' \
 	  -ex 'continue' \
 	  -ex 'layout split' \
 	;

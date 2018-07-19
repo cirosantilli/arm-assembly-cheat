@@ -1,6 +1,7 @@
 /* https://github.com/cirosantilli/arm-assembly-cheat#cbz */
 
 #include "common.h"
+
 ENTRY
 
     /* Branch. */
