@@ -293,6 +293,12 @@ Bitwise:
 ** `oor`: OR
 * link:v7/bic.S[]
 
+Shifts:
+
+* `asr`: Arithmetic Shift Right. Keep sign.
+* `lsr`: Logical Shift Right. Insert zeroes sign.
+* `ror`: Rotate Right. Wrap bits around.
+
 ==== mov
 
 Move an immediate to a register, or a register to another register.
@@ -429,6 +435,8 @@ Bibliography:
 == VFP
 
 Vector Floating Point extension.
+
+Example: link:v7/vfp.S[]
 
 Bibliography:
 

@@ -2,6 +2,11 @@
 
 #include "common.h"
 
+.data;
+    /* Must be in the .data section, since we want to modify it. */
+myvar:
+    .word 0x12345678
+
 ENTRY
     /* Cannot use PC relative addressing to a different segment,
      * or else it fails with:
@@ -35,7 +40,3 @@ ENTRY
     cmp r1, r2
 
 EXIT
-.data;
-    /* Must be in the .data section, since we want to modify it. */
-myvar:
-    .word 0x12345678
