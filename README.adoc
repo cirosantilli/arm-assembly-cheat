@@ -370,7 +370,10 @@ In general cannot encode conditional instructions, but <<thumb-2>> can.
 
 Example: link:v7/thumb.S[]
 
-Bibliography: https://stackoverflow.com/questions/28669905/what-is-the-difference-between-the-arm-thumb-and-thumb-2-instruction-encodings
+Bibliography:
+
+* https://stackoverflow.com/questions/28669905/what-is-the-difference-between-the-arm-thumb-and-thumb-2-instruction-encodings
+* https://reverseengineering.stackexchange.com/questions/6080/how-to-detect-thumb-mode-in-arm-disassembly
 
 === Thumb-2
 
