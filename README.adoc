@@ -352,6 +352,25 @@ As a consequence, the push order is fixed no matter how you write the assembly i
 
 AArch64 loses those instructions, likely because it was not possible anymore to encode all registers: http://stackoverflow.com/questions/27941220/push-lr-and-pop-lr-in-arm-arch64 and replaces them with `stp` and `ldp`.
 
+=== ubfm
+
+Unsigned Bitfield Move.
+
+____
+copies any number of low-order bits from a source register into the same number of
+adjacent bits at any position in the destination register, with zeros in the upper and lower bits.
+____
+
+Example: link:v8/ubfm.S[]
+
+Operation:
+
+....
+dest = (src & ((1 << width) - 1)) >> lsb;
+....
+
+Bibliography: https://stackoverflow.com/questions/8366625/arm-bit-field-extract
+
 == Instruction encoding
 
 === Instruction length
