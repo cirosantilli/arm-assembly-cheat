@@ -371,6 +371,14 @@ dest = (src & ((1 << width) - 1)) >> lsb;
 
 Bibliography: https://stackoverflow.com/questions/8366625/arm-bit-field-extract
 
+==== ubfx
+
+Alias for:
+
+....
+UBFM <Wd>, <Wn>, #<lsb>, #(<lsb>+<width>-1)
+....
+
 == Instruction encoding
 
 === Instruction length

@@ -30,4 +30,9 @@ ENTRY
     cmp x1, x2
     ASSERT(beq)
 
+    ubfx x1, x0, #8, #16
+    ldr x2, =0x0000000000006677
+    cmp x1, x2
+    ASSERT(beq)
+
 EXIT
