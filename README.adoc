@@ -24,7 +24,14 @@ cd arm-assembly-cheat
 make test
 ....
 
-The armv7 examples are all located under the link:v7[] directory. Run one of them:
+The armv7 examples are all located under the link:v7[] directory. Run all of them:
+
+....
+cd v7
+make test
+....
+
+Run just one of them:
 
 ....
 cd v7
@@ -37,11 +44,7 @@ E.g.:
 make test-add
 ....
 
-will run:
-
-....
-add.S
-....
+will run link:v7/add.S[].
 
 <<armv8>> examples are all located under the link:v8[] directory. They can be run in the same way as ARMv7 examples:
 
