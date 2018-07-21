@@ -13,5 +13,5 @@ _start:
     mov r7, #1 /* syscall id */
     swi #0
 msg:
-    .ascii "hello world\n"
+    .ascii "hello syscall\n"
 len = . - msg

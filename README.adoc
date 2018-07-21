@@ -9,13 +9,13 @@
 :toclevels: 6
 :toc-title:
 
-ARMv7 and ARMv8 assembly userland minimal examples tutorial. Runnable asserts on x86 host with QEMU user mode. Nice GDB step debug setup. Tested on Ubuntu 18.04 host.
+ARMv7 and ARMv8 assembly userland minimal examples tutorial. Runnable asserts on x86 host with QEMU user mode or natively on an ARM guest. Nice GDB step debug setup. Tested on Ubuntu 18.04 host and Raspberry Pi 2 guest.
 
 toc::[]
 
 == Getting started
 
-Clone, configure, build and run all ARMv7 and ARMv8 examples through QEMU user, and assert that they exit with status 0:
+On your host, clone, configure, build and run all ARMv7 and ARMv8 examples through QEMU user, and assert that they exit with status 0:
 
 ....
 git clone --recursive https://github.com/cirosantilli/arm-assembly-cheat
@@ -180,7 +180,7 @@ When reading the disassembly, many instructions have either a `.n` or `.w` suffi
 
 Bibliography: https://stackoverflow.com/questions/27147043/n-suffix-to-branch-instruction
 
-=== Run on Raspberry Pi 2
+=== Run natively on Raspberry Pi 2
 
 Yay! Let's see if this actually works on real hardware, or if it is just an emulation pipe dream?
 
@@ -190,9 +190,9 @@ link:https://en.wikipedia.org/wiki/Raspberry_Pi[According to Wikipedia] the Rasp
 
 Therefore we will only be able to run `v7` examples on that board.
 
-First connect to your Pi through SSH as explained at: https://stackoverflow.com/questions/16040128/hook-up-raspberry-pi-via-ethernet-to-laptop-without-router/39086537#39086537
+First connect to your Pi through SSH as explained at: https://stackoverflow.com/revisions/39086537/10
 
-Inside the Pi:
+Then inside the Pi:
 
 ....
 sudo apt-get update
@@ -203,6 +203,8 @@ cd v7
 make NATIVE=y test
 make NATIVE=y gdb-add
 ....
+
+GDB TUI is slightly buggier on the ancient 4.9 toolchain (current line gets different indentation, does not break on the right instruction after `asm_main_end`, link:https://superuser.com/questions/180512/how-to-turn-off-gdb-tui[cannot leave TUI]), but it might still be usable
 
 === Build your own toolchain
 
@@ -596,7 +598,7 @@ make -C v8/linux test
 Outcome for both:
 
 ....
-hello world
+hello syscall
 ....
 
 Sources:

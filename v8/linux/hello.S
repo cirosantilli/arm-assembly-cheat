@@ -13,5 +13,5 @@ _start:
     mov x8, #93
     svc #0
 msg:
-    .ascii "hello world\n"
+    .ascii "hello syscall\n"
 len = . - msg

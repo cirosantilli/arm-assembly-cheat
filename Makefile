@@ -26,11 +26,11 @@ RUN_CMD = $(QEMU_EXE) -L $(SYSROOT)
 TEST = test
 
 ifeq ($(CTNG),)
-  PREFIX_PATH = $(CTNG)/$(PREFIX)/bin/$(PREFIX)-
-  SYSROOT = $(CTNG)/$(PREFIX)/$(PREFIX)/sysroot
-else
   PREFIX_PATH = $(PREFIX)-
   SYSROOT = $(DEFAULT_SYSROOT)
+else
+  PREFIX_PATH = $(CTNG)/$(PREFIX)/bin/$(PREFIX)-
+  SYSROOT = $(CTNG)/$(PREFIX)/$(PREFIX)/sysroot
 endif
 
 INS = $(wildcard *$(IN_EXT))
@@ -81,28 +81,28 @@ README.html: README.adoc
 	asciidoctor -b html5 -v '$<' > '$@'
 
 gdb-%: %$(OUT_EXT) $(QEMU_EXE)
-	if [ ! '$(NATIVE)' = y ]; then \
+	if [ '$(NATIVE)' = y ]; then \
+	  gdb_cmd=gdb; \
+	  gdb_after='-ex run'; \
+	else \
 	  $(RUN_CMD) -g $(GDB_PORT) '$<' & \
-	  gdb_cmd_before="gdb-multiarch \
+	  gdb_cmd="gdb-multiarch \
 	-ex 'set architecture $(ARCH)' \
 	-ex 'set sysroot $(SYSROOT)' \
 	-ex 'target remote localhost:$(GDB_PORT)' \
 	"; \
-	  gdb_run='-ex continue'; \
-	else \
-	  gdb_cmd=gdb; \
-	  gdb_run='-ex run'; \
+	  gdb_after='-ex continue'; \
 	fi; \
-	  gdb_cmd="$${gdb_cmd} \
-      -q \
-	  -nh \
-	  -ex 'set confirm off' \
-	  -ex 'file $<' \
-	  -ex 'break $(GDB_BREAK)' \
-          $$gdb_run \
-	  -ex 'layout split' \
+	gdb_cmd="$${gdb_cmd} \
+	-q \
+	-nh \
+	-ex 'set confirm off' \
+	-ex 'file $<' \
+	-ex 'break $(GDB_BREAK)' \
+	-ex 'layout split' \
+	$$gdb_after \
 	"; \
-        echo "$$gdb_cmd"; \
+	echo "$$gdb_cmd"; \
 	eval "$$gdb_cmd"
 
 objdump: $(OBJDUMPS)
