@@ -198,6 +198,15 @@ make \
 
 Ideally we should just add crosstool-ng as a submodule here and automate from there, but I've done that like 5 times this month and I'm lazy now.
 
+=== Build documentation
+
+If you don't like reading on GitHub, the HTML documentation can be generated from the README with:
+
+....
+make doc
+xdg-open README.html
+....
+
 == About
 
 `qemu-arm-static` is used for emulation on x86 hosts. It translates ARM to x86, and forwards system calls to the host kernel.
@@ -225,13 +234,6 @@ arm-linux-gnueabihf-gcc -o 'sub.out' 'sub.o' main.o
 The C driver then just calls `asm_main`, which each `.S` example implements.
 
 This allows us to easily use the C standard libray portably: from the point of view of GCC, everything looks like a regular C program, which does the required glibc initialization before `main()`.
-
-=== Build documentation
-
-....
-make doc
-xdg-open README.html
-....
 
 == Registers
 
@@ -471,7 +473,7 @@ ____
 
 Assemblers however support magic memory allocations which may hide what is truly going on: https://stackoverflow.com/questions/14046686/why-use-ldr-over-mov-or-vice-versa-in-arm-assembly Always ask your friendly disassembly for a good confirmation.
 
-=== ubfm
+==== ubfm
 
 Unsigned Bitfield Move.
 
@@ -490,7 +492,7 @@ dest = (src & ((1 << width) - 1)) >> lsb;
 
 Bibliography: https://stackoverflow.com/questions/8366625/arm-bit-field-extract
 
-==== ubfx
+===== ubfx
 
 Alias for:
 
@@ -591,6 +593,41 @@ Bibliography:
 * https://stackoverflow.com/questions/45742869/linux-syscall-conventions-for-armv8
 * https://reverseengineering.stackexchange.com/questions/16917/arm64-syscalls-table
 
+== ARMv8
+
+In this repository we will document only points where ARMv8 differs from ARMv7 behaviour: so you should likely learn ARMv7 first.
+
+ARMv8 is the 64 bit version of the ARM architecture.
+
+It has two states:
+
+* AArch32: 32-bit legacy compatibility mode, similar to ARMv7
+* AArch64: 64-bit mode, the main mode of operation
+
+Great summary of differences from AArch32: <https://en.wikipedia.org/wiki/ARM_architecture#AArch64_features>
+
+Some random ones, TODO create clean examples of them:
+
+* the stack has to 16-byte aligned. Therefore, the main way to push things to stack is `ldp` and  `stp`, which push two 8 byte registers at a time
+
+=== ARMv8 movk
+
+Fill a 64 bit register with 4 16-bit instructions one at a time.
+
+Example: link:v8/movk.S[]
+
+Bibliography: https://stackoverflow.com/questions/27938768/moving-a-32-bit-constant-in-arm-arch64-register
+
+=== ARMv8 registers
+
+Example: link:v8/regs.S[]
+
+=== stp
+
+Push a pair of registers to the stack.
+
+TODO minimal example. Currently used on link:v8/commmon_arch.h[] since it is the main way to restore register state.
+
 == Floating point
 
 === VFP
@@ -638,41 +675,6 @@ Scalable Vector Extension.
 aarch64 only, newer than <<neon>>. TODO announcement date. Possibly 2017: https://alastairreid.github.io/papers/sve-ieee-micro-2017.pdf Added to QEMU in 3.0.0.
 
 Official spec: https://developer.arm.com/docs/100891/latest/sve-overview/introducing-sve
-
-== ARMv8
-
-In this repository we will document only points where ARMv8 differs from ARMv7 behaviour: so you should likely learn ARMv7 first.
-
-ARMv8 is the 64 bit version of the ARM architecture.
-
-It has two states:
-
-* AArch32: 32-bit legacy compatibility mode, similar to ARMv7
-* AArch64: 64-bit mode, the main mode of operation
-
-Great summary of differences from AArch32: <https://en.wikipedia.org/wiki/ARM_architecture#AArch64_features>
-
-Some random ones, TODO create clean examples of them:
-
-* the stack has to 16-byte aligned. Therefore, the main way to push things to stack is `ldp` and  `stp`, which push two 8 byte registers at a time
-
-=== ARMv8 movk
-
-Fill a 64 bit register with 4 16-bit instructions one at a time.
-
-Example: link:v8/movk.S[]
-
-Bibliography: https://stackoverflow.com/questions/27938768/moving-a-32-bit-constant-in-arm-arch64-register
-
-=== ARMv8 registers
-
-Example: link:v8/regs.S[]
-
-=== stp
-
-Push a pair of registers to the stack.
-
-TODO minimal example. Currently used on link:v8/commmon_arch.h[] since it is the main way to restore register state.
 
 == Theory
 
