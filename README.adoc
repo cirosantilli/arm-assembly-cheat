@@ -172,6 +172,14 @@ This jumps directly to `asm_main`, which is what you likely want to see.
 
 Disassembly is still useful even though we are writing assembly because the assembler can do some non-obvious magic that we want to understand.
 
+==== .n and .w suffixes
+
+When reading the disassembly, many instructions have either a `.n` or `.w` suffix.
+
+`.n` means narrow, and stands for the Thumb encoding of an instructions, while `.w` means wide and stands for the ARM encoding.
+
+Bibliography: https://stackoverflow.com/questions/27147043/n-suffix-to-branch-instruction
+
 === Build your own toolchain
 
 If you are like me, and you don't trust distro blobs, or if your distro does not provide working blobs, here goes a working procedure to use your own pristine cross toolchain. 
@@ -520,10 +528,6 @@ Bibliography:
 Newer version of thumb that allows encoding almost all instructions, TODO example.
 
 Bibliography: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0471i/CHDFEDDB.html
-
-=== .n and .w suffixes
-
-https://stackoverflow.com/questions/27147043/n-suffix-to-branch-instruction
 
 [[aapcs]]
 == Calling convention
