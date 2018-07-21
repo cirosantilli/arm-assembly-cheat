@@ -270,16 +270,83 @@ Only in ARMv8 and ARMv7 Thumb mode, not in armv7 ARM mode.
 
 === Load and store instructions
 
-In ARM, there are only two instruction families that do memory access: `ldr`  to load and `str` to store.
-
-Examples:
-
-* link:v7/ldr.S[]
-* link:v7/str.S[]
+In ARM, there are only two instruction families that do memory access: <<ldr>>  to load and <<str>> to store.
 
 Everything else works on register and immediates.
 
 This is part of the RISC-y beauty of the ARM instruction set, unlike x86 in which several operations can read from memory, and helps to predict how to optimize for a given CPU pipeline.
+
+==== ldr
+
+===== ldr magic
+
+The `ldr` assembly directive can automatically create hidden variables and load them from memory with PC relative loads.
+
+Example: link:v7/ldr_magic[]
+
+This is done basically because all instructions are 32-bit wide, and there is not enough space to encode 32-bit addresses in them.
+
+Bibliography:
+
+* https://stackoverflow.com/questions/37840754/what-does-an-equals-sign-on-the-right-side-of-a-ldr-instruction-in-arm-mean
+* https://stackoverflow.com/questions/17214962/what-is-the-difference-between-label-equals-sign-and-label-brackets-in-ar
+* https://stackoverflow.com/questions/14046686/why-use-ldr-over-mov-or-vice-versa-in-arm-assembly
+
+===== Addressing modes
+
+Example: link:v7/address_modes.S[]
+
+Load and store instructions can update the source register with the following modes:
+
+* offset: add an offset, don't change the address register. Notation:
++
+....
+ldr r1, [r0, #4]
+....
+* pre-indexed: change the address register, and then use it modified. Notation:
++
+....
+ldr r1, [r0, #4]!
+....
+* post-indexed: use the address register unmodified, and then modify it. Notation:
++
+....
+ldr r1, [r0] #4
+....
+
+The offset itself can come from the following sources:
+
+* immediate
+* register
+* scaled register: left shift the register and use that as an offset
+
+The indexed modes are convenient to loop over arrays.
+
+Bibliography: <<armarm7>>:
+
+* A4.6.5 "Addressing modes"
+* A8.5 "Memory accesses"
+
+====== Loop over array
+
+As an application of the post-indexed addressing mode, let's increment an array.
+
+Example: link:v7/inc_array.S[]
+
+===== ldr width
+
+There are `ldr` variants that load less than full 4 bytes:
+
+* link:v7/ldrb.S[]
+* link:v7/ldrh.S[]
+
+==== str
+
+Store from memory into registers.
+
+Example: link:v7/str.S[]
+
+Basically everything that applies to <<ldr>> also applies here so we won't go into much detail.
 
 === Data processing instructions
 

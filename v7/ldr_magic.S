@@ -1,9 +1,10 @@
-/* https://github.com/cirosantilli/arm-assembly-cheat#load-and-store-instructions */
+/* https://github.com/cirosantilli/arm-assembly-cheat#ldr-magic */
 
 #include "common.h"
 
 ENTRY
-    /* PC relative load.
+
+    /* Mnemonic for a PC relative load.
      * ldr r0, [pc, #offset]
      */
     ldr r0, myvar
@@ -12,7 +13,7 @@ ENTRY
     cmp r0, r1
     ASSERT(beq)
 
-    /* PC relative load with an offset.
+    /* Mnemonic PC relative load with an offset.
      * Load myvar2 instead of myvar.
      */
     ldr r0, myvar + 4
@@ -34,13 +35,6 @@ ENTRY
     cmp r1, r2
     ASSERT(beq)
 
-    /* Same as =myvar but with a constant. */
-    ldr r0, =0x11112222
-    movw r1, #0x2222
-    movt r1, #0x1111
-    cmp r0, r1
-    ASSERT(beq)
-
     /* More efficiently, use r0 as the address to read, and write to r0 itself. */
     ldr r0, =myvar
     ldr r0, [r0]
@@ -49,10 +43,16 @@ ENTRY
     cmp r0, r1
     ASSERT(beq)
 
-    /* Read from address in a the r0 register.
-     *
-     * Use GAS tolower16 and topper16 to load the address of myvar
-     * into r0 with two immediates.
+    /* Same as =myvar but store a constant to a register.
+     * Can also be done with movw and movt. */
+    ldr r0, =0x11112222
+    movw r1, #0x2222
+    movt r1, #0x1111
+    cmp r0, r1
+    ASSERT(beq)
+
+    /* We can also use GAS tolower16 and topper16  and movw and movt
+     * to load the address of myvar into r0 with two immediates.
      *
      * This results in one extra 4 byte instruction read from memory,
      * and one less data read, so it is likely more cache efficient.
@@ -62,33 +62,6 @@ ENTRY
     ldr r1, [r0]
     movw r2, #0x5678
     movt r2, #0x1234
-    cmp r1, r2
-    ASSERT(beq)
-
-    /* Read from address from the r0 register and add an offset of 4 to it,
-     * which ends up reading myvar2 instead of myvar.
-     */
-    movw r0, #:lower16:myvar
-    movt r0, #:upper16:myvar
-    ldr r1, [r0, #4]
-    movw r2, #0xDEF0
-    movt r2, #0x9ABC
-    cmp r1, r2
-    ASSERT(beq)
-
-    /* ldrb: load a single byte. */
-    ldr r0, =myvar
-    mov r1, #0x0
-    ldrb r1, [r0]
-    ldr r2, =0x00000078
-    cmp r1, r2
-    ASSERT(beq)
-
-    /* ldrh: load half-word (2 bytes). */
-    ldr r0, =myvar
-    mov r1, #0x0
-    ldrh r1, [r0]
-    ldr r2, =0x00005678
     cmp r1, r2
     ASSERT(beq)
 
