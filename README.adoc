@@ -180,6 +180,30 @@ When reading the disassembly, many instructions have either a `.n` or `.w` suffi
 
 Bibliography: https://stackoverflow.com/questions/27147043/n-suffix-to-branch-instruction
 
+=== Run on Raspberry Pi 2
+
+Yay! Let's see if this actually works on real hardware, or if it is just an emulation pipe dream?
+
+We will just compile natively, since I'm not in the mood for cross compilation hell today.
+
+link:https://en.wikipedia.org/wiki/Raspberry_Pi[According to Wikipedia] the Raspberry Pi 2 V 1.1 which I have has a BCM2836, which has an link:https://en.wikipedia.org/wiki/ARM_Cortex-A7[ARM Cortex-A7], which implements ARMv7-A, <<vfp,VFPv4>> and <<neon>>.
+
+Therefore we will only be able to run `v7` examples on that board.
+
+First connect to your Pi through SSH as explained at: https://stackoverflow.com/questions/16040128/hook-up-raspberry-pi-via-ethernet-to-laptop-without-router/39086537#39086537
+
+Inside the Pi:
+
+....
+sudo apt-get update
+sudo apt-get install git
+git clone https://github.com/cirosantilli/arm-assembly-cheat
+cd arm-assembly-cheat
+cd v7
+make NATIVE=y test
+make NATIVE=y gdb-add
+....
+
 === Build your own toolchain
 
 If you are like me, and you don't trust distro blobs, or if your distro does not provide working blobs, here goes a working procedure to use your own pristine cross toolchain. 
@@ -642,7 +666,9 @@ ____
 Some devices such as the ARM Cortex-A8 have a cut-down VFPLite module instead of a full VFP module, and require roughly ten times more clock cycles per float operation.
 ____
 
-VFP has several revisions, named as VFPv1, VFPv2, etc. TODO: announcement dates. This answer https://stackoverflow.com/questions/37790029/what-is-difference-between-arm64-and-armhf/48954012#48954012 comments that it appears on `/proc/cpuinfo` e.g. as: `vfp vfpv3`.
+VFP has several revisions, named as VFPv1, VFPv2, etc. TODO: announcement dates.
+
+As mentioned at: https://stackoverflow.com/questions/37790029/what-is-difference-between-arm64-and-armhf/48954012#48954012 the Linux kernel shows those capabilities in `/proc/cpuinfo` with flags such as `vfp vfpv3`.
 
 When a certain version of VFP is present on a CPU, the compiler prefix typically contains the `hf` characters which stands for Hard Float, e.g.: `arm-linux-gnueabihf`. This means that the compiler will emit VFP instructions instead of just using software implementations.
 

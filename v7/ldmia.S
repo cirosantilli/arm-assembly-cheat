@@ -25,13 +25,21 @@ ENTRY
     ASSERT_EQ(r3, 0x33333333)
     ASSERT_EQ(r4, 0x44444444)
 
-    /* Swapping the order of r1 and r2 on the mnemonic makes no difference to load order. */
+    /* Swapping the order of r1 and r2 on the mnemonic makes no difference to load order.
+     *
+     * But it gives an assembler warning, so we won't do it by default:
+     *
+     *  ldmia.S: Assembler messages:
+     *  ldmia.S:32: Warning: register range not in ascending order
+     */
+#if 0
     ldr r0, =my_array_0
     ldr r1, =0
     ldr r2, =0
     ldmia r0, {r2,r1}
     ASSERT_EQ(r1, 0x11111111)
     ASSERT_EQ(r2, 0x22222222)
+#endif
 
     /* Modify the array */
     ldr r0, =my_array_1

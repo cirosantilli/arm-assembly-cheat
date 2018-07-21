@@ -4,5 +4,6 @@ sudo apt install \
   gcc-aarch64-linux-gnu \
   gcc-arm-linux-gnueabihf \
   gdb-multiarch \
+  screen \
 ;
 sudo apt build-dep qemu-user
