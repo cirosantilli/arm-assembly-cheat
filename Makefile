@@ -1,8 +1,10 @@
 .POSIX:
 
-CC = $(PREFIX_PATH)-gcc
+CC = $(PREFIX_PATH)gcc
+CFLAGS = -ggdb3 -march=$(MARCH) -pedantic -std=c99 -Wall -Wextra $(CFLAGS_QEMU) $(CFLAGS_EXTRA)
 # no-pie: https://stackoverflow.com/questions/51310756/how-to-gdb-step-debug-a-dynamically-linked-executable-in-qemu-user-mode
-CFLAGS = -fno-pie -ggdb3 -march=$(MARCH) -pedantic -no-pie -std=c99 -Wall -Wextra $(CFLAGS_EXTRA)
+# And the flag not present in Raspbian 2017 which has an ancient gcc 4.9, so we have to remove it.
+CFLAGS_QEMU = -fno-pie -no-pie
 CTNG =
 DEFAULT_SYSROOT = /usr/$(PREFIX)
 DRIVER_BASENAME = main
@@ -10,24 +12,25 @@ DRIVER_OBJ = $(DRIVER_BASENAME)$(OBJ_EXT)
 GDB_BREAK = asm_main_end
 GDB_PORT = 1234
 IN_EXT = .S
-OBJDUMP = $(PREFIX_PATH)-objdump
+NATIVE =
+OBJDUMP = $(PREFIX_PATH)objdump
 OBJDUMP_EXT = .objdump
 OBJ_EXT = .o
 OUT_EXT = .out
 PHONY_MAKES =
 ROOT_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 QEMU_DIR = $(ROOT_DIR)/qemu
-QEMU_OUT_DIR = $(ROOT_DIR)/out/qemu/$(ARCH)
 QEMU_EXE = $(QEMU_OUT_DIR)/$(ARCH)-linux-user/qemu-$(ARCH)
+QEMU_OUT_DIR = $(ROOT_DIR)/out/qemu/$(ARCH)
 RUN_CMD = $(QEMU_EXE) -L $(SYSROOT)
 TEST = test
 
 ifeq ($(CTNG),)
-  PREFIX_PATH = $(PREFIX)
-  SYSROOT = $(DEFAULT_SYSROOT)
-else
-  PREFIX_PATH = $(CTNG)/$(PREFIX)/bin/$(PREFIX)
+  PREFIX_PATH = $(CTNG)/$(PREFIX)/bin/$(PREFIX)-
   SYSROOT = $(CTNG)/$(PREFIX)/$(PREFIX)/sysroot
+else
+  PREFIX_PATH = $(PREFIX)-
+  SYSROOT = $(DEFAULT_SYSROOT)
 endif
 
 INS = $(wildcard *$(IN_EXT))
@@ -36,6 +39,15 @@ OUTS = $(addsuffix $(OUT_EXT), $(INS_NOEXT))
 OBJDUMPS = $(addsuffix $(OBJDUMP_EXT), $(INS_NOEXT))
 
 -include params.mk
+
+ifeq ($(NATIVE),y)
+  CFLAGS_QEMU =
+  PREFIX_PATH =
+  QEMU_EXE =
+  # TODO remove this, make Linux work.
+  PHONY_MAKES =
+  RUN_CMD = PATH=".:${PATH}"
+endif
 
 .PHONY: all clean doc objdump qemu qemu-clean test $(PHONY_MAKES)
 .PRECIOUS: %$(OBJ_EXT)
@@ -69,18 +81,29 @@ README.html: README.adoc
 	asciidoctor -b html5 -v '$<' > '$@'
 
 gdb-%: %$(OUT_EXT) $(QEMU_EXE)
-	$(RUN_CMD) -g $(GDB_PORT) '$<' &
-	gdb-multiarch -q \
+	if [ ! '$(NATIVE)' = y ]; then \
+	  $(RUN_CMD) -g $(GDB_PORT) '$<' & \
+	  gdb_cmd_before="gdb-multiarch \
+	-ex 'set architecture $(ARCH)' \
+	-ex 'set sysroot $(SYSROOT)' \
+	-ex 'target remote localhost:$(GDB_PORT)' \
+	"; \
+	  gdb_run='-ex continue'; \
+	else \
+	  gdb_cmd=gdb; \
+	  gdb_run='-ex run'; \
+	fi; \
+	  gdb_cmd="$${gdb_cmd} \
+      -q \
 	  -nh \
-	  -ex 'set confirm off'  \
-	  -ex 'set architecture $(ARCH)' \
-	  -ex 'set sysroot $(SYSROOT)' \
+	  -ex 'set confirm off' \
 	  -ex 'file $<' \
-	  -ex 'target remote localhost:$(GDB_PORT)' \
 	  -ex 'break $(GDB_BREAK)' \
-	  -ex 'continue' \
+          $$gdb_run \
 	  -ex 'layout split' \
-	;
+	"; \
+        echo "$$gdb_cmd"; \
+	eval "$$gdb_cmd"
 
 objdump: $(OBJDUMPS)
 	for phony in $(PHONY_MAKES); do \
