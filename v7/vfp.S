@@ -15,25 +15,13 @@ sum_expect:
 
 ENTRY
 
-    /* Do the sum. */
+    /* Do the sum and verify it. */
     ldr r0, =sum
     ldr r1, =a1
     ldr r2, =a2
     mov r3, #8
     bl vec_sum
-
-    /* Verify the sum. */
-    ldr r0, =sum
-    ldr r1, =sum_expect
-    mov r2, #8
-verify:
-    ldr r3, [r0], #4
-    ldr r4, [r1], #4
-    cmp r3, r4
-    ASSERT(beq)
-    sub r2, #1
-    cmp r2, #0
-    bne verify
+    ASSERT_MEMCMP(sum, sum_expect, 0x20)
 
 EXIT
 

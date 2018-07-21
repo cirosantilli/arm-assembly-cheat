@@ -1,6 +1,21 @@
 #ifndef COMMON_ARCH_H
 #define COMMON_ARCH_H
 
+/* Assert that a register equals a constant.
+ * * reg: the register to check. Can be r0-r10, but not r11. r11 is overwritten.
+ */
+#define ASSERT_EQ(reg, const) \
+    ldr r11, =const; \
+	cmp reg, r11; \
+	ASSERT(beq); \
+;
+
+/* Assert that two arrays are the same. */
+#define ASSERT_MEMCMP(s1, s2, n) \
+	MEMCMP(s1, s2, n); \
+	ASSERT_EQ(r0, 0); \
+;
+
 /* Store all callee saved registers, and LR in case we make further BL calls.
  *
  * Also save the input arguments r0-r3 on the stack, so we can access them later on,
@@ -10,7 +25,7 @@
 .text; \
 .global asm_main; \
 asm_main: \
-    stmdb sp!, {r0-r11, lr}; \
+    stmdb sp!, {r0-r12, lr}; \
 asm_main_end: \
 ;
 
@@ -32,7 +47,7 @@ fail: \
     mov r0, #1; \
 pass: \
     add sp, #16; \
-    ldmia sp!, {r4-r11, lr}; \
+    ldmia sp!, {r4-r12, lr}; \
     bx lr; \
 ;
 
@@ -40,6 +55,13 @@ pass: \
 #define FAIL \
     ldr r0, =__LINE__; \
     b fail; \
+;
+
+#define MEMCMP(s1, s2, n) \
+    ldr r0, =s1; \
+    ldr r1, =s2; \
+    ldr r2, =n; \
+    bl memcmp; \
 ;
 
 #endif

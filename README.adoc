@@ -122,6 +122,28 @@ Shortcut:
 
 It is not possible to restart the running program from GDB as in `gdbserver --multi` unfortunately: https://stackoverflow.com/questions/51357124/how-to-restart-qemu-user-mode-programs-from-the-gdb-stub-as-in-gdbserver-multi
 
+Quick GDB tips:
+
+* print a register:
++
+....
+i r r0
+....
++
+Bibliography: https://stackoverflow.com/questions/5429137/how-to-print-register-values-in-gdb
+* print an array of 4 32-bit integers in hex:
++
+....
+p/x (unsigned[4])my_array_0
+....
++
+Bibliography: https://stackoverflow.com/questions/32300718/printing-array-from-bss-in-gdb
+* print the address of a variable:
++
+....
+p &my_array_0
+....
+
 Bibliography: https://stackoverflow.com/questions/20590155/how-to-single-step-arm-assembler-in-gdb-on-qemu/51310791#51310791
 
 === Disassemble
@@ -268,6 +290,14 @@ Example: link:v8/cbz.S[]
 
 Only in ARMv8 and ARMv7 Thumb mode, not in armv7 ARM mode.
 
+==== Conditional execution
+
+Weirdly, <<b>> and family are not the only instructions that can execute conditionally on the flags: the same also applies to most instructions, e.g. `add`.
+
+Example: link:v7/cond.S[]
+
+Just add the usual `eq`, `ne`, etc. suffixes just as for `b`.
+
 === Load and store instructions
 
 In ARM, there are only two instruction families that do memory access: <<ldr>>  to load and <<str>> to store.
@@ -356,7 +386,9 @@ Pop values form stack into the register and optionally update the address regist
 
 `stmdb` is the push version.
 
-They stand for:
+Example: link:v7/ldmia.S[]
+
+The mnemonics stand for:
 
 * `stmdb`: STore Multiple Decrement Before
 * `ldmia`: LoaD Multiple Increment After
@@ -488,6 +520,10 @@ Bibliography:
 Newer version of thumb that allows encoding almost all instructions, TODO example.
 
 Bibliography: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0471i/CHDFEDDB.html
+
+=== .n and .w suffixes
+
+https://stackoverflow.com/questions/27147043/n-suffix-to-branch-instruction
 
 [[aapcs]]
 == Calling convention

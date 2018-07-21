@@ -3,7 +3,11 @@
 
 #include "common_arch.h"
 
-.extern exit, printf, puts
+.extern \
+    exit, \
+    printf, \
+    puts \
+;
 
 /* Assert that the given branch instruction is taken. */
 #define ASSERT(branch_if_pass) \
