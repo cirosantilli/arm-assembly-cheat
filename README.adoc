@@ -348,6 +348,30 @@ Example: link:v7/str.S[]
 
 Basically everything that applies to <<ldr>> also applies here so we won't go into much detail.
 
+==== push
+
+Push one ore more registers to the value contained in the stack.
+
+Example: link:v7/push.S[]
+
+Mnemonics for:
+
+....
+STMDB sp!, reglist
+LDMIA sp! reglist
+....
+
+which stand for:
+
+* Store Multiple Decrement Before
+* Load Multiple Increment After
+
+The registers are encoded as single bits inside the instruction: each bit represents one register.
+
+As a consequence, the push order is fixed no matter how you write the assembly instruction: there is not enough space to encode ordering TODO example.
+
+AArch64 loses those instructions, likely because it was not possible anymore to encode all registers: http://stackoverflow.com/questions/27941220/push-lr-and-pop-lr-in-arm-arch64 and replaces them with `stp` and `ldp`.
+
 === Data processing instructions
 
 Arithmetic:
@@ -400,27 +424,6 @@ In software - especially in languages like C - constants tend to be small. When 
 ____
 
 Assemblers however support magic memory allocations which may hide what is truly going on: https://stackoverflow.com/questions/14046686/why-use-ldr-over-mov-or-vice-versa-in-arm-assembly Always ask your friendly disassembly for a good confirmation.
-
-==== push
-
-Push one ore more registers to the value contained in the stack.
-
-Example: link:v7/push.S[]
-
-Mnemonics for:
-
-....
-STMDB sp!, reglist
-LDMIA sp! reglist
-....
-
-but recommended in that case.
-
-The registers are encoded as single bits inside the instruction: each bit represents one register.
-
-As a consequence, the push order is fixed no matter how you write the assembly instruction: there is not enough space to encode ordering TODO example.
-
-AArch64 loses those instructions, likely because it was not possible anymore to encode all registers: http://stackoverflow.com/questions/27941220/push-lr-and-pop-lr-in-arm-arch64 and replaces them with `stp` and `ldp`.
 
 === ubfm
 

@@ -10,7 +10,7 @@
 .text; \
 .global asm_main; \
 asm_main: \
-    stmdb sp!, { r0-r11, lr }; \
+    stmdb sp!, {r0-r11, lr}; \
 asm_main_end: \
 ;
 
@@ -32,7 +32,7 @@ fail: \
     mov r0, #1; \
 pass: \
     add sp, #16; \
-    ldmia sp!, { r4-r11, lr }; \
+    ldmia sp!, {r4-r11, lr}; \
     bx lr; \
 ;
 
