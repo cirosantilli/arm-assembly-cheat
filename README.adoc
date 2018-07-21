@@ -276,6 +276,8 @@ Everything else works on register and immediates.
 
 This is part of the RISC-y beauty of the ARM instruction set, unlike x86 in which several operations can read from memory, and helps to predict how to optimize for a given CPU pipeline.
 
+This kind of architecture is called a link:https://en.wikipedia.org/wiki/Load/store_architecture[Load/store architecture].
+
 ==== ldr
 
 ===== ldr magic
@@ -348,27 +350,31 @@ Example: link:v7/str.S[]
 
 Basically everything that applies to <<ldr>> also applies here so we won't go into much detail.
 
-==== push
+==== ldmia
 
-Push one ore more registers to the value contained in the stack.
+Pop values form stack into the register and optionally update the address register.
+
+`stmdb` is the push version.
+
+They stand for:
+
+* `stmdb`: STore Multiple Decrement Before
+* `ldmia`: LoaD Multiple Increment After
 
 Example: link:v7/push.S[]
 
-Mnemonics for:
+`push` and `pop` are just mnemonics `stdmdb` and `ldmia` using the stack pointer `sp` as address register:
 
 ....
-STMDB sp!, reglist
-LDMIA sp! reglist
+stmdb sp!, reglist
+ldmia sp!, reglist
 ....
 
-which stand for:
-
-* Store Multiple Decrement Before
-* Load Multiple Increment After
+The `!` indicates that we want to update the register.
 
 The registers are encoded as single bits inside the instruction: each bit represents one register.
 
-As a consequence, the push order is fixed no matter how you write the assembly instruction: there is not enough space to encode ordering TODO example.
+As a consequence, the push order is fixed no matter how you write the assembly instruction: there is just not enough space to encode ordering.
 
 AArch64 loses those instructions, likely because it was not possible anymore to encode all registers: http://stackoverflow.com/questions/27941220/push-lr-and-pop-lr-in-arm-arch64 and replaces them with `stp` and `ldp`.
 
@@ -454,6 +460,8 @@ UBFM <Wd>, <Wn>, #<lsb>, #(<lsb>+<width>-1)
 
 == Instruction encoding
 
+Understanding the basics of instruction encodings is fundamental to help you to remember what instructions do and why some things are possible or not.
+
 === Instruction length
 
 Every ARMv7 instruction is 4 bytes long.
@@ -481,6 +489,7 @@ Newer version of thumb that allows encoding almost all instructions, TODO exampl
 
 Bibliography: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0471i/CHDFEDDB.html
 
+[[aapcs]]
 == Calling convention
 
 Call C standard library functions from assembly:
@@ -498,9 +507,16 @@ hello printf 12345678
 
 Source: link:v7/c_from_arm.S[]
 
-Don't forget that stack must be 8 byte aligned.
+ARM Architecture Procedure Call Standard (AAPCS) is the name that ARM Holdings gives to the calling convention. 
 
-Bibliography: http://stackoverflow.com/questions/8422287/calling-c-functions-from-arm-assembly
+Official specification: http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042f/IHI0042F_aapcs.pdf
+
+Bibliography:
+
+* https://en.wikipedia.org/wiki/Calling_convention#ARM_(A32) Wiki contains the master list as usual.
+* http://stackoverflow.com/questions/8422287/calling-c-functions-from-arm-assembly
+* http://stackoverflow.com/questions/261419/arm-to-c-calling-convention-registers-to-save
+* https://stackoverflow.com/questions/10494848/arm-whats-the-difference-between-apcs-and-aapcs-abi
 
 == Linux system calls
 
@@ -586,19 +602,41 @@ TODO minimal example. Currently used on link:v8/commmon_arch.h[] since it is the
 TODO review all of those and move them into the main README. They are from a previous life.
 
 . link:how-to-play-with-arm.md[How to play with ARM]
-. link:introduction.md[Introduction]
 . link:versions.md[Versions]
-. link:calling-conventions.md[Calling conventions]
-. link:extensions.md[Extensions]
 .. link:thumb.md[Thumb]
 . link:vs-x86.md[Vs x86]
 . link:compilers.md[Compilers]
-. link:free-implementations.md[Free implementations]
 . link:gas.md[GAS]
-. link:flags.md[Flags]
-. link:system-programming.md[System programming]
-. link:isa-documentation.md[ISA documentation]
-. link:glossary.md[Glossary]
+
+=== Introduction to ARM
+
+The link:https://en.wikipedia.org/wiki/ARM_architecture[ARM architecture] is has been used on the vast majority of mobile phones in the 2010's, and on a large fraction of micro controllers.
+
+It competes with x86 because its implementations are designed for low power consumption, which is a major requirement of the cell phone market.
+
+ARM is generally considered a RISC instruction set, although there are some more complex instructions which would not generally be classified as purely RISC.
+
+ARM is developed by the British funded company ARM Holdings: https://en.wikipedia.org/wiki/Arm_Holdings which originated as a joint venture between Acorn Computers, Apple  and VLSI Technology in 1990.
+
+=== Free implementations
+
+The ARM instruction set is itself protected by patents / copyright / whatever, and you have to pay ARM Holdings a licence to implement it with their own custom Verilog code.
+
+This is the case of many major customers, including many Apple's Ax and Qualcomm Snapdragon chips.
+
+ARM has already sued people in the past for implementing ARM ISA: http://www.eetimes.com/author.asp?section_id=36&doc_id=1287452
+
+http://semiengineering.com/an-alternative-to-x86-arm-architectures/ mentions that:
+
+____
+Asanovic joked that the shortest unit of time is not the moment between a traffic light turning green in New York City and the cab driver behind the first vehicle blowing the horn; it’s someone announcing that they have created an open-source, ARM-compatible core and receiving a “cease and desist” letter from a law firm representing ARM.
+____
+
+This licensing however does have the following fairness to it: ARM Holdings invents a lot of money in making a great open source software environment for the ARM ISA, so it is only natural that it should be able to get some money from hardware manufacturers for using their ISA.
+
+Patents for very old ISAs however have expired, Amber is one implementation of those: https://en.wikipedia.org/wiki/Amber_%28processor_core%29 TODO does it have any application?
+
+Bibliography: https://www.quora.com/Why-is-it-that-you-need-a-license-from-ARM-to-design-an-ARM-CPU-How-are-the-instruction-sets-protected
 
 == Bibliography
 
@@ -642,3 +680,31 @@ https://developer.arm.com/docs/den0024/latest/preface
 A more terse human readable introduction to the ARM architecture than the reference manuals.
 
 We use: DEN0024A https://static.docs.arm.com/den0024/a/DEN0024A_v8_architecture_PG.pdf
+
+=== Bare metal
+
+This tutorial only covers userland concepts.
+
+However, certain instructions can only be used in higher privilege levels from an operating system itself.
+
+Here is a bibliography for ARM programming without an operating system, also known as "Bare Metal Programming":
+
+* generic:
+** https://stackoverflow.com/questions/38914019/how-to-make-bare-metal-arm-programs-and-run-them-on-qemu/50981397#50981397 generic QEMU question
+** link:https://github.com/freedomtan/aarch64-bare-metal-qemu/tree/2ae937a2b106b43bfca49eec49359b3e30eac1b1[]: `-M virt` UART bare metal hello world, nothing else, just works
+** https://github.com/bravegnu/gnu-eprog Not tested.
+** https://stackoverflow.com/questions/29837892/how-to-run-a-c-program-with-no-os-on-the-raspberry-pi/40063032#40063032 no QEMU restriction
+** https://github.com/cirosantilli/raspberry-pi-bare-metal-blinker minimal, but not very QEMU friendly however because hard to observe LED: https://raspberrypi.stackexchange.com/questions/56373/is-it-possible-to-get-the-state-of-the-leds-and-gpios-in-a-qemu-emulation-like-t
+* raspberry PI:
+** https://raspberrypi.stackexchange.com/questions/34733/how-to-do-qemu-emulation-for-bare-metal-raspberry-pi-images/85135#85135 RPI3 specific
+** link:https://github.com/bztsrc/raspi3-tutorial[], getting started: https://raspberrypi.stackexchange.com/questions/34733/how-to-do-qemu-emulation-for-bare-metal-raspberry-pi-images/85135#85135
+** https://github.com/dwelch67/raspberrypi
+** https://github.com/BrianSidebotham/arm-tutorial-rpi
+* gem5:
+** https://github.com/tukl-msd/gem5.bare-metal bare metal UART example. Tested with: https://stackoverflow.com/questions/43682311/uart-communication-in-gem5-with-arm-bare-metal/50983650#50983650
+* games:
+** https://github.com/kcsongor/arm-doom PI 1 model B https://www.youtube.com/watch?v=jeHtktKtGYQ
+** https://github.com/Tetris-Duel-Team/Tetris-Duel Demo: https://www.youtube.com/watch?v=hTqKRdcKZ9k
+** https://github.com/ICTeam28/PiFox rail shooter https://www.youtube.com/watch?v=-5n9IxSQH1M
+
+x86 bare metal tutorial at: https://github.com/cirosantilli/x86-bare-metal-examples
