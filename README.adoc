@@ -282,7 +282,7 @@ This is part of the RISC-y beauty of the ARM instruction set, unlike x86 in whic
 
 The `ldr` assembly directive can automatically create hidden variables and load them from memory with PC relative loads.
 
-Example: link:v7/ldr_magic[]
+Example: link:v7/ldr_magic.S[]
 
 This is done basically because all instructions are 32-bit wide, and there is not enough space to encode 32-bit addresses in them.
 
