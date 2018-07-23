@@ -26,7 +26,7 @@
 .global asm_main; \
 asm_main: \
     stmdb sp!, {r0-r12, lr}; \
-asm_main_end: \
+asm_main_after_prolog: \
 ;
 
 /* Meant to be called at the end of ENTRY.*

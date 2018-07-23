@@ -204,7 +204,7 @@ make NATIVE=y test
 make NATIVE=y gdb-add
 ....
 
-GDB TUI is slightly buggier on the ancient 4.9 toolchain (current line gets different indentation, does not break on the right instruction after `asm_main_end`, link:https://superuser.com/questions/180512/how-to-turn-off-gdb-tui[cannot leave TUI]), but it might still be usable
+GDB TUI is slightly buggier on the ancient 4.9 toolchain (current line gets different indentation, does not break on the right instruction after `asm_main_after_prolog`, link:https://superuser.com/questions/180512/how-to-turn-off-gdb-tui[cannot leave TUI]), but it might still be usable
 
 I believe that the exact current setup will work on the Raspberry Pi 3, which has a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2837/README.md[BCM2837] SoC, which has 4 link:https://en.wikipedia.org/wiki/ARM_Cortex-A53[Cortex A53] cores, which implement ARMv8-A, so you just have to go to the ARMv8 folder instead. TODO test it.
 

@@ -4,7 +4,7 @@
 .thumb_func
 .global asm_main
 asm_main:
-asm_main_end:
+asm_main_after_prolog:
 
     /* CBZ: cmp and branch if zero instruction. Equivalent to CMP + BEQ.
      * TODO create an interesting assertion here.
