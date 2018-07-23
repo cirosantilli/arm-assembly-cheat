@@ -106,7 +106,7 @@ Shortcut:
 ./t -g add
 ....
 
-This leaves us right at the end of `asm_main`, and at the start of the assembly code in the `.S` file.
+This leaves us right at the end of the prolog of `asm_main`, and at the start of the assembly code in the `.S` file.
 
 Stop on a different symbol instead:
 
@@ -267,7 +267,7 @@ arm-linux-gnueabihf-gcc -o 'sub.out' 'sub.o' main.o
 
 The C driver then just calls `asm_main`, which each `.S` example implements.
 
-This allows us to easily use the C standard libray portably: from the point of view of GCC, everything looks like a regular C program, which does the required glibc initialization before `main()`.
+This allows us to easily use the C standard library portably: from the point of view of GCC, everything looks like a regular C program, which does the required glibc initialization before `main()`.
 
 == Registers
 

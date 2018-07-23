@@ -3,4 +3,5 @@
 *.o
 *.objdump
 *.out
+*.swp
 /out
