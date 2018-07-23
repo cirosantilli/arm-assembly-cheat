@@ -216,7 +216,7 @@ Bibliography: https://raspberrypi.stackexchange.com/questions/1732/writing-arm-a
 
 If you are like me, and you don't trust distro blobs, or if your distro does not provide working blobs, here goes a working procedure to use your own pristine cross toolchain. 
 
-Build the toolchain with crosstool-ng as explained at: https://stackoverflow.com/revisions/51310756/6
+Build the toolchain with crosstool-NG as explained at: https://stackoverflow.com/revisions/51310756/6
 
 Then run with:
 
@@ -228,7 +228,7 @@ make \
 ;
 ....
 
-Ideally we should just add crosstool-ng as a submodule here and automate from there, but I've done that like 5 times this month and I'm lazy now.
+Ideally we should just add crosstool-NG as a submodule here and automate from there, but I've done that like 5 times this month and I'm lazy now.
 
 === Build documentation
 
@@ -245,9 +245,11 @@ xdg-open README.html
 
 OS portability is achieved with the C standard library which makes system calls for us.
 
+Using the standard library also allows us to use its convenient functionality such as `printf` formatting and `memcpy` to check memory.
+
 Non OS portable examples will be clearly labeled with their OS, e.g.: <<linux-system-calls>>.
 
-These examples show how our insfrastructure works:
+These examples show how our infrastructure works:
 
 * link:fail.S[]
 * link:v7/hello_driver.S[]
