@@ -6,6 +6,7 @@ ENTRY
 
     /* Mnemonic for a PC relative load.
      * ldr r0, [pc, #offset]
+     * r0 = myvar
      */
     ldr r0, myvar
     movw r1, #0x5678
@@ -22,7 +23,7 @@ ENTRY
     cmp r0, r1
     ASSERT(beq)
 
-    /* Read from address in a the r0 register.
+    /* r0 = &myvar
      *
      * First store the address in r0 using a magic =myvar, which creates
      * a new variable containing the address and PC-relative addresses it

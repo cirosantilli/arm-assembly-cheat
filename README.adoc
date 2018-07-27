@@ -431,6 +431,21 @@ There are `ldr` variants that load less than full 4 bytes:
 * link:v7/ldrb.S[]
 * link:v7/ldrh.S[]
 
+===== ldr ARMv8
+
+Unlike in ARMv7, the target register cannot be SP or PC, otherwise assembly fails with:
+
+....
+Error: operand 1 should be an integer register -- `ldr sp,=0x1111222233334444'
+....
+
+Examples:
+
+* link:v7/ldr_sp.S[]
+* link:v8/ldr_sp.S[]
+
+TODO rationale.
+
 ==== str
 
 Store from memory into registers.

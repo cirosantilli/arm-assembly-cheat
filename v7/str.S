@@ -8,17 +8,6 @@ myvar:
     .word 0x12345678
 
 ENTRY
-    /* Cannot use PC relative addressing to a different segment,
-     * or else it fails with:
-     *
-     * ....
-     * Error: internal_relocation (type: OFFSET_IMM) not fixed up
-     * ....
-     *
-     * https://stackoverflow.com/questions/10094282/internal-relocation-not-fixed-up
-     */
-    /*ldr r0, myvar*/
-
     /* r0 will contain the address. */
     ldr r0, =myvar
 
@@ -38,5 +27,27 @@ ENTRY
     movw r2, #0xDEF0
     movt r2, #0x9ABC
     cmp r1, r2
+
+    /* Cannot use PC relative addressing to a different segment,
+     * or else it fails with:
+     *
+     * ....
+     * Error: internal_relocation (type: OFFSET_IMM) not fixed up
+     * ....
+     *
+     * https://stackoverflow.com/questions/10094282/internal-relocation-not-fixed-up
+     */
+    /*ldr r0, myvar*/
+
+    /* We could in theory write this to set the address of myvar,
+     * but it will always segfault because the text segment is read-only. */
+    /*
+    str r1, var_in_same_section
+var_in_same_section:
+    */
+
+    /* = sign just doesn't make sense for str, you can't set the
+     * address of a variable. */
+    /*str r1, =myvar */
 
 EXIT
