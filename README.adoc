@@ -196,7 +196,7 @@ Then inside the Pi:
 
 ....
 sudo apt-get update
-sudo apt-get install git
+sudo apt-get install git make gcc gdb
 git clone https://github.com/cirosantilli/arm-assembly-cheat
 cd arm-assembly-cheat
 cd v7
@@ -206,11 +206,26 @@ make NATIVE=y gdb-add
 
 GDB TUI is slightly buggier on the ancient 4.9 toolchain (current line gets different indentation, does not break on the right instruction after `asm_main_after_prolog`, link:https://superuser.com/questions/180512/how-to-turn-off-gdb-tui[cannot leave TUI]), but it might still be usable
 
-I believe that the exact current setup will work on the Raspberry Pi 3, which has a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2837/README.md[BCM2837] SoC, which has 4 link:https://en.wikipedia.org/wiki/ARM_Cortex-A53[Cortex A53] cores, which implement ARMv8-A, so you just have to go to the ARMv8 folder instead. TODO test it.
-
 The Pi 0 and 1 however have a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/[BCM2835] SoC, which has an ARM1176JZF-S core, which implements the ARMv6Z ISA, which we don't support yet on this repo.
 
 Bibliography: https://raspberrypi.stackexchange.com/questions/1732/writing-arm-assembly-code/87260#87260
+
+==== Run natively on Raspberry Pi 3
+
+The Raspberry Pi 3 has a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2837/README.md[BCM2837] SoC, which has 4 link:https://en.wikipedia.org/wiki/ARM_Cortex-A53[Cortex A53] cores, which implement ARMv8-A.
+
+However, as of July 2018, there is no official ARMv8 image for the Pi 3, the same ARMv7 image is provided for both: https://raspberrypi.stackexchange.com/questions/43921/raspbian-moving-to-64-bit-mode
+
+Then we look at the following threads:
+
+* https://raspberrypi.stackexchange.com/questions/49466/raspberry-pi-3-and-64-bit-kernel-differences-between-armv7-and-armv8
+* https://raspberrypi.stackexchange.com/questions/77693/enabling-armv8-on-raspberry-pi-3-b
+
+which lead us to this 64-bit Debian based distro for the Pi: https://github.com/bamarni/pi64
+
+So first we flash pi64 2017-07-31, and then do exactly the same as for the Raspberry Pi 2, except that you must go into `v8` instead of `v7`.
+
+TODO: can we run the `v7` folder? First I can't even compile it. Related: https://stackoverflow.com/questions/21716800/does-gcc-arm-linux-gnueabi-build-for-a-64-bit-target For runtime: https://stackoverflow.com/questions/22460589/armv8-running-legacy-32-bit-applications-on-64-bit-os
 
 === Build your own toolchain
 
