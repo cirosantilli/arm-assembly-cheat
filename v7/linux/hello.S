@@ -1,6 +1,7 @@
 .text
 .global _start
 _start:
+asm_main_after_prolog:
     /* write */
     mov r0, #1     /* stdout */
     ldr r1, =msg   /* buffer */
