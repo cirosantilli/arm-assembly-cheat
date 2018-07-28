@@ -618,10 +618,11 @@ make -C v7/linux test
 make -C v8/linux test
 ....
 
-Outcome for both:
+Outcome for each:
 
 ....
-hello syscall
+hello syscall v7
+hello syscall v8
 ....
 
 Sources:

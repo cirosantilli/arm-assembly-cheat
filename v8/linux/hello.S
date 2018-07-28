@@ -1,6 +1,7 @@
 .text
 .global _start
 _start:
+
     /* write */
     mov x0, #1
     ldr x1, =msg
@@ -13,5 +14,5 @@ _start:
     mov x8, #93
     svc #0
 msg:
-    .ascii "hello syscall\n"
+    .ascii "hello syscall v8\n"
 len = . - msg

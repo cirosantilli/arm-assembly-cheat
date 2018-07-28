@@ -5,6 +5,7 @@ CFLAGS = -ggdb3 -march=$(MARCH) -pedantic -std=c99 -Wall -Wextra $(CFLAGS_QEMU) 
 # no-pie: https://stackoverflow.com/questions/51310756/how-to-gdb-step-debug-a-dynamically-linked-executable-in-qemu-user-mode
 # And the flag not present in Raspbian 2017 which has an ancient gcc 4.9, so we have to remove it.
 CFLAGS_QEMU = -fno-pie -no-pie
+COMMON_HEADER = common.h
 CTNG =
 DEFAULT_SYSROOT = /usr/$(PREFIX)
 DRIVER_BASENAME = main
@@ -44,9 +45,13 @@ ifeq ($(NATIVE),y)
   CFLAGS_QEMU =
   PREFIX_PATH =
   QEMU_EXE =
-  # TODO remove this, make Linux work.
-  PHONY_MAKES =
   RUN_CMD = PATH=".:${PATH}"
+endif
+
+ifeq ($(FREESTAND),y)
+  CFLAGS_EXTRA += -nostdlib
+  DRIVER_OBJ =
+  COMMON_HEADER =
 endif
 
 .PHONY: all clean doc objdump qemu qemu-clean test $(PHONY_MAKES)
@@ -63,7 +68,7 @@ all: $(OUTS) qemu
 %$(OBJDUMP_EXT): %$(OUT_EXT)
 	$(OBJDUMP) -S '$<' > '$@'
 
-%$(OBJ_EXT): %$(IN_EXT) common.h
+%$(OBJ_EXT): %$(IN_EXT) $(COMMON_HEADER)
 	$(CC) $(CFLAGS) -c -o '$@' '$<'
 
 $(DRIVER_OBJ): $(DRIVER_BASENAME).c
@@ -91,7 +96,9 @@ gdb-%: %$(OUT_EXT) $(QEMU_EXE)
 	-ex 'set sysroot $(SYSROOT)' \
 	-ex 'target remote localhost:$(GDB_PORT)' \
 	"; \
-	  gdb_after='-ex continue'; \
+	  if [ ! '$(FREESTAND)' = y ]; then \
+	    gdb_after='-ex continue'; \
+	  fi; \
 	fi; \
 	gdb_cmd="$${gdb_cmd} \
 	-q \
