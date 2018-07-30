@@ -40,7 +40,7 @@ ENTRY
     /*ldr r0, myvar*/
 
     /* We could in theory write this to set the address of myvar,
-     * but it will always segfault because the text segment is read-only. */
+     * but it will always segfault under Linux because the text segment is read-only. */
     /*
     str r1, var_in_same_section
 var_in_same_section:
