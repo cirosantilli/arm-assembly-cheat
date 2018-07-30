@@ -497,6 +497,7 @@ Bitwise:
 * link:v7/and.S[]
 ** `eor`: exclusive OR
 ** `oor`: OR
+** `bic`: bit clear: `left & ~right`
 * link:v7/bic.S[]
 
 Shifts:
