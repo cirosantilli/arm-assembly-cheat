@@ -16,7 +16,7 @@ asm_main: \
     stp  x4, x5, [sp, #0x70]; \
     stp  x2, x3, [sp, #0x80]; \
     stp  x0, x1, [sp, #0x90]; \
-asm_main_after_prolog: \
+asm_main_after_prologue: \
 ;
 
 #define EXIT \

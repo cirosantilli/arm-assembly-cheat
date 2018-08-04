@@ -106,7 +106,7 @@ Shortcut:
 ./t -g add
 ....
 
-This leaves us right at the end of the prolog of `asm_main`, and at the start of the assembly code in the `.S` file.
+This leaves us right at the end of the prologue of `asm_main`, and at the start of the assembly code in the `.S` file.
 
 Stop on a different symbol instead:
 
@@ -204,7 +204,7 @@ make NATIVE=y test
 make NATIVE=y gdb-add
 ....
 
-GDB TUI is slightly buggier on the ancient 4.9 toolchain (current line gets different indentation, does not break on the right instruction after `asm_main_after_prolog`, link:https://superuser.com/questions/180512/how-to-turn-off-gdb-tui[cannot leave TUI]), but it might still be usable
+GDB TUI is slightly buggier on the ancient 4.9 toolchain (current line gets different indentation, does not break on the right instruction after `asm_main_after_prologue`, link:https://superuser.com/questions/180512/how-to-turn-off-gdb-tui[cannot leave TUI]), but it might still be usable
 
 The Pi 0 and 1 however have a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/[BCM2835] SoC, which has an ARM1176JZF-S core, which implements the ARMv6Z ISA, which we don't support yet on this repo.
 
