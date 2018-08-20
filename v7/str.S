@@ -16,6 +16,7 @@ ENTRY
     movw r2, #0x5678
     movt r2, #0x1234
     cmp r1, r2
+    ASSERT(beq)
 
     /* Modify the value. */
     movw r1, #0xDEF0
@@ -27,6 +28,7 @@ ENTRY
     movw r2, #0xDEF0
     movt r2, #0x9ABC
     cmp r1, r2
+    ASSERT(beq)
 
     /* Cannot use PC relative addressing to a different segment,
      * or else it fails with:
