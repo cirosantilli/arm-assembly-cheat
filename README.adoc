@@ -538,6 +538,14 @@ ____
 
 Assemblers however support magic memory allocations which may hide what is truly going on: https://stackoverflow.com/questions/14046686/why-use-ldr-over-mov-or-vice-versa-in-arm-assembly Always ask your friendly disassembly for a good confirmation.
 
+==== S suffix
+
+The `S` suffix, present on most <<data-processing-instructions>>, makes the instruction also set the Status register flags that control conditional jumps.
+
+If the result of the operation is `0`, then it triggers `beq`, since comparison is a subtraction, with success on 0.
+
+Example: link:v7/s_suffix.S[]
+
 ==== ubfm
 
 Unsigned Bitfield Move.
