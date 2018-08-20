@@ -42,14 +42,18 @@ ENTRY
     /*ldr r0, myvar*/
 
     /* We could in theory write this to set the address of myvar,
-     * but it will always segfault under Linux because the text segment is read-only. */
-    /*
+     * but it will always segfault under Linux because the text segment is read-only.
+     */
+#if 0
     str r1, var_in_same_section
 var_in_same_section:
-    */
+#endif
 
     /* = sign just doesn't make sense for str, you can't set the
-     * address of a variable. */
-    /*str r1, =myvar */
+     * address of a variable.
+     */
+#if 0
+    str r1, =myvar
+#endif
 
 EXIT
