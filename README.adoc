@@ -491,6 +491,7 @@ Arithmetic:
 * link:v7/add.S[]
 * link:v7/mul.S[]
 * link:v7/sub.S[]
+* link:v7/tst.S[]
 
 Bitwise:
 
