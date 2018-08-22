@@ -1,0 +1,75 @@
+/* https://github.com/cirosantilli/arm-assembly-cheat#shift-suffixes */
+
+#include "common.h"
+
+ENTRY
+    /* lsr */
+    ldr r0, =0xFFF00FFF
+    mov r1, r0, lsl #8
+    ldr r2, =0xF00FFF00
+    cmp r1, r2
+    ASSERT(beq)
+
+    /* lsl */
+    ldr r0, =0xFFF00FFF
+    mov r1, r0, lsr #8
+    ldr r2, =0x00FFF00F
+    cmp r1, r2
+    ASSERT(beq)
+
+    /* ror */
+    ldr r0, =0xFFF00FFF
+    mov r1, r0, ror #8
+    ldr r2, =0xFFFFF00F
+    cmp r1, r2
+    ASSERT(beq)
+
+    /* asr negative */
+    ldr r0, =0x80000008
+    mov r1, r0, asr #1
+    ldr r2, =0xC0000004
+    cmp r1, r2
+    ASSERT(beq)
+
+    /* asr positive */
+    ldr r0, =0x40000008
+    mov r1, r0, asr #1
+    ldr r2, =0x20000004
+    cmp r1, r2
+    ASSERT(beq)
+
+    /* There are also direct shift mnemonics for the mov shifts.
+     *
+     * They assembly to the exact same bytes as the mov version
+     */
+    ldr r0, =0xFFF00FFF
+    lsl r1, r0, #8
+    ldr r2, =0xF00FFF00
+    cmp r1, r2
+    ASSERT(beq)
+
+    /* If used with the `mov` instruction, it results in a pure shift,
+     * but the suffixes also exist for all the other data processing instructions.
+     *
+     * Here we illustrate a shifted add instruction which calculates:
+     *
+     * ....
+     * r1 = r0 + shift(r2)
+     * ....
+     */
+    ldr r0, =0x10
+    ldr r1, =0x100
+    add r1, r0, lsl #1
+    ldr r2, =0x00000120
+    cmp r1, r2
+    ASSERT(beq)
+
+    /* The shift takes up the same encoding slot as the immediate,
+     * therefore it is not possible to both use an immediate and shift.
+     *
+     * Error: shift expression expected -- `add r1,r0,#1,lsl#1'
+     */
+#if 0
+    add r1, r0, #1, lsl #1
+#endif
+EXIT

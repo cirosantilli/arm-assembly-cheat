@@ -357,6 +357,8 @@ Example: link:v7/cond.S[]
 
 Just add the usual `eq`, `ne`, etc. suffixes just as for `b`.
 
+The list of all extensions is documented at <<armv7>> "A8.3 Conditional execution".
+
 === Load and store instructions
 
 In ARM, there are only two instruction families that do memory access: <<ldr>>  to load and <<str>> to store.
@@ -488,7 +490,7 @@ AArch64 loses those instructions, likely because it was not possible anymore to 
 
 Arithmetic:
 
-* link:v7/add.S[]
+* link:v7/add.S[]. We use this simple instruction to explain syntax common to most data processing instructions, so have a good look at that file.
 * link:v7/mul.S[]
 * link:v7/sub.S[]
 * link:v7/tst.S[]
@@ -496,16 +498,9 @@ Arithmetic:
 Bitwise:
 
 * link:v7/and.S[]
-** `eor`: exclusive OR
-** `oor`: OR
-** `bic`: bit clear: `left & ~right`
+* `eor`: exclusive OR
+* `oor`: OR
 * link:v7/bic.S[]
-
-Shifts:
-
-* `asr`: Arithmetic Shift Right. Keep sign.
-* `lsr`: Logical Shift Right. Insert zeroes sign.
-* `ror`: Rotate Right. Wrap bits around.
 
 ==== mov
 
@@ -538,6 +533,20 @@ In software - especially in languages like C - constants tend to be small. When 
 ____
 
 Assemblers however support magic memory allocations which may hide what is truly going on: https://stackoverflow.com/questions/14046686/why-use-ldr-over-mov-or-vice-versa-in-arm-assembly Always ask your friendly disassembly for a good confirmation.
+
+==== Shift suffixes
+
+Most data processing instructions can also optionally shift the second register operand.
+
+Example: link:v7/shift.S[]
+
+The shift types are:
+
+* `lsr` and `lfl`: Logical Shift Right / Left. Insert zeroes.
+* `ror`: Rotate Right / Left. Wrap bits around.
+* `asr`: Arithmetic Shift Right. Keep sign.
+
+Documented at: <<armv7>> "A4.4.1 Standard data-processing instructions"
 
 ==== S suffix
 

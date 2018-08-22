@@ -1,4 +1,7 @@
-/* Bitwise Bit Clear: clear some bits. */
+/* Bitwise Bit Clear: clear some bits.
+ *
+ * dest = `left & ~right`
+ */
 
 #include "common.h"
 
