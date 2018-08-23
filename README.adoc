@@ -584,6 +584,22 @@ Alias for:
 UBFM <Wd>, <Wn>, #<lsb>, #(<lsb>+<width>-1)
 ....
 
+=== Miscellaneous instructions
+
+==== nop
+
+There are a few different ways to encode `nop`, notably `mov` a register into itself, and a dedicated miscellaneous instruction.
+
+Examples: link:v7/nop.S[]
+
+Try disassembling the executable to see what the assembler is emitting:
+
+....
+gdb-multiarch -batch -ex 'arch arm' -ex "file v7/nop.out" -ex "disassemble/rs asm_main_after_prologue"
+....
+
+Bibliography: https://stackoverflow.com/questions/1875491/nop-for-iphone-binaries
+
 == Instruction encoding
 
 Understanding the basics of instruction encodings is fundamental to help you to remember what instructions do and why some things are possible or not.
