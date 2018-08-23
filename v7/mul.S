@@ -8,6 +8,5 @@ ENTRY
     mov r1, #2
     mov r2, #3
     mul r1, r2
-    cmp r1, #6
-    ASSERT(beq)
+    ASSERT_EQ(r1, 6)
 EXIT

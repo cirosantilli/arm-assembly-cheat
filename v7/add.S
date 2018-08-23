@@ -9,8 +9,7 @@ ENTRY
     mov r0, #1
     /* r1 = r0 + 2 */
     add r1, r0, #2
-    cmp r1, #3
-    ASSERT(beq)
+    ASSERT_EQ(r1, 3)
 
     /* If src == dest, we can omit one of them.
      *
@@ -18,8 +17,7 @@ ENTRY
      */
     mov r0, #1
     add r0, #2
-    cmp r0, #3
-    ASSERT(beq)
+    ASSERT_EQ(r0, 3)
 
     /* Register encoding.
      *
@@ -28,7 +26,7 @@ ENTRY
     mov r0, #1
     mov r1, #2
     add r2, r0, r1
-    cmp r1, #3
+    ASSERT_EQ(r2, 3)
 
     /* Register encoding, omit implicit register.
      *
@@ -37,7 +35,6 @@ ENTRY
     mov r0, #1
     mov r1, #2
     add r1, r0
-    cmp r1, #3
-    ASSERT(beq)
+    ASSERT_EQ(r1, 3)
 
 EXIT

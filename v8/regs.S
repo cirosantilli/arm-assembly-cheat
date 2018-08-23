@@ -1,6 +1,7 @@
 #include "common.h"
 
 ENTRY
+
     /* 31 64-bit eXtended general purpose registers. */
     mov x0, #0
     mov x1, #1
@@ -37,8 +38,7 @@ ENTRY
     /* W form addresses the lower 4 bytes word, and zeroes the top. */
     ldr x0, =0x1111222233334444
     ldr x1, =0x5555666677778888
-    ldr x2, =0x0000000077778888
     mov w0, w1
-    cmp x0, x2
-    ASSERT(beq)
+    ASSERT_EQ(x0, 0x0000000077778888)
+
 EXIT

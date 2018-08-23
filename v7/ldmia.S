@@ -12,6 +12,7 @@ my_array_1:
     .word 0x55555555, 0x66666666, 0x77777777, 0x88888888
 
 ENTRY
+
     /* Load r1, r2, r3 and r4 starting from the address in r0. Don't change r0 */
     ldr r0, =my_array_0
     ldr r1, =0
@@ -57,4 +58,5 @@ ENTRY
     ldr r0, =my_array_0
     ldmia r0!, {r1-r4}
     ASSERT_EQ(r0, my_array_1)
+
 EXIT

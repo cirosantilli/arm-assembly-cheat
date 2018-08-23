@@ -10,9 +10,7 @@ ENTRY
     movw r0, #0xFFFF
     movt r0, #0x1234
     add r0, #1
-    ldr r1, =0x12350000
-    cmp r0, r1
-    ASSERT(beq)
+    ASSERT_EQ(r0, 0x12350000)
 
     /* movw also zeroes out the top bits, allowing small 16-bit
      * C constants to be assigned in a single instruction.
@@ -24,8 +22,6 @@ ENTRY
      */
     ldr r0, =0x12345678
     movw r0, #0x1111
-    ldr r1, =0x00001111
-    cmp r0, r1
-    ASSERT(beq)
+    ASSERT_EQ(r0, 0x00001111)
 
 EXIT

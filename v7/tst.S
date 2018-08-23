@@ -3,6 +3,7 @@
 #include "common.h"
 
 ENTRY
+
     /* 0x0F && 0xF0 == 0x00, so beq. */
     mov r0, #0x0F
     tst r0, #0xF0
@@ -13,7 +14,6 @@ ENTRY
     tst r0, #0x0F
     ASSERT(bne)
     # r0 was not modified.
-    cmp r0, #0xFF
-    ASSERT(beq)
+    ASSERT_EQ(r0, 0xFF)
 
 EXIT

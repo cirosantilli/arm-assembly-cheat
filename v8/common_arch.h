@@ -1,6 +1,12 @@
 #ifndef COMMON_ARCH_H
 #define COMMON_ARCH_H
 
+#define ASSERT_EQ(reg, const) \
+    ldr x11, =const; \
+	cmp reg, x11; \
+	ASSERT(beq); \
+;
+
 #define ENTRY \
 .text; \
 .global asm_main; \

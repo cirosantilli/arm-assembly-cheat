@@ -426,12 +426,12 @@ As an application of the post-indexed addressing mode, let's increment an array.
 
 Example: link:v7/inc_array.S[]
 
-===== ldr width
+===== ldr and ldrb
 
 There are `ldr` variants that load less than full 4 bytes:
 
-* link:v7/ldrb.S[]
-* link:v7/ldrh.S[]
+* link:v7/ldrb.S[]: load byte
+* link:v7/ldrh.S[]: load half word
 
 ===== ldr ARMv8
 
@@ -495,13 +495,22 @@ Arithmetic:
 * link:v7/sub.S[]
 * link:v7/tst.S[]
 
-Bitwise:
+==== Bitwise
 
 * link:v7/and.S[]
 * `eor`: exclusive OR
 * `oor`: OR
-* link:v7/bic.S[]
 * link:v7/clz.S[]: count leading zeroes
+
+===== bic
+
+Bitwise Bit Clear: clear some bits.
+
+....
+dest = `left & ~right`
+....
+
+Example: link:v7/bic.S[]
 
 ==== mov
 

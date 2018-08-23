@@ -3,6 +3,7 @@
 #include "common.h"
 
 ENTRY
+
     /* Smaller*/
     mov r0, #1
     cmp r0, #2
@@ -23,4 +24,5 @@ ENTRY
     ASSERT(bge)
     ASSERT(bgt)
     ASSERT(bne)
+
 EXIT

@@ -1,6 +1,9 @@
+/* https://github.com/cirosantilli/arm-assembly-cheat#ldmia */
+
 #include "common.h"
 
 ENTRY
+
     /* Save sp before push. */
     mov r0, sp
 
@@ -16,15 +19,13 @@ ENTRY
     mov r3, #0
     mov r4, #0
     pop {r3, r4}
-    cmp r3, #1
-    ASSERT(beq)
-    cmp r4, #2
-    ASSERT(beq)
+    ASSERT_EQ(r3, 1)
+    ASSERT_EQ(r4, 2)
 
     /* Check that stack pointer moved down by 8 bytes
-     * (2 registers x 4 bytes each). */
+     * (2 registers x 4 bytes each).
+     */
     sub r0, r1
-    cmp r0, #8
-    ASSERT(beq)
+    ASSERT_EQ(r0, 8)
 
 EXIT

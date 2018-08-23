@@ -21,8 +21,7 @@ ENTRY
     /* movs still moves... */
     mov r0, #0
     movs r0, #1
-    cmp r0, #1
-    ASSERT(beq)
+    ASSERT_EQ(r0, 1)
 
     /* add: the result is 0. */
     mov r0, #1

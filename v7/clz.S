@@ -5,19 +5,13 @@
 ENTRY
     ldr r0, =0x7FFFFFFF
     clz r1, r0
-    ldr r2, =1
-    cmp r1, r2
-    ASSERT(beq)
+    ASSERT_EQ(r1, 1)
 
     ldr r0, =0x3FFFFFFF
     clz r1, r0
-    ldr r2, =2
-    cmp r1, r2
-    ASSERT(beq)
+    ASSERT_EQ(r1, 2)
 
     ldr r0, =0x1FFFFFFF
     clz r1, r0
-    ldr r2, =3
-    cmp r1, r2
-    ASSERT(beq)
+    ASSERT_EQ(r1, 3)
 EXIT

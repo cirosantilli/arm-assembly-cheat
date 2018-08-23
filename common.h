@@ -16,4 +16,10 @@
 1: \
 ;
 
+/* Assert that a register equals another register. */
+#define ASSERT_REG_EQ(reg1, reg2) \
+	cmp reg1, reg2; \
+	ASSERT(beq); \
+;
+
 #endif
