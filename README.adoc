@@ -501,6 +501,7 @@ Bitwise:
 * `eor`: exclusive OR
 * `oor`: OR
 * link:v7/bic.S[]
+* link:v7/clz.S[]: count leading zeroes
 
 ==== mov
 

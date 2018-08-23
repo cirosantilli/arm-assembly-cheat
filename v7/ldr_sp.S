@@ -13,7 +13,7 @@ ENTRY
     ldr r0, =new
     ldr r1, =old
 
-    /*sp */
+    /* Can load into sp. */
     str r0, [r0]
     /* Can be encoded. */
     str sp, [r1]
@@ -27,7 +27,7 @@ ENTRY
     cmp r2, r3
     ASSERT(beq)
 
-    /* pc */
+    /* Can load into pc. */
     ldr r2, =jumpto
     str r2, [r0]
     /* Can be encoded. */
