@@ -296,17 +296,12 @@ Bibliography: <<armarm7>> A2.3 "ARM core registers".
 
 ==== Immediates
 
-The hash sign `#`:
+Full explanation: https://stackoverflow.com/questions/21652884/is-the-hash-required-for-immediate-values-in-arm-assembly/51987780#51987780
 
-* is required in ARMv7 with `.syntax divided` (the default)
-* optional on:
-** ARMv7 with `.syntax unified`
-** ARMv8
+Examples:
 
-See also:
-
-* https://stackoverflow.com/questions/21652884/is-the-hash-required-for-immediate-values-in-arm-assembly/51987780#51987780
-* https://stackoverflow.com/questions/6097958/what-does-the-hash-value-associated-with-the-arm-ldr-instruction-mean/51988091#51988091
+* link:v7/immediates.S[]
+* link:v8/immediates.S[]
 
 ==== Comments
 
