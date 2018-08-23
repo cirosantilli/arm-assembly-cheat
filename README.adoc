@@ -308,6 +308,15 @@ See also:
 * https://stackoverflow.com/questions/21652884/is-the-hash-required-for-immediate-values-in-arm-assembly/51987780#51987780
 * https://stackoverflow.com/questions/6097958/what-does-the-hash-value-associated-with-the-arm-ldr-instruction-mean/51988091#51988091
 
+==== Comments
+
+Full explanation: https://stackoverflow.com/questions/15663280/how-to-make-the-gnu-assembler-use-a-slash-for-comments/51991349#51991349
+
+Examples:
+
+* link:v7/comments.S[]
+* link:v8/comments.S[]
+
 == Instructions
 
 Grouping loosely based on that of the <<armarm7>> Chapter A4 "The Instruction Sets".
