@@ -357,7 +357,7 @@ Example: link:v7/cond.S[]
 
 Just add the usual `eq`, `ne`, etc. suffixes just as for `b`.
 
-The list of all extensions is documented at <<armv7>> "A8.3 Conditional execution".
+The list of all extensions is documented at <<armarm7>> "A8.3 Conditional execution".
 
 === Load and store instructions
 
@@ -520,7 +520,7 @@ The solutions to this problem are mentioned at:
 
 Summary of solutions:
 
-* `movw` and `movt`
+* <<movw-and-movt>>
 * place it in memory. But then how to load the address, which is also a 32-bit value?
 ** use pc-relative addressing if the memory is close enough
 ** use `orr` encodable shifted immediates
@@ -535,6 +535,14 @@ ____
 
 Assemblers however support magic memory allocations which may hide what is truly going on: https://stackoverflow.com/questions/14046686/why-use-ldr-over-mov-or-vice-versa-in-arm-assembly Always ask your friendly disassembly for a good confirmation.
 
+==== movw and movt
+
+Set the higher or lower 16 bits of a register to an immediate in one go.
+
+Example: link:v7/movw.S[]
+
+The ARMv8 version analogue is <<movk>>.
+
 ==== Shift suffixes
 
 Most data processing instructions can also optionally shift the second register operand.
@@ -547,7 +555,7 @@ The shift types are:
 * `ror`: Rotate Right / Left. Wrap bits around.
 * `asr`: Arithmetic Shift Right. Keep sign.
 
-Documented at: <<armv7>> "A4.4.1 Standard data-processing instructions"
+Documented at: <<armarm7>> "A4.4.1 Standard data-processing instructions"
 
 ==== S suffix
 
@@ -711,9 +719,11 @@ Some random ones, TODO create clean examples of them:
 
 * the stack has to 16-byte aligned. Therefore, the main way to push things to stack is `ldp` and  `stp`, which push two 8 byte registers at a time
 
-=== ARMv8 movk
+=== movk
 
 Fill a 64 bit register with 4 16-bit instructions one at a time.
+
+Similar to <<movw-and-movt>> in v7.
 
 Example: link:v8/movk.S[]
 
