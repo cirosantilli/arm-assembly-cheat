@@ -874,6 +874,7 @@ Getting started tutorials:
 * http://www.davespace.co.uk/arm/introduction-to-arm/
 * https://azeria-labs.com/writing-arm-assembly-part-1/
 * https://thinkingeek.com/arm-assembler-raspberry-pi/
+* http://bob.cs.sonoma.edu/IntroCompOrg-RPi/app-make.html
 
 === Official manuals
 
