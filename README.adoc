@@ -1020,7 +1020,15 @@ This tutorial only covers userland concepts.
 
 However, certain instructions can only be used in higher privilege levels from an operating system itself.
 
-Here is a bibliography for ARM programming without an operating system, also known as "Bare Metal Programming":
+Here is a base setup ARM programming without an operating system, also known as "Bare Metal Programming: https://github.com/cirosantilli/linux-kernel-module-cheat/tree/7d6f8c3884a4b4170aa274b986caae55b1bebaaf#baremetal-setup
+
+Features:
+
+* clean crosstool-NG build for GCC
+* C standard library powevered by Newlib
+* works on both QEMU and gem5
+
+Here are further links:
 
 * generic:
 ** https://stackoverflow.com/questions/38914019/how-to-make-bare-metal-arm-programs-and-run-them-on-qemu/50981397#50981397 generic QEMU question
