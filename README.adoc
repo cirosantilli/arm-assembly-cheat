@@ -80,21 +80,32 @@ add r1, r0, #2
 ASSERT_EQ(r1, 4)
 ....
 
-and now after running:
+Try messing with the examples to see them fail, e.g. modify link:v7/add.S[] to contain:
 
 ....
-./t add
+mov r0, #1
+add r1, r0, #2
+ASSERT_EQ(r1, 4)
 ....
 
-You should see something like:
+and then watch it fail:
+
+....
+cd v7
+make test-add
+....
+
+with:
 
 ....
 error 1 at line 12
-Makefile:164: recipe for target 'test-add' failed
-make: *** [test-add] Error 1
+Makefile:138: recipe for target 'test-add' failed
+error 1 at line 12
 ....
 
-Look how nice we are: we even told you that the assert failed at line 12!
+since `1 + 2` tends to equal `3` and not `4`.
+
+So look how nice we are: we even gave you the line number `12` of the failing assert!
 
 Just build the examples without running:
 
@@ -245,9 +256,9 @@ Then we look at the following threads:
 
 which lead us to this 64-bit Debian based distro for the Pi: https://github.com/bamarni/pi64
 
-So first we flash pi64 2017-07-31, and then do exactly the same as for the Raspberry Pi 2, except that you must go into `v8` instead of `v7`.
+So first we flash pi64's link:https://github.com/bamarni/pi64/releases/download/2017-07-31/pi64-lite.zip[2017-07-31 release], and then do exactly the same as for the Raspberry Pi 2, except that you must go into the `v8` directory instead of `v7`.
 
-TODO: can we run the `v7` folder? First I can't even compile it. Related: https://stackoverflow.com/questions/21716800/does-gcc-arm-linux-gnueabi-build-for-a-64-bit-target For runtime: https://stackoverflow.com/questions/22460589/armv8-running-legacy-32-bit-applications-on-64-bit-os
+TODO: can we run the `v7` folder in ARMv8? First I can't even compile it. Related: https://stackoverflow.com/questions/21716800/does-gcc-arm-linux-gnueabi-build-for-a-64-bit-target For runtime: https://stackoverflow.com/questions/22460589/armv8-running-legacy-32-bit-applications-on-64-bit-os
 
 === Build your own toolchain
 
@@ -1020,7 +1031,7 @@ This tutorial only covers userland concepts.
 
 However, certain instructions can only be used in higher privilege levels from an operating system itself.
 
-Here is a base setup ARM programming without an operating system, also known as "Bare Metal Programming: https://github.com/cirosantilli/linux-kernel-module-cheat/tree/7d6f8c3884a4b4170aa274b986caae55b1bebaaf#baremetal-setup
+Here is a base setup ARM programming without an operating system, also known as "Bare Metal Programming": https://github.com/cirosantilli/linux-kernel-module-cheat/tree/7d6f8c3884a4b4170aa274b986caae55b1bebaaf#baremetal-setup
 
 Features:
 
