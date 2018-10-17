@@ -786,7 +786,10 @@ ____
 
 VFP has several revisions, named as VFPv1, VFPv2, etc. TODO: announcement dates.
 
-As mentioned at: https://stackoverflow.com/questions/37790029/what-is-difference-between-arm64-and-armhf/48954012#48954012 the Linux kernel shows those capabilities in `/proc/cpuinfo` with flags such as `vfp vfpv3`.
+As mentioned at: https://stackoverflow.com/questions/37790029/what-is-difference-between-arm64-and-armhf/48954012#48954012 the Linux kernel shows those capabilities in `/proc/cpuinfo` with flags such as `vfp`, `vfpv3` and others, see:
+
+* https://github.com/torvalds/linux/blob/v4.18/arch/arm/kernel/setup.c#L1199
+* https://github.com/torvalds/linux/blob/v4.18/arch/arm64/kernel/cpuinfo.c#L95
 
 When a certain version of VFP is present on a CPU, the compiler prefix typically contains the `hf` characters which stands for Hard Float, e.g.: `arm-linux-gnueabihf`. This means that the compiler will emit VFP instructions instead of just using software implementations.
 
@@ -808,6 +811,8 @@ ____
 
 Newer than VFP. TODO announcement date.
 
+The Linux kernel shows `/proc/cpuinfo` compatibility as `neon`.
+
 Vs <<vfp>>: https://stackoverflow.com/questions/4097034/arm-cortex-a8-whats-the-difference-between-vfp-and-neon
 
 Bibliography: https://stackoverflow.com/questions/2851421/is-there-a-good-reference-for-arm-neon-intrinsics
@@ -819,6 +824,8 @@ TODO example
 Scalable Vector Extension.
 
 aarch64 only, newer than <<neon>>. TODO announcement date. Possibly 2017: https://alastairreid.github.io/papers/sve-ieee-micro-2017.pdf Added to QEMU in 3.0.0.
+
+The Linux kernel shows `/proc/cpuinfo` compatibility as `sve`.
 
 Official spec: https://developer.arm.com/docs/100891/latest/sve-overview/introducing-sve
 
