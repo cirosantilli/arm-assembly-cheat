@@ -870,6 +870,30 @@ Patents for very old ISAs however have expired, Amber is one implementation of t
 
 Bibliography: https://www.quora.com/Why-is-it-that-you-need-a-license-from-ARM-to-design-an-ARM-CPU-How-are-the-instruction-sets-protected
 
+== CONTRIBUTING
+
+=== Update QEMU
+
+https://stackoverflow.com/questions/816370/how-do-you-force-a-makefile-to-rebuild-a-target
+
+....
+git -C qemu pull
+make -B -C v7 qemu
+make -B -C v8 qemu
+....
+
+If the build fails due to drastic QEMU changes, first do:
+
+....
+make qemu-clean
+....
+
+Then make sure that the tests still pass:
+
+....
+make test
+....
+
 == Bibliography
 
 ISA quick references can be found in some places however:
