@@ -776,7 +776,7 @@ There is no `x31` name, and the encoding can have two different names depending 
 ** https://community.arm.com/processors/f/discussions/3185/wzr-xzr-register-s-purpose
 * `sp`: stack pointer
 
-Described on <<armarmv8>> C1.2.5 "Register names".
+Described on <<armarm8>> C1.2.5 "Register names".
 
 === stp
 
@@ -831,6 +831,22 @@ Vs <<vfp>>: https://stackoverflow.com/questions/4097034/arm-cortex-a8-whats-the-
 
 Bibliography: https://stackoverflow.com/questions/2851421/is-there-a-good-reference-for-arm-neon-intrinsics
 
+=== ARMv8 floating point
+
+TODO example.
+
+The <<armarm8>> specifies floating point support in the main architecture at A1.5 "Advanced SIMD and floating-point support".
+
+It is semi-mandatory:
+
+____
+No floating-point or SIMD support. This option is licensed only for implementations targeting specialized markets.
+____
+
+Therefore it is in theory optional, but highly available.
+
+This is unlike ARMv7, where is is completely optional through <<vfp>>.
+
 === SVE
 
 TODO example
@@ -855,7 +871,7 @@ https://developer.arm.com/products/software-development-tools/hpc/documentation/
 
 ===== SVE spec
 
-<<armarmv8>> A1.7 "ARMv8 architecture extensions" says:
+<<armarm8>> A1.7 "ARMv8 architecture extensions" says:
 
 ____
 SVE is an optional extension to ARMv8.2. That is, SVE requires the implementation of ARMv8.2.
