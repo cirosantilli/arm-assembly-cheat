@@ -9,7 +9,7 @@
 :toclevels: 6
 :toc-title:
 
-ARMv7 and ARMv8 assembly userland minimal examples tutorial. Runnable asserts on x86 host with QEMU user mode or natively on an ARM guest. Nice GDB step debug setup. Tested on Ubuntu 18.04 host and Raspberry Pi 2 and 3 guests.
+ARMv7 and ARMv8 assembly userland minimal examples tutorial. Runnable asserts on x86 host with QEMU user mode or natively on an ARM guest. Nice GDB step debug setup. Tested on Ubuntu 18.04 host and Raspberry Pi 2 and 3 guests. Baremetal setup at: https://github.com/cirosantilli/linux-kernel-module-cheat#baremetal-setup x86 cheat at: https://github.com/cirosantilli/x86-assembly-cheat
 
 toc::[]
 
