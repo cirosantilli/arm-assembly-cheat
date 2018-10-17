@@ -251,7 +251,7 @@ If you don't like reading on GitHub, the HTML documentation can be generated fro
 
 ....
 make doc
-xdg-open README.html
+xdg-open out/README.html
 ....
 
 == About

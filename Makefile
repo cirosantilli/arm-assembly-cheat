@@ -22,7 +22,9 @@ PHONY_MAKES =
 ROOT_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 QEMU_DIR = $(ROOT_DIR)/qemu
 QEMU_EXE = $(QEMU_OUT_DIR)/$(ARCH)-linux-user/qemu-$(ARCH)
-QEMU_OUT_DIR = $(ROOT_DIR)/out/qemu/$(ARCH)
+OUT_DIR = $(ROOT_DIR)/out
+QEMU_OUT_DIR = $(OUT_DIR)/qemu/$(ARCH)
+DOC_OUT = $(OUT_DIR)/README.html
 RUN_CMD = $(QEMU_EXE) -L $(SYSROOT)
 TEST = test
 
@@ -80,10 +82,10 @@ clean:
 	  $(MAKE) -C $${phony} clean; \
 	done
 
-doc: README.html
+doc: $(DOC_OUT)
 
-README.html: README.adoc
-	asciidoctor -b html5 -v '$<' > '$@'
+$(DOC_OUT): README.adoc
+	asciidoctor -b html5 -o '$@' -v '$<'
 
 gdb-%: %$(OUT_EXT) $(QEMU_EXE)
 	if [ '$(NATIVE)' = y ]; then \
