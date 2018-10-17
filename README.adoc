@@ -15,13 +15,14 @@ toc::[]
 
 == Getting started
 
-On your host, clone, configure, build and run all ARMv7 and ARMv8 examples through QEMU user, and assert that they exit with status 0:
+Clone, configure, build QEMU from source, run all ARMv7 and ARMv8 examples through QEMU user, and assert that they exit with status 0:
 
 ....
 git clone --recursive https://github.com/cirosantilli/arm-assembly-cheat
 cd arm-assembly-cheat
 ./configure
 make test
+echo $?
 ....
 
 The armv7 examples are all located under the link:v7[] directory. Run all of them:
