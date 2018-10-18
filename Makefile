@@ -1,10 +1,11 @@
 .POSIX:
 
-AS = $(PREFIX_PATH)as
-ASFLAGS = --gdwarf-2 -march=$(MARCH) $(ASFLAGS_EXTRA)
+AS = $(BINUTILS_BIN_DIR)/$(ARCH)-elf-as
+ASFLAGS = --gdwarf-2 -march=$(MARCH_AS) $(ASFLAGS_EXTRA)
+BINUTILS_BIN_DIR = $(BINUTILS_INSTALL_DIR)/bin
 CC = $(PREFIX_PATH)gcc
 CPP = $(PREFIX_PATH)cpp
-CPP_EXT = .cpp.tmp
+CPP_EXT = $(IN_EXT).tmp
 CFLAGS = -ggdb3 -march=$(MARCH) -pedantic -std=c99 -Wall -Wextra $(CFLAGS_QEMU) $(CFLAGS_EXTRA)
 # no-pie: https://stackoverflow.com/questions/51310756/how-to-gdb-step-debug-a-dynamically-linked-executable-in-qemu-user-mode
 # And the flag not present in Raspbian 2017 which has an ancient gcc 4.9, so we have to remove it.
@@ -15,8 +16,10 @@ DEFAULT_SYSROOT = /usr/$(PREFIX)
 DRIVER_BASENAME = main
 DRIVER_OBJ = $(DRIVER_BASENAME)$(OBJ_EXT)
 GDB_BREAK = asm_main_after_prologue
+GDB = $(BINUTILS_BIN_DIR)/$(ARCH)-elf-gdb
 GDB_PORT = 1234
 IN_EXT = .S
+MARCH_AS = $(MARCH)
 NATIVE =
 OBJDUMP = $(PREFIX_PATH)objdump
 OBJDUMP_EXT = .objdump
@@ -25,13 +28,15 @@ OUT_EXT = .out
 PHONY_MAKES =
 ROOT_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 BINUTILS_SRC_DIR = $(ROOT_DIR)/binutils-gdb
-BINUTILS_BUILD_DIR = $(OUT_DIR)/binutils-gdb/$(ARCH)
-QEMU_DIR = $(ROOT_DIR)/qemu
+BINUTILS_OUT_DIR = $(OUT_DIR)/binutils-gdb
+BINUTILS_BUILD_DIR = $(BINUTILS_OUT_DIR)/build/$(ARCH)
+BINUTILS_INSTALL_DIR = $(BINUTILS_OUT_DIR)/install
+QEMU_SRC_DIR = $(ROOT_DIR)/qemu
 QEMU_EXE = $(QEMU_BUILD_DIR)/$(ARCH)-linux-user/qemu-$(ARCH)
 OUT_DIR = $(ROOT_DIR)/out
 QEMU_BUILD_DIR = $(OUT_DIR)/qemu/$(ARCH)
 DOC_OUT = $(OUT_DIR)/README.html
-RUN_CMD = $(QEMU_EXE) -L $(SYSROOT)
+RUN_CMD = $(QEMU_EXE) -L $(SYSROOT) -E LD_BIND_NOW=1
 TEST = test
 
 ifeq ($(CTNG),)
@@ -65,7 +70,7 @@ endif
 .PHONY: all clean doc objdump binutils-gdb binutils-gdb-clean qemu qemu-clean test $(PHONY_MAKES)
 .PRECIOUS: %$(OBJ_EXT)
 
-all: $(OUTS) qemu
+all: binutils-gdb $(OUTS) qemu
 	for phony in $(PHONY_MAKES); do \
 	  $(MAKE) -C $${phony}; \
 	done
@@ -76,7 +81,7 @@ all: $(OUTS) qemu
 %$(OBJDUMP_EXT): %$(OUT_EXT)
 	$(OBJDUMP) -S '$<' > '$@'
 
-%$(OBJ_EXT): %$(IN_EXT) $(COMMON_HEADER) binutils-gdb
+%$(OBJ_EXT): %$(IN_EXT) $(COMMON_HEADER)
 	$(CPP) -o '$(basename $<)$(CPP_EXT)' '$<'
 	$(AS) $(ASFLAGS) -c -o '$@' '$(basename $<)$(CPP_EXT)'
 
@@ -100,7 +105,7 @@ gdb-%: %$(OUT_EXT) $(QEMU_EXE)
 	  gdb_after='-ex run'; \
 	else \
 	  $(RUN_CMD) -g $(GDB_PORT) '$<' & \
-	  gdb_cmd="gdb-multiarch \
+	  gdb_cmd="$(GDB) \
 	-ex 'set architecture $(ARCH)' \
 	-ex 'set sysroot $(SYSROOT)' \
 	-ex 'target remote localhost:$(GDB_PORT)' \
@@ -131,7 +136,7 @@ qemu: $(QEMU_EXE)
 $(QEMU_EXE):
 	mkdir -p '$(QEMU_BUILD_DIR)'
 	cd '$(QEMU_BUILD_DIR)' && \
-	"$(QEMU_DIR)/configure" \
+	"$(QEMU_SRC_DIR)/configure" \
 	  --enable-debug \
 	  --target-list="$(ARCH)-linux-user" \
 	&& \
@@ -143,14 +148,17 @@ qemu-clean:
 	  $(MAKE) -C $${phony} qemu-clean; \
 	done
 
-binutils-gdb:
+binutils-gdb: $(AS)
+
+$(AS):
 	mkdir -p '$(BINUTILS_BUILD_DIR)'
 	cd '$(BINUTILS_BUILD_DIR)' && \
-	"$(BINUTILS_DIR)/configure" \
-	  --enable-debug \
-	  --target-list="$(ARCH)-linux-user" \
+	"$(BINUTILS_SRC_DIR)/configure" \
+	  --target '$(ARCH)-elf' \
+	  --prefix '$(BINUTILS_INSTALL_DIR)' \
 	&& \
-	make -j`nproc`
+	make -j`nproc` && \
+	make -j`nproc` install
 
 test-%: %$(OUT_EXT) $(QEMU_EXE)
 	$(RUN_CMD) '$<'

@@ -15,7 +15,7 @@ toc::[]
 
 == Getting started
 
-Clone, configure, build QEMU from source, run all ARMv7 and ARMv8 examples through QEMU user, and assert that they exit with status 0:
+Clone, configure, build QEMU and Binutils from source, run all ARMv7 and ARMv8 examples through QEMU user, and assert that they exit with status 0:
 
 ....
 git clone --recursive https://github.com/cirosantilli/arm-assembly-cheat
@@ -25,11 +25,16 @@ make test
 echo $?
 ....
 
+We compile our own Binutils and QEMU to be able to use the newest ISA features. Those projects build pretty fast (~10 minutes), so it is fine.
+
+The cleanest thing would be to also compile GCC with link:https://github.com/crosstool-ng/crosstool-ng[crosstool-NG], but the build is much longer, and I'm lazy, let's just wait until something fails in obscure ways.
+
 The armv7 examples are all located under the link:v7[] directory. Run all of them:
 
 ....
 cd v7
 make test
+echo $?
 ....
 
 Run just one of them:
@@ -37,6 +42,7 @@ Run just one of them:
 ....
 cd v7
 make test-<basename-no-extension>
+echo $?
 ....
 
 E.g.:
@@ -47,33 +53,48 @@ make test-add
 
 will run link:v7/add.S[].
 
+Alternatively, to help with tab complete, the following shortcuts all do the same thing as `make test-add`:
+
+....
+./t add
+./t add.
+./t add.out
+....
+
 <<armv8>> examples are all located under the link:v8[] directory. They can be run in the same way as ARMv7 examples:
 
 ....
 cd v8
-make test-mov
-....
-
-Alternatively, to help with tab complete, the following all do the same thing:
-
-....
-./t hello_driver
-./t hello_driver.
-./t hello_driver.out
+make test-movk
 ....
 
 Almost all example don't output anything, they just assert that the computations are as expected and exit 0 is that was the case.
 
-Try messing with the examples to see them fail, e.g. link:fail.S[]. You should see something like:
+Failures however output clear error messages.
+
+Try messing with the examples to see them fail. E.g. modify link:v7/add.S[] to contain:
 
 ....
-error 1 at line 7
-TEST FAILED: fail.out
-Makefile:78: recipe for target 'test' failed
-make: *** [test] Error 1
+mov r0, #1
+add r1, r0, #2
+ASSERT_EQ(r1, 4)
 ....
 
-So look how nice we are: we even gave you the line number of the failing assert!
+and now after running:
+
+....
+./t add
+....
+
+You should see something like:
+
+....
+error 1 at line 12
+Makefile:164: recipe for target 'test-add' failed
+make: *** [test-add] Error 1
+....
+
+Look how nice we are: we even told you that the assert failed at line 12!
 
 Just build the examples without running:
 
