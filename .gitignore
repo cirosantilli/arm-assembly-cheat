@@ -1,8 +1,9 @@
-*.html
+*.bak
 *.log
 *.o
 *.objdump
 *.out
 *.swp
-tmp.*
+*.tmp
 /out
+tmp.*

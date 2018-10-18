@@ -1,6 +1,10 @@
 .POSIX:
 
+AS = $(PREFIX_PATH)as
+ASFLAGS = --gdwarf-2 -march=$(MARCH) $(ASFLAGS_EXTRA)
 CC = $(PREFIX_PATH)gcc
+CPP = $(PREFIX_PATH)cpp
+CPP_EXT = .cpp.tmp
 CFLAGS = -ggdb3 -march=$(MARCH) -pedantic -std=c99 -Wall -Wextra $(CFLAGS_QEMU) $(CFLAGS_EXTRA)
 # no-pie: https://stackoverflow.com/questions/51310756/how-to-gdb-step-debug-a-dynamically-linked-executable-in-qemu-user-mode
 # And the flag not present in Raspbian 2017 which has an ancient gcc 4.9, so we have to remove it.
@@ -20,10 +24,12 @@ OBJ_EXT = .o
 OUT_EXT = .out
 PHONY_MAKES =
 ROOT_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+BINUTILS_SRC_DIR = $(ROOT_DIR)/binutils-gdb
+BINUTILS_BUILD_DIR = $(OUT_DIR)/binutils-gdb/$(ARCH)
 QEMU_DIR = $(ROOT_DIR)/qemu
-QEMU_EXE = $(QEMU_OUT_DIR)/$(ARCH)-linux-user/qemu-$(ARCH)
+QEMU_EXE = $(QEMU_BUILD_DIR)/$(ARCH)-linux-user/qemu-$(ARCH)
 OUT_DIR = $(ROOT_DIR)/out
-QEMU_OUT_DIR = $(OUT_DIR)/qemu/$(ARCH)
+QEMU_BUILD_DIR = $(OUT_DIR)/qemu/$(ARCH)
 DOC_OUT = $(OUT_DIR)/README.html
 RUN_CMD = $(QEMU_EXE) -L $(SYSROOT)
 TEST = test
@@ -56,7 +62,7 @@ ifeq ($(FREESTAND),y)
   COMMON_HEADER =
 endif
 
-.PHONY: all clean doc objdump qemu qemu-clean test $(PHONY_MAKES)
+.PHONY: all clean doc objdump binutils-gdb binutils-gdb-clean qemu qemu-clean test $(PHONY_MAKES)
 .PRECIOUS: %$(OBJ_EXT)
 
 all: $(OUTS) qemu
@@ -70,8 +76,9 @@ all: $(OUTS) qemu
 %$(OBJDUMP_EXT): %$(OUT_EXT)
 	$(OBJDUMP) -S '$<' > '$@'
 
-%$(OBJ_EXT): %$(IN_EXT) $(COMMON_HEADER)
-	$(CC) $(CFLAGS) -c -o '$@' '$<'
+%$(OBJ_EXT): %$(IN_EXT) $(COMMON_HEADER) binutils-gdb
+	$(CPP) -o '$(basename $<)$(CPP_EXT)' '$<'
+	$(AS) $(ASFLAGS) -c -o '$@' '$(basename $<)$(CPP_EXT)'
 
 $(DRIVER_OBJ): $(DRIVER_BASENAME).c
 	$(CC) $(CFLAGS) -c -o '$@' '$<'
@@ -122,8 +129,8 @@ objdump: $(OBJDUMPS)
 qemu: $(QEMU_EXE)
 
 $(QEMU_EXE):
-	mkdir -p '$(QEMU_OUT_DIR)'
-	cd '$(QEMU_OUT_DIR)' && \
+	mkdir -p '$(QEMU_BUILD_DIR)'
+	cd '$(QEMU_BUILD_DIR)' && \
 	"$(QEMU_DIR)/configure" \
 	  --enable-debug \
 	  --target-list="$(ARCH)-linux-user" \
@@ -131,10 +138,19 @@ $(QEMU_EXE):
 	make -j`nproc`
 
 qemu-clean:
-	rm -rf '$(QEMU_OUT_DIR)'
+	rm -rf '$(QEMU_BUILD_DIR)'
 	for phony in $(QEMU_PHONY_MAKES); do \
 	  $(MAKE) -C $${phony} qemu-clean; \
 	done
+
+binutils-gdb:
+	mkdir -p '$(BINUTILS_BUILD_DIR)'
+	cd '$(BINUTILS_BUILD_DIR)' && \
+	"$(BINUTILS_DIR)/configure" \
+	  --enable-debug \
+	  --target-list="$(ARCH)-linux-user" \
+	&& \
+	make -j`nproc`
 
 test-%: %$(OUT_EXT) $(QEMU_EXE)
 	$(RUN_CMD) '$<'
