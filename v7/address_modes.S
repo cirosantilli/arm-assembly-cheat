@@ -41,7 +41,7 @@ ENTRY
      */
     ldr r0, =myvar
     mov r1, #2
-    ldr r2, [r0, r1, LSL #1]
+    ldr r2, [r0, r1, lsl #1]
     ASSERT_EQ(r2, 0x9ABCDEF0)
 
 EXIT

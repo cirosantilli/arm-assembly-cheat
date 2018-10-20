@@ -14,7 +14,6 @@ sum_expect:
     .float 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0
 
 ENTRY
-
     /* Do the sum and verify it. */
     ldr r0, =sum
     ldr r1, =a1
@@ -22,7 +21,6 @@ ENTRY
     mov r3, #8
     bl vec_sum
     ASSERT_MEMCMP(sum, sum_expect, 0x20)
-
 EXIT
 
 /* void vec_sum(float *sum, float *a1, float *a2, int length) {

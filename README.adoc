@@ -709,7 +709,7 @@ Bibliography: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui047
 Call C standard library functions from assembly:
 
 ....
-make test-c_from_arm
+make test-c_from_asm
 ....
 
 Output:
@@ -719,7 +719,7 @@ hello puts
 hello printf 12345678
 ....
 
-Source: link:v7/c_from_arm.S[]
+Source: link:v7/c_from_asm.S[]
 
 ARM Architecture Procedure Call Standard (AAPCS) is the name that ARM Holdings gives to the calling convention. 
 
