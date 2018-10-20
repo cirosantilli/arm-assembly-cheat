@@ -732,6 +732,12 @@ Bibliography:
 * http://stackoverflow.com/questions/261419/arm-to-c-calling-convention-registers-to-save
 * https://stackoverflow.com/questions/10494848/arm-whats-the-difference-between-apcs-and-aapcs-abi
 
+== Inline assembly
+
+Somewhat like x86, but with a few quirks, so let's make a list of what works here.
+
+* link:v8/reg_var.S[]
+
 == Linux system calls
 
 Do a `write` and `exit` raw Linux system calls:
@@ -865,11 +871,19 @@ Bibliography: https://stackoverflow.com/questions/2851421/is-there-a-good-refere
 
 === ARMv8 floating point
 
-TODO example.
+link:v8/floating_point.S[]
 
 The <<armarm8>> specifies floating point support in the main architecture at A1.5 "Advanced SIMD and floating-point support".
 
-It is semi-mandatory:
+The feature is often refered to simply as "SIMD&FP" throughout the manual.
+
+Non-formal introductory tutorials are very scarce, but luckily the instructions are very similar integer instructions, good design.
+
+A good way to get started is to just disassemble some minimal floating-point C code.
+
+==== ARMv8 floating point availability
+
+Support is semi-mandatory:
 
 ____
 No floating-point or SIMD support. This option is licensed only for implementations targeting specialized markets.
@@ -877,11 +891,27 @@ ____
 
 Therefore it is in theory optional, but highly available.
 
-This is unlike ARMv7, where is is completely optional through <<vfp>>.
+This is unlike ARMv7, where floating point is completely optional through <<vfp>>.
+
+==== ARMv8 floating point registers
+
+<<armarm8>> B1.2.1 "Registers in AArch64" describes the registers:
+
+____
+32 SIMD&FP registers, V0 to V31. Each register can be accessed as:
+
+* A 128-bit register named `Q0` to `Q31`.
+* A 64-bit register named `D0` to `D31`.
+* A 32-bit register named `S0` to `S31`.
+* A 16-bit register named `H0` to `H31`.
+* An 8-bit register named `B0` to `B31`.
+____
 
 === SVE
 
-TODO example
+TODO get assert working:
+
+link:v8/sve.S[]
 
 Scalable Vector Extension.
 

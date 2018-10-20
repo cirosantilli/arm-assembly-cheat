@@ -20,6 +20,8 @@ ENTRY
     ldr r2, =a2
     mov r3, #8
     bl vec_sum
+    /* The assert works easily because all floats used
+     * have exact base-2 representation. */
     ASSERT_MEMCMP(sum, sum_expect, 0x20)
 EXIT
 
