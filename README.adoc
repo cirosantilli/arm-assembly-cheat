@@ -736,8 +736,9 @@ Bibliography:
 
 Somewhat like x86, but with a few quirks, so let's make a list of what works here.
 
-* link:v8/reg_var.S[]
-* link:v8/reg_var_float.S[]
+* link:v7/inline/reg_var.c[]
+* link:v8/inline/reg_var.c[]
+* link:v8/inline/reg_var_float.c[]
 
 == Linux system calls
 

@@ -1,24 +1,26 @@
 .POSIX:
 
 AS = $(BINUTILS_BIN_DIR)/$(ARCH)-elf-as
+ASM_EXT = .S
 ASFLAGS = --gdwarf-2 -march=$(MARCH_AS) $(ASFLAGS_EXTRA)
 BINUTILS_BIN_DIR = $(BINUTILS_INSTALL_DIR)/bin
 CC = $(PREFIX_PATH)gcc
-CPP = $(PREFIX_PATH)cpp
-CPP_EXT = $(IN_EXT).tmp
 CFLAGS = -ggdb3 -march=$(MARCH) -pedantic -std=c99 -Wall -Wextra $(CFLAGS_QEMU) $(CFLAGS_EXTRA)
+CPP = $(PREFIX_PATH)cpp
+CPP_EXT = $(ASM_EXT).tmp
 # no-pie: https://stackoverflow.com/questions/51310756/how-to-gdb-step-debug-a-dynamically-linked-executable-in-qemu-user-mode
 # And the flag not present in Raspbian 2017 which has an ancient gcc 4.9, so we have to remove it.
 CFLAGS_QEMU = -fno-pie -no-pie
 COMMON_HEADER = common.h
 CTNG =
+C_EXT = .c
 DEFAULT_SYSROOT = /usr/$(PREFIX)
-DRIVER_BASENAME = main
-DRIVER_OBJ = $(DRIVER_BASENAME)$(OBJ_EXT)
+DRIVER_BASENAME_NOEXT = main
+DRIVER_BASENAME = main$(C_EXT)
+DRIVER_OBJ = $(DRIVER_BASENAME_NOEXT)$(OBJ_EXT)
 GDB_BREAK = asm_main_after_prologue
 GDB = $(BINUTILS_BIN_DIR)/$(ARCH)-elf-gdb
 GDB_PORT = 1234
-IN_EXT = .S
 MARCH_AS = $(MARCH)
 NATIVE =
 OBJDUMP = $(PREFIX_PATH)objdump
@@ -47,10 +49,14 @@ else
   SYSROOT = $(CTNG)/$(PREFIX)/$(PREFIX)/sysroot
 endif
 
-INS = $(wildcard *$(IN_EXT))
-INS_NOEXT = $(basename $(INS))
-OUTS = $(addsuffix $(OUT_EXT), $(INS_NOEXT))
-OBJDUMPS = $(addsuffix $(OBJDUMP_EXT), $(INS_NOEXT))
+INS_ASM = $(wildcard *$(ASM_EXT))
+INS_ASM_NOEXT = $(basename $(INS_ASM))
+OUTS_ASM = $(addsuffix $(OUT_EXT), $(INS_ASM_NOEXT))
+INS_C = $(filter-out $(DRIVER_BASENAME), $(wildcard *$(C_EXT)))
+INS_C_NOEXT = $(basename $(INS_C))
+OUTS_C = $(addsuffix $(OUT_EXT), $(INS_C_NOEXT))
+OBJDUMPS = $(addsuffix $(OBJDUMP_EXT), $(INS_ASM_NOEXT) $(INS_C_NOEXT))
+OUTS = $(OUTS_ASM) $(OUTS_C)
 
 -include params.mk
 
@@ -81,15 +87,18 @@ all: binutils-gdb $(OUTS) qemu
 %$(OBJDUMP_EXT): %$(OUT_EXT)
 	$(OBJDUMP) -S '$<' > '$@'
 
-%$(OBJ_EXT): %$(IN_EXT) $(COMMON_HEADER)
+%$(OBJ_EXT): %$(C_EXT)
+	$(CC) -c $(CFLAGS) -o '$@' '$<'
+
+%$(OBJ_EXT): %$(ASM_EXT) $(COMMON_HEADER)
 	$(CPP) -o '$(basename $<)$(CPP_EXT)' '$<'
 	$(AS) $(ASFLAGS) -c -o '$@' '$(basename $<)$(CPP_EXT)'
 
-$(DRIVER_OBJ): $(DRIVER_BASENAME).c
+$(DRIVER_OBJ): $(DRIVER_BASENAME)
 	$(CC) $(CFLAGS) -c -o '$@' '$<'
 
 clean:
-	rm -f *.html *.o *.objdump *.out
+	rm -f *.html *.o *.objdump *.out *$(CPP_EXT)
 	for phony in $(PHONY_MAKES); do \
 	  $(MAKE) -C $${phony} clean; \
 	done
