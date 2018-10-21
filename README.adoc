@@ -9,7 +9,7 @@
 :toclevels: 6
 :toc-title:
 
-ARMv7 and ARMv8 assembly userland minimal examples tutorial. Runnable asserts on x86 host with QEMU user mode or natively on an ARM guest. Nice GDB step debug setup. Tested on Ubuntu 18.04 host and Raspberry Pi 2 and 3 guests. Baremetal setup at: https://github.com/cirosantilli/linux-kernel-module-cheat#baremetal-setup x86 cheat at: https://github.com/cirosantilli/x86-assembly-cheat
+ARMv7 and <<ARMv8>> assembly userland minimal examples tutorial. Runnable asserts on x86 host with QEMU user mode or natively on an ARM guest. Nice <<gdb-step-debug>> setup. Tested on Ubuntu 18.04 host and <<rpi2,Raspberry Pi 2>> and <<rpi3,3>> guests. Baremetal setup at: https://github.com/cirosantilli/linux-kernel-module-cheat#baremetal-setup x86 cheat at: https://github.com/cirosantilli/x86-assembly-cheat
 
 toc::[]
 
@@ -139,7 +139,7 @@ Shortcut:
 ./t -g add
 ....
 
-This leaves us right at the end of the prologue of `asm_main`, and at the start of the assembly code in the `.S` file.
+This leaves us right at the end of the prologue of `asm_main` in link:https://sourceware.org/gdb/onlinedocs/gdb/TUI.html[GDB TUI mode], which is at the start of the assembly code in the `.S` file.
 
 Stop on a different symbol instead:
 
@@ -179,6 +179,24 @@ p &my_array_0
 
 Bibliography: https://stackoverflow.com/questions/20590155/how-to-single-step-arm-assembler-in-gdb-on-qemu/51310791#51310791
 
+==== Advanced usage
+
+The default setup is opinionated and assumes that your are a newb: it ignores your `.gdbinit` and puts you in TUI mode.
+
+However, you will sooner or later notice that TUI is crappy print on break Python scripts are the path of light, e.g. link:https://github.com/cyrus-and/gdb-dashboard[GDB dashboard].
+
+In order to prevent our opinionated defaults get in the way of your perfect setup, use:
+
+....
+make GDB_EXPERT=y gdb-add
+....
+
+or the shortcut:
+
+....
+./t -G add
+....
+
 === Disassemble
 
 Even though <<gdb-step-debug>> can already disassemble instructions for us, it is sometimes useful to have the disassembly in a text file for further examination.
@@ -213,6 +231,7 @@ When reading the disassembly, many instructions have either a `.n` or `.w` suffi
 
 Bibliography: https://stackoverflow.com/questions/27147043/n-suffix-to-branch-instruction
 
+[[rpi2]]
 === Run natively on Raspberry Pi 2
 
 Yay! Let's see if this actually works on real hardware, or if it is just an emulation pipe dream?
@@ -243,6 +262,7 @@ The Pi 0 and 1 however have a link:https://www.raspberrypi.org/documentation/har
 
 Bibliography: https://raspberrypi.stackexchange.com/questions/1732/writing-arm-assembly-code/87260#87260
 
+[[rpi3]]
 ==== Run natively on Raspberry Pi 3
 
 The Raspberry Pi 3 has a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2837/README.md[BCM2837] SoC, which has 4 link:https://en.wikipedia.org/wiki/ARM_Cortex-A53[Cortex A53] cores, which implement ARMv8-A.

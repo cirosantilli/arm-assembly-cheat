@@ -18,8 +18,9 @@ DEFAULT_SYSROOT = /usr/$(PREFIX)
 DRIVER_BASENAME_NOEXT = main
 DRIVER_BASENAME = main$(C_EXT)
 DRIVER_OBJ = $(DRIVER_BASENAME_NOEXT)$(OBJ_EXT)
-GDB_BREAK = asm_main_after_prologue
 GDB = $(BINUTILS_BIN_DIR)/$(ARCH)-elf-gdb
+GDB_BREAK = asm_main_after_prologue
+GDB_EXPERT =
 GDB_PORT = 1234
 MARCH_AS = $(MARCH)
 NATIVE =
@@ -110,11 +111,13 @@ $(DOC_OUT): README.adoc
 
 gdb-%: %$(OUT_EXT) $(QEMU_EXE)
 	if [ '$(NATIVE)' = y ]; then \
-	  gdb_cmd=gdb; \
+	  gdb_exe=gdb; \
 	  gdb_after='-ex run'; \
+	  gdb_args=; \
 	else \
 	  $(RUN_CMD) -g $(GDB_PORT) '$<' & \
-	  gdb_cmd="$(GDB) \
+	  gdb_exe='$(GDB)' \
+	  gdb_args="\
 	-ex 'set architecture $(ARCH)' \
 	-ex 'set sysroot $(SYSROOT)' \
 	-ex 'target remote localhost:$(GDB_PORT)' \
@@ -123,13 +126,18 @@ gdb-%: %$(OUT_EXT) $(QEMU_EXE)
 	    gdb_after='-ex continue'; \
 	  fi; \
 	fi; \
-	gdb_cmd="$${gdb_cmd} \
-	-q \
+	if [ ! '$(GDB_EXPERT)' = y ]; then \
+	  gdb_args="$${gdb_args} \
 	-nh \
 	-ex 'set confirm off' \
-	-ex 'file $<' \
-	-ex 'break $(GDB_BREAK)' \
 	-ex 'layout split' \
+	"; \
+	fi; \
+	gdb_cmd="$${gdb_exe} \
+	-q \
+	-ex 'file $<' \
+	$${gdb_args} \
+	-ex 'break $(GDB_BREAK)' \
 	$$gdb_after \
 	"; \
 	echo "$$gdb_cmd"; \
