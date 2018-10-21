@@ -2,12 +2,9 @@
 
 #include "common.h"
 
-.data;
-new:
-    .skip 4
-old:
-    .skip 4
-
+.bss;
+    new: .skip 4
+    old: .skip 4
 ENTRY
     /* These will contain the addresses. */
     ldr r0, =new

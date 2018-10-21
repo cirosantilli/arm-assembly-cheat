@@ -7,6 +7,11 @@
 	ASSERT(beq); \
 ;
 
+#define ASSERT_MEMCMP(s1, s2, n) \
+	MEMCMP(s1, s2, n); \
+	ASSERT_EQ(x0, 0); \
+;
+
 #define ENTRY \
 .text; \
 .global asm_main; \
@@ -47,6 +52,13 @@ pass: \
 #define FAIL \
     ldr w0, =__LINE__; \
     b fail; \
+;
+
+#define MEMCMP(s1, s2, n) \
+    ldr x0, =s1; \
+    ldr x1, =s2; \
+    ldr x2, =n; \
+    bl memcmp; \
 ;
 
 #endif

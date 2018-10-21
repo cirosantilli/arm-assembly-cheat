@@ -1,4 +1,4 @@
-/* https://github.com/cirosantilli/arm-assembly-cheat#armv8-floaing-point */
+/* https://github.com/cirosantilli/arm-assembly-cheat#advanced-simd-instructions */
 
 #include "common.h"
 
@@ -43,7 +43,7 @@ ENTRY
     FAIL
 1:
 
-    /* TODO why?
+    /* TODO why? What's the point of q then?
      * Error: operand mismatch -- `fmov q0,#1.5'
      */
 #if 0
@@ -60,6 +60,4 @@ ENTRY
 #if 0
     fmov d0, #1.23456798
 #endif
-
-    # ASSERT_MEMCMP(sum, sum_expect, 0x20)
 EXIT
