@@ -6,6 +6,9 @@ ENTRY
     /* 4x 32-bit float add.
      *
      * s stands for single == 32 bits.
+     *
+     * 1 in ld1 means to load just one register, see:
+     * https://github.com/cirosantilli/arm-assembly-cheat#simd-interleaving
      */
 .data
     u32_0:          .word 0xF111F111, 0xF222F222, 0xF333F333, 0xF444F444

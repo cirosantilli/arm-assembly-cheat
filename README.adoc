@@ -903,6 +903,18 @@ The Linux kernel shows `/proc/cpuinfo` compatibility as `neon`.
 
 Vs <<vfp>>: https://stackoverflow.com/questions/4097034/arm-cortex-a8-whats-the-difference-between-vfp-and-neon
 
+==== SIMD interleaving
+
+Example: link:v8/simd_interleave.S[]
+
+We can load multiple vectors from memory in one instruction.
+
+Note how the vectors are loaded in an interleaved manner: one int for each.
+
+This is why the `ldN` instructions take an argument list denoted by `{}` for the registers, much like armv7 <<ldmia>>.
+
+TODO confirm: can load up to 4 vectors at once.
+
 ==== Advanced SIMD instructions bibliography
 
 Non-formal introductory tutorials are extrmerly scarce.
