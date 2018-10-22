@@ -3,10 +3,13 @@ action=test
 gdb_break=
 gdb_expert=n
 OPTIND=1
-while getopts b:Gg OPT; do
+while getopts b:c:Gg OPT; do
   case "$OPT" in
     b)
       gdb_break="$OPTARG"
+      ;;
+    c)
+      cflags_cli="$OPTARG"
       ;;
     g)
       action=gdb
@@ -24,4 +27,4 @@ if [ -n "$gdb_break" ]; then
 else
   gdb_break_cmd=
 fi
-make $gdb_break_cmd GDB_EXPERT="$gdb_expert" "${action}-${target}"
+make $gdb_break_cmd CFLAGS_CLI="$cflags_cli" GDB_EXPERT="$gdb_expert" "${action}-${target}"

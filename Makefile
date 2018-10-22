@@ -5,7 +5,7 @@ ASM_EXT = .S
 ASFLAGS = --gdwarf-2 -march=$(MARCH_AS) $(ASFLAGS_EXTRA)
 BINUTILS_BIN_DIR = $(BINUTILS_INSTALL_DIR)/bin
 CC = $(PREFIX_PATH)gcc
-CFLAGS = -ggdb3 -march=$(MARCH) -pedantic -std=c99 -Wall -Wextra $(CFLAGS_QEMU) $(CFLAGS_EXTRA)
+CFLAGS = -ggdb3 -march=$(MARCH) -pedantic -std=c99 -Wall -Wextra $(CFLAGS_QEMU) $(CFLAGS_EXTRA) $(CFLAGS_CLI)
 CPP = $(PREFIX_PATH)cpp
 CPP_EXT = $(ASM_EXT).tmp
 # no-pie: https://stackoverflow.com/questions/51310756/how-to-gdb-step-debug-a-dynamically-linked-executable-in-qemu-user-mode
