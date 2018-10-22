@@ -15,11 +15,17 @@ else
   y=
 fi
 $sudo apt update
+# libexpat-dev is required for GDB:
+# https://stackoverflow.com/questions/27815416/warning-can-not-parse-xml-library-list-xml-support-was-disabled-at-compile-tim/52929017#52929017
 $sudo apt install $y \
   asciidoctor \
   gcc-aarch64-linux-gnu \
   gcc-arm-linux-gnueabihf \
   gdb-multiarch \
+  libexpat-dev \
   screen \
 ;
-$sudo apt build-dep binutils qemu $y
+# Using just binutils here instead of aarch64-* version
+# because that one downloads 4x more packages and this one
+# seems to work...
+$sudo apt build-dep $y binutils qemu

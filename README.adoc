@@ -136,26 +136,36 @@ If you are not on an Ubuntu host machine, here are some ways in which you can us
 For other Linux distros, you can either:
 
 * have a look at what `download-dependencies` does and adapt it to your distro. It should be easy, then proceed normally.
-* run this repo with Docker:
 +
+Might fail due to some incompatibility, but likely won't.
+* run this repo with <<docker-host-setup,docker>>. Requires you to know some Docker boilerplate, but cannot (?) fail.
+
+===== Docker host setup
+
 ....
 sudo apt install docker
 sudo docker create -it --name arm-assembly-cheat -w "/host/$(pwd)" -v "/:/host" ubuntu:18.04
-sudo docker exec -it ub /bin/bash
+sudo docker exec -it arm-assembly-cheat /bin/bash
 ....
-+
-then inside Docker just add the `--docker` flag to `./download-dependencies`:
-+
+
+Then inside Docker just add the `--docker` flag to `./download-dependencies` and proceed otherwise normally:
+
 ....
 ./download-dependencies --docker
 make test
 ....
-+
-The `download-dependencies` takes a while because `build-dep binutils` is large
+
+The `download-dependencies` takes a while because `build-dep binutils` is large.
+
+We share the repository between Docker and host, so you can just edit the files on host with your favorite text editor, and then just run them from inside Docker.
+
+TODO: GDB TUI GUI is broken inside Docker due to terminal quirks. Forwarding the port and connecting from host will likely work, but I'm lazy to try it out now.
 
 ==== Non-Linux host
 
-For non-Linux systems, just use an Ubuntu virtual machine such as VirtualBox: link:https://askubuntu.com/questions/142549/how-to-install-ubuntu-on-virtualbox[].
+For non-Linux systems, the easiest thing to do is to use an Ubuntu virtual machine such as VirtualBox: link:https://askubuntu.com/questions/142549/how-to-install-ubuntu-on-virtualbox[].
+
+Porting is not however impossible because we use the C standard library for portability, see: <<architecture-of-this-repo>>. Pull requests are welcome.
 
 [[rpi2]]
 ==== Raspberry Pi 2 native
@@ -333,37 +343,7 @@ make doc
 xdg-open out/README.html
 ....
 
-== About
-
-`qemu-arm-static` is used for emulation on x86 hosts. It translates ARM to x86, and forwards system calls to the host kernel.
-
-OS portability is achieved with the C standard library which makes system calls for us.
-
-Using the standard library also allows us to use its convenient functionality such as `printf` formatting and `memcpy` to check memory.
-
-Non OS portable examples will be clearly labeled with their OS, e.g.: <<linux-system-calls>>.
-
-These examples show how our infrastructure works:
-
-* link:fail.S[]
-* link:v7/hello_driver.S[]
-* link:hello_common.S[]
-
-=== C driver
-
-We link all examples agains a C program: link:main.c[]. Sample simplified commands:
-
-....
-arm-linux-gnueabihf-gcc -c -o 'main.o' 'main.c'
-arm-linux-gnueabihf-gcc -c -o 'sub.o' 'sub.S'
-arm-linux-gnueabihf-gcc -o 'sub.out' 'sub.o' main.o
-....
-
-The C driver then just calls `asm_main`, which each `.S` example implements.
-
-This allows us to easily use the C standard library portably: from the point of view of GCC, everything looks like a regular C program, which does the required glibc initialization before `main()`.
-
-== Basics
+== ARM assembly basics
 
 === Registers
 
@@ -1033,6 +1013,35 @@ TODO review all of those and move them into the main README. They are from a pre
 . link:compilers.md[Compilers]
 . link:gas.md[GAS]
 
+=== Architecture of this repo
+
+`qemu-arm-static` is used for emulation on x86 hosts. It translates ARM to x86, and forwards system calls to the host kernel.
+
+OS portability is achieved with the C standard library which makes system calls for us: this would in theory work in operating systems other than Linux if you port the build system to them.
+
+Using the standard library also allows us to use its convenient functionality such as `printf` formatting and `memcpy` to check memory.
+
+Non-OS portable examples will be clearly labeled with their OS, e.g.: <<linux-system-calls>>.
+
+These examples show how our infrastructure works:
+
+* link:fail.S[]
+* link:v7/hello_driver.S[]
+* link:hello_common.S[]
+
+==== C driver
+
+We link all examples against a C program: link:main.c[]. Sample simplified commands:
+
+....
+arm-linux-gnueabihf-gcc -c -o 'main.o' 'main.c'
+arm-linux-gnueabihf-gcc -c -o 'sub.o' 'sub.S'
+arm-linux-gnueabihf-gcc -o 'sub.out' 'sub.o' main.o
+....
+
+The C driver then just calls `asm_main`, which each `.S` example implements.
+
+This allows us to easily use the C standard library portably: from the point of view of GCC, everything looks like a regular C program, which does the required glibc initialization before `main()`.
 === Introduction to ARM
 
 The link:https://en.wikipedia.org/wiki/ARM_architecture[ARM architecture] is has been used on the vast majority of mobile phones in the 2010's, and on a large fraction of micro controllers.
