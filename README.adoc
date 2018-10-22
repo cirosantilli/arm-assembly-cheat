@@ -20,7 +20,7 @@ Clone, configure, build QEMU and Binutils from source, run all ARMv7 and ARMv8 e
 ....
 git clone --recursive https://github.com/cirosantilli/arm-assembly-cheat
 cd arm-assembly-cheat
-./configure
+./download-dependencies
 make test
 echo $?
 ....

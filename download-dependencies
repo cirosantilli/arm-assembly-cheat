@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -eu
+if [ $# -gt 0 ]; then
+  docker=true
+else
+  docker=false
+fi
+if "$docker"; then
+  sudo=
+  y=-y
+else
+  sudo=sudo
+  y=
+fi
+if "$docker"; then
+  sed -Ei 's/^# deb-src/deb-src/' /etc/apt/sources.list
+fi
+$sudo apt update
+$sudo apt install $y \
+  asciidoctor \
+  gcc-aarch64-linux-gnu \
+  gcc-arm-linux-gnueabihf \
+  gdb-multiarch \
+  screen \
+;
+$sudo apt build-dep qemu $y
