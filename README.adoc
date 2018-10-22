@@ -9,7 +9,7 @@
 :toclevels: 6
 :toc-title:
 
-ARMv7 and <<ARMv8>> assembly userland minimal examples tutorial. Runnable asserts on x86 host with QEMU user mode or natively on an ARM guest. Nice <<gdb-step-debug>> setup. Tested on Ubuntu 18.04 host and <<rpi2,Raspberry Pi 2>> and <<rpi3,3>> guests. Baremetal setup at: https://github.com/cirosantilli/linux-kernel-module-cheat#baremetal-setup x86 cheat at: https://github.com/cirosantilli/x86-assembly-cheat
+ARMv7 and <<ARMv8>> assembly userland minimal examples tutorial. Runnable <<asserts,asserts>> on x86 hosts with QEMU user mode or natively on an ARM guests. Nice <<gdb-step-debug>> setup. Tested on Ubuntu 18.04 host and <<rpi2,Raspberry Pi 2>> and <<rpi3,3>> guests. Baremetal setup at: https://github.com/cirosantilli/linux-kernel-module-cheat#baremetal-setup x86 cheat at: https://github.com/cirosantilli/x86-assembly-cheat
 
 toc::[]
 
@@ -25,11 +25,15 @@ make test
 echo $?
 ....
 
-For other operating systems, see: <<getting-started-non-ubuntu>>.
+Expected outcome: the exit status is successful:
 
-We compile our own Binutils and QEMU to be able to use the newest ISA features. Those projects build pretty fast (~10 minutes), so it is fine.
+....
+0
+....
 
-The cleanest thing would be to also compile GCC with link:https://github.com/crosstool-ng/crosstool-ng[crosstool-NG], but the build is much longer, and I'm lazy, let's just wait until something fails in obscure ways.
+For other operating systems, see: <<getting-started-on-non-ubuntu-operating-systems>>.
+
+We compile our own Binutils and QEMU to be able to use the newest ISA features. Those projects build pretty fast (~10 minutes), so it is fine. The cleanest thing would be to also compile GCC with <<crosstool-ng-toolchain>>.
 
 The armv7 examples are all located under the link:v7[] directory. Run all of them:
 
@@ -55,7 +59,9 @@ make test-add
 
 will run link:v7/add.S[].
 
-Alternatively, to help with tab complete, the following shortcuts all do the same thing as `make test-add`:
+This just tests some assertions, but does not output anything. See: <<asserts>>.
+
+Alternatively, to help with tab completion, the following shortcuts all do the same thing as `make test-add`:
 
 ....
 ./t add
@@ -70,17 +76,29 @@ cd v8
 make test-movk
 ....
 
+Just build the examples without running:
+
+....
+make
+....
+
+Clean the examples:
+
+....
+make clean
+....
+
+This does not clean QEMU builds themselves. To do that run:
+
+....
+make qemu-clean
+....
+
+=== Asserts
+
 Almost all example don't output anything, they just assert that the computations are as expected and exit 0 is that was the case.
 
 Failures however output clear error messages.
-
-Try messing with the examples to see them fail. E.g. modify link:v7/add.S[] to contain:
-
-....
-mov r0, #1
-add r1, r0, #2
-ASSERT_EQ(r1, 4)
-....
 
 Try messing with the examples to see them fail, e.g. modify link:v7/add.S[] to contain:
 
@@ -109,23 +127,84 @@ since `1 + 2` tends to equal `3` and not `4`.
 
 So look how nice we are: we even gave you the line number `12` of the failing assert!
 
-Just build the examples without running:
+=== Getting started on non-Ubuntu operating systems
+
+If you are not on an Ubuntu host machine, here are some ways in which you can use this repo.
+
+==== Other Linux distro hosts
+
+For other Linux distros, you can either:
+
+* have a look at what `download-dependencies` does and adapt it to your distro. It should be easy, then proceed normally.
+* run this repo with Docker:
++
+....
+sudo apt install docker
+sudo docker create -it --name arm-assembly-cheat -w "/host/$(pwd)" -v "/:/host" ubuntu:18.04
+sudo docker exec -it ub /bin/bash
+....
++
+then inside Docker just add the `--docker` flag to `./download-dependencies`:
++
+....
+./download-dependencies --docker
+make test
+....
++
+The `download-dependencies` takes a while because `build-dep binutils` is large
+
+==== Non-Linux host
+
+For non-Linux systems, just use an Ubuntu virtual machine such as VirtualBox: link:https://askubuntu.com/questions/142549/how-to-install-ubuntu-on-virtualbox[].
+
+[[rpi2]]
+==== Raspberry Pi 2 native
+
+Yay! Let's see if this actually works on real hardware, or if it is just an emulation pipe dream?
+
+We will just compile natively, since I'm not in the mood for cross compilation hell today.
+
+link:https://en.wikipedia.org/wiki/Raspberry_Pi[According to Wikipedia] the Raspberry Pi 2 V 1.1 which I have has a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2836/README.md[BCM2836] SoC, which has 4 link:https://en.wikipedia.org/wiki/ARM_Cortex-A7[ARM Cortex-A7] cores, which link:https://en.wikipedia.org/wiki/List_of_ARM_microarchitectures[implement ARMv7-A], <<vfp,VFPv4>> and <<neon>>.
+
+Therefore we will only be able to run `v7` examples on that board.
+
+First connect to your Pi through SSH as explained at: https://stackoverflow.com/revisions/39086537/10
+
+Then inside the Pi:
 
 ....
-make
+sudo apt-get update
+sudo apt-get install git make gcc gdb
+git clone https://github.com/cirosantilli/arm-assembly-cheat
+cd arm-assembly-cheat
+cd v7
+make NATIVE=y test
+make NATIVE=y gdb-add
 ....
 
-Clean the examples:
+GDB TUI is slightly buggier on the ancient 4.9 toolchain (current line gets different indentation, does not break on the right instruction after `asm_main_after_prologue`, link:https://superuser.com/questions/180512/how-to-turn-off-gdb-tui[cannot leave TUI]), but it might still be usable
 
-....
-make clean
-....
+The Pi 0 and 1 however have a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/[BCM2835] SoC, which has an ARM1176JZF-S core, which implements the ARMv6Z ISA, which we don't support yet on this repo.
 
-This does not clean QEMU builds themselves. To do that run:
+Bibliography: https://raspberrypi.stackexchange.com/questions/1732/writing-arm-assembly-code/87260#87260
 
-....
-make qemu-clean
-....
+[[rpi3]]
+==== Raspberry Pi 3 native
+
+The Raspberry Pi 3 has a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2837/README.md[BCM2837] SoC, which has 4 link:https://en.wikipedia.org/wiki/ARM_Cortex-A53[Cortex A53] cores, which implement ARMv8-A.
+
+However, as of July 2018, there is no official ARMv8 image for the Pi 3, the same ARMv7 image is provided for both: https://raspberrypi.stackexchange.com/questions/43921/raspbian-moving-to-64-bit-mode
+
+Then we look at the following threads:
+
+* https://raspberrypi.stackexchange.com/questions/49466/raspberry-pi-3-and-64-bit-kernel-differences-between-armv7-and-armv8
+* https://raspberrypi.stackexchange.com/questions/77693/enabling-armv8-on-raspberry-pi-3-b
+
+which lead us to this 64-bit Debian based distro for the Pi: https://github.com/bamarni/pi64
+
+So first we flash pi64's link:https://github.com/bamarni/pi64/releases/download/2017-07-31/pi64-lite.zip[2017-07-31 release], and then do exactly the same as for the Raspberry Pi 2, except that you must go into the `v8` directory instead of `v7`.
+
+TODO: can we run the `v7` folder in ARMv8? First I can't even compile it. Related: https://stackoverflow.com/questions/21716800/does-gcc-arm-linux-gnueabi-build-for-a-64-bit-target For runtime: https://stackoverflow.com/questions/22460589/armv8-running-legacy-32-bit-applications-on-64-bit-os
 
 === GDB step debug
 
@@ -225,70 +304,17 @@ This jumps directly to `asm_main`, which is what you likely want to see.
 
 Disassembly is still useful even though we are writing assembly because the assembler can do some non-obvious magic that we want to understand.
 
-==== .n and .w suffixes
+=== crosstool-NG toolchain
 
-When reading the disassembly, many instructions have either a `.n` or `.w` suffix.
+Currently we build just Binutils from source, but use the host GCC to save time.
 
-`.n` means narrow, and stands for the Thumb encoding of an instructions, while `.w` means wide and stands for the ARM encoding.
+This could lead to incompatibilities, although we haven't observed any so far.
 
-Bibliography: https://stackoverflow.com/questions/27147043/n-suffix-to-branch-instruction
+link:https://github.com/crosstool-ng/crosstool-ng[crosstool-NG] is a set of scripts that makes it easy to obtain a cross compiled GCC. Ideally we should track it here as a submodule and automate from there.
 
-[[rpi2]]
-=== Run natively on Raspberry Pi 2
+You can build the toolchain with crosstool-NG as explained at: https://stackoverflow.com/revisions/51310756/6
 
-Yay! Let's see if this actually works on real hardware, or if it is just an emulation pipe dream?
-
-We will just compile natively, since I'm not in the mood for cross compilation hell today.
-
-link:https://en.wikipedia.org/wiki/Raspberry_Pi[According to Wikipedia] the Raspberry Pi 2 V 1.1 which I have has a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2836/README.md[BCM2836] SoC, which has 4 link:https://en.wikipedia.org/wiki/ARM_Cortex-A7[ARM Cortex-A7] cores, which link:https://en.wikipedia.org/wiki/List_of_ARM_microarchitectures[implement ARMv7-A], <<vfp,VFPv4>> and <<neon>>.
-
-Therefore we will only be able to run `v7` examples on that board.
-
-First connect to your Pi through SSH as explained at: https://stackoverflow.com/revisions/39086537/10
-
-Then inside the Pi:
-
-....
-sudo apt-get update
-sudo apt-get install git make gcc gdb
-git clone https://github.com/cirosantilli/arm-assembly-cheat
-cd arm-assembly-cheat
-cd v7
-make NATIVE=y test
-make NATIVE=y gdb-add
-....
-
-GDB TUI is slightly buggier on the ancient 4.9 toolchain (current line gets different indentation, does not break on the right instruction after `asm_main_after_prologue`, link:https://superuser.com/questions/180512/how-to-turn-off-gdb-tui[cannot leave TUI]), but it might still be usable
-
-The Pi 0 and 1 however have a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2835/[BCM2835] SoC, which has an ARM1176JZF-S core, which implements the ARMv6Z ISA, which we don't support yet on this repo.
-
-Bibliography: https://raspberrypi.stackexchange.com/questions/1732/writing-arm-assembly-code/87260#87260
-
-[[rpi3]]
-==== Run natively on Raspberry Pi 3
-
-The Raspberry Pi 3 has a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2837/README.md[BCM2837] SoC, which has 4 link:https://en.wikipedia.org/wiki/ARM_Cortex-A53[Cortex A53] cores, which implement ARMv8-A.
-
-However, as of July 2018, there is no official ARMv8 image for the Pi 3, the same ARMv7 image is provided for both: https://raspberrypi.stackexchange.com/questions/43921/raspbian-moving-to-64-bit-mode
-
-Then we look at the following threads:
-
-* https://raspberrypi.stackexchange.com/questions/49466/raspberry-pi-3-and-64-bit-kernel-differences-between-armv7-and-armv8
-* https://raspberrypi.stackexchange.com/questions/77693/enabling-armv8-on-raspberry-pi-3-b
-
-which lead us to this 64-bit Debian based distro for the Pi: https://github.com/bamarni/pi64
-
-So first we flash pi64's link:https://github.com/bamarni/pi64/releases/download/2017-07-31/pi64-lite.zip[2017-07-31 release], and then do exactly the same as for the Raspberry Pi 2, except that you must go into the `v8` directory instead of `v7`.
-
-TODO: can we run the `v7` folder in ARMv8? First I can't even compile it. Related: https://stackoverflow.com/questions/21716800/does-gcc-arm-linux-gnueabi-build-for-a-64-bit-target For runtime: https://stackoverflow.com/questions/22460589/armv8-running-legacy-32-bit-applications-on-64-bit-os
-
-=== Build your own toolchain
-
-If you are like me, and you don't trust distro blobs, or if your distro does not provide working blobs, here goes a working procedure to use your own pristine cross toolchain. 
-
-Build the toolchain with crosstool-NG as explained at: https://stackoverflow.com/revisions/51310756/6
-
-Then run with:
+Then run this repo with:
 
 ....
 make \
@@ -298,9 +324,7 @@ make \
 ;
 ....
 
-Ideally we should just add crosstool-NG as a submodule here and automate from there, but I've done that like 5 times this month and I'm lazy now.
-
-=== Build documentation
+=== Build the documentation
 
 If you don't like reading on GitHub, the HTML documentation can be generated from the README with:
 
@@ -308,30 +332,6 @@ If you don't like reading on GitHub, the HTML documentation can be generated fro
 make doc
 xdg-open out/README.html
 ....
-
-=== Getting started non-Ubuntu
-
-For other Linux distros, you can either:
-
-* have a look at what `download-dependencies` does and adapt it to your distro. It should be easy, then proceed normally.
-* run this repo with Docker:
-+
-....
-sudo apt install docker
-sudo docker create -it --name arm-assembly-cheat -w "/host/$(pwd)" -v "/:/host" ubuntu:18.04
-sudo docker exec -it ub /bin/bash
-....
-+
-then inside Docker just add the `--docker` flag to `./download-dependencies`:
-+
-....
-./download-dependencies --docker
-make test
-....
-+
-The `download-dependencies` takes a while because `build-dep binutils` is large
-
-For non-Linux systems, just use an Ubuntu virtual machine such as VirtualBox: link:https://askubuntu.com/questions/142549/how-to-install-ubuntu-on-virtualbox[].
 
 == About
 
@@ -390,6 +390,14 @@ Examples:
 
 * link:v7/comments.S[]
 * link:v8/comments.S[]
+
+==== .n and .w suffixes
+
+When reading <<disassemble,disassembly>>, many instructions have either a `.n` or `.w` suffix.
+
+`.n` means narrow, and stands for the Thumb encoding of an instructions, while `.w` means wide and stands for the ARM encoding.
+
+Bibliography: https://stackoverflow.com/questions/27147043/n-suffix-to-branch-instruction
 
 == Instructions
 
@@ -782,9 +790,9 @@ Bibliography:
 
 Somewhat like x86, but with a few quirks, so let's make a list of what works here.
 
-* link:v7/inline/reg_var.c[]
-* link:v8/inline/reg_var.c[]
-* link:v8/inline/reg_var_float.c[]
+* link:v7/c/reg_var.c[]
+* link:v8/c/reg_var.c[]
+* link:v8/c/reg_var_float.c[]
 
 == Linux system calls
 
@@ -932,7 +940,7 @@ A few good ways to get your hands on some examples include:
 
 Just an informal name for the "Avanced SIMD instructions"? Very confusing.
 
-<<armarmv8>> F2.9 "Additional information about Advanced SIMD and floating-point instructions" says:
+<<armarm8>> F2.9 "Additional information about Advanced SIMD and floating-point instructions" says:
 
 ____
 The Advanced SIMD architecture, its associated implementations, and supporting software, are commonly referred to as NEON technology.

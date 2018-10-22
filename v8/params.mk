@@ -4,5 +4,5 @@ DEFAULT_SYSROOT = /usr/aarch64-linux-gnu
 # armv8.5-a+sve not in Ubuntu 18.04.
 MARCH = armv8-a
 MARCH_AS = armv8.5-a+sve
-PHONY_MAKES = inline linux
+PHONY_MAKES = c linux
 PREFIX = aarch64-linux-gnu
