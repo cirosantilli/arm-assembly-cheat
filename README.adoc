@@ -1153,6 +1153,8 @@ https://developer.arm.com/docs/den0024/latest/preface
 
 A more terse human readable introduction to the ARM architecture than the reference manuals.
 
+Does not have as many assembly code examples as you'd hope however...
+
 We use: DEN0024A https://static.docs.arm.com/den0024/a/DEN0024A_v8_architecture_PG.pdf
 
 === Bare metal
