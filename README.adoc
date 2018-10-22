@@ -795,7 +795,9 @@ Sources:
 * link:v7/linux/hello.S[]
 * link:v8/linux/hello.S[]
 
-Unlike most our other examples, which use the C standard library for portability, this one can only be run on Linux.
+Unlike most our other examples, which use the C standard library for portability, examples under `linux/` be only run on Linux.
+
+Such executables are called free-standing, because they don't execute the glibc initialization code, but rather start directly on our custom hand written assembly.
 
 The syscall numbers are defined at:
 
