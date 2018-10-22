@@ -998,7 +998,7 @@ Official spec: https://developer.arm.com/docs/100891/latest/sve-overview/introdu
 
 ==== SVE bibliography
 
-* https://alastairreid.github.io/papers/sve-ieee-micro-2017.pdf paper with some nice few examples and illustrations
+* https://alastairreid.github.io/papers/sve-ieee-micro-2017.pdf paper with some nice few concrete examples, illustrations and rationale. This is the best material I've seen so far.
 * https://static.docs.arm.com/dui0965/c/DUI0965C_scalable_vector_extension_guide.pdf
 * https://developer.arm.com/products/software-development-tools/hpc/documentation/writing-inline-sve-assembly quick inlining guide
 
