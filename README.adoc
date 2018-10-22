@@ -755,7 +755,7 @@ hello printf 12345678
 
 Source: link:v7/c_from_asm.S[]
 
-ARM Architecture Procedure Call Standard (AAPCS) is the name that ARM Holdings gives to the calling convention. 
+ARM Architecture Procedure Call Standard (AAPCS) is the name that ARM Holdings gives to the calling convention.
 
 Official specification: http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042f/IHI0042F_aapcs.pdf
 
@@ -821,6 +821,8 @@ It has two states:
 
 Great summary of differences from AArch32: <https://en.wikipedia.org/wiki/ARM_architecture#AArch64_features>
 
+ARMv8 was link:https://developer.arm.com/docs/den0024/latest/preface[released in 2013].
+
 Some random ones, TODO create clean examples of them:
 
 * the stack has to 16-byte aligned. Therefore, the main way to push things to stack is `ldp` and  `stp`, which push two 8 byte registers at a time
@@ -884,7 +886,7 @@ When a certain version of VFP is present on a CPU, the compiler prefix typically
 Bibliography:
 
 * [[armarm7]] Appendix D6 "Common VFP Subarchitecture Specification". It is not part of the ISA, but just an extension.
-* https://mindplusplus.wordpress.com/2013/06/25/arm-vfp-vector-programming-part-1-introduction/ 
+* https://mindplusplus.wordpress.com/2013/06/25/arm-vfp-vector-programming-part-1-introduction/
 * https://en.wikipedia.org/wiki/ARM_architecture#Floating-point_(VFP)
 
 === Advanced SIMD instructions
@@ -941,7 +943,7 @@ ____
 https://developer.arm.com/technologies/neon mentions that is is present on both ARMv7 and ARMv8:
 
 ____
-NEON technology was introduced to the Armv7-A and Armv7-R profiles. It is also now an extension to the Armv8-A and Armv8-R profiles. 
+NEON technology was introduced to the Armv7-A and Armv7-R profiles. It is also now an extension to the Armv8-A and Armv8-R profiles.
 ____
 
 ==== ARMv8 floating point availability
@@ -996,9 +998,9 @@ Official spec: https://developer.arm.com/docs/100891/latest/sve-overview/introdu
 
 ==== SVE bibliography
 
-https://static.docs.arm.com/dui0965/c/DUI0965C_scalable_vector_extension_guide.pdf 
-
-https://developer.arm.com/products/software-development-tools/hpc/documentation/writing-inline-sve-assembly quick inlining guide
+* https://alastairreid.github.io/papers/sve-ieee-micro-2017.pdf paper with some nice few examples and illustrations
+* https://static.docs.arm.com/dui0965/c/DUI0965C_scalable_vector_extension_guide.pdf
+* https://developer.arm.com/products/software-development-tools/hpc/documentation/writing-inline-sve-assembly quick inlining guide
 
 ===== SVE spec
 

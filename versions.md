@@ -19,10 +19,6 @@ TODO backwards compatible?
 - <http://stackoverflow.com/questions/19608570/what-parts-of-armv4-5-6-code-will-not-work-on-armv7>
 - <http://stackoverflow.com/questions/6771941/how-to-find-out-if-cpu-is-arm-v5-cpu-instructions-compatible>
 
-### ARMv8
-
-2011, has a 64-bit mode called AArch64, and an armv7 compatible 32-bit mode called AArch32.
-
 ## Implementations
 
 The ARM ISA is much more fragmented / less backwards compatible than X86.
