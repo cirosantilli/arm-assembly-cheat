@@ -980,13 +980,15 @@ ____
 
 === SVE
 
-TODO get assert working:
-
-link:v8/sve.S[]
+Example: link:v8/sve.S[]
 
 Scalable Vector Extension.
 
 aarch64 only, newer than <<neon>>.
+
+It is called Scalable because it does not specify the vector width! Therefore we don't have to worry about new vector width instructions every few years! Hurray!
+
+The instructions then allow implicitly tracking the loop index without knowing the actual vector length.
 
 Added to QEMU use mode in 3.0.0.
 
@@ -998,7 +1000,8 @@ Official spec: https://developer.arm.com/docs/100891/latest/sve-overview/introdu
 
 ==== SVE bibliography
 
-* https://alastairreid.github.io/papers/sve-ieee-micro-2017.pdf paper with some nice few concrete examples, illustrations and rationale. This is the best material I've seen so far.
+* https://www.rico.cat/files/ICS18-gem5-sve-tutorial.pdf step by step of a complete code execution examples, the best initial tutorial so far
+* https://alastairreid.github.io/papers/sve-ieee-micro-2017.pdf paper with some nice few concrete examples, illustrations and rationale
 * https://static.docs.arm.com/dui0965/c/DUI0965C_scalable_vector_extension_guide.pdf
 * https://developer.arm.com/products/software-development-tools/hpc/documentation/writing-inline-sve-assembly quick inlining guide
 
