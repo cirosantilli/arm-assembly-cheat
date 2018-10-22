@@ -15,7 +15,7 @@ toc::[]
 
 == Getting started
 
-Clone, configure, build QEMU and Binutils from source, run all ARMv7 and ARMv8 examples through QEMU user, and assert that they exit with status 0:
+On Ubuntu, clone, configure, build QEMU and Binutils from source, run all ARMv7 and ARMv8 examples through QEMU user, and assert that they exit with status 0:
 
 ....
 git clone --recursive https://github.com/cirosantilli/arm-assembly-cheat
@@ -24,6 +24,8 @@ cd arm-assembly-cheat
 make test
 echo $?
 ....
+
+For other operating systems, see: <<getting-started-non-ubuntu>>.
 
 We compile our own Binutils and QEMU to be able to use the newest ISA features. Those projects build pretty fast (~10 minutes), so it is fine.
 
@@ -306,6 +308,30 @@ If you don't like reading on GitHub, the HTML documentation can be generated fro
 make doc
 xdg-open out/README.html
 ....
+
+=== Getting started non-Ubuntu
+
+For other Linux distros, you can either:
+
+* have a look at what `download-dependencies` does and adapt it to your distro. It should be easy, then proceed normally.
+* run this repo with Docker:
++
+....
+sudo apt install docker
+sudo docker create -it --name arm-assembly-cheat -w "/host/$(pwd)" -v "/:/host" ubuntu:18.04
+sudo docker exec -it ub /bin/bash
+....
++
+then inside Docker just add the `--docker` flag to `./download-dependencies`:
++
+....
+./download-dependencies --docker
+make test
+....
++
+The `download-dependencies` takes a while because `build-dep binutils` is large
+
+For non-Linux systems, just use an Ubuntu virtual machine such as VirtualBox: link:https://askubuntu.com/questions/142549/how-to-install-ubuntu-on-virtualbox[].
 
 == About
 
