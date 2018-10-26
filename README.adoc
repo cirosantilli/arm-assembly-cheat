@@ -343,6 +343,14 @@ make doc
 xdg-open out/README.html
 ....
 
+=== Custom build flags
+
+E.g., to pass `-static` for an emulator that does not support dynamically linked executables like link:https://stackoverflow.com/questions/50542222/how-to-run-a-dynamically-linked-executable-syscall-emulation-mode-se-py-in-gem5[gem5]:
+
+....
+make CFLAGS_CLI=-static
+....
+
 == ARM assembly basics
 
 === Registers
