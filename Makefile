@@ -60,6 +60,7 @@ OBJDUMPS = $(addsuffix $(OBJDUMP_EXT), $(INS_ASM_NOEXT) $(INS_C_NOEXT))
 OUTS = $(OUTS_ASM) $(OUTS_C)
 
 -include params.mk
+-include params_private.mk
 
 ifeq ($(NATIVE),y)
   CFLAGS_QEMU =

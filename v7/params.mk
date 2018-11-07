@@ -6,5 +6,4 @@ ASFLAGS_EXTRA = -mfpu=neon-vfpv3 -meabi=5
 # -marm: the opposite of -mthumb.
 CFLAGS_EXTRA = -marm
 MARCH = armv7-a
-PHONY_MAKES = c linux
 PREFIX = arm-linux-gnueabihf
