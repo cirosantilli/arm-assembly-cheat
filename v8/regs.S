@@ -35,7 +35,9 @@ ENTRY
     mov x27, #27
     mov x28, #28
     mov x29, #29
-    mov x30, #30
+
+    /* x30 is the link register. BL stores the return address here. *
+    /* mov x30, #30 */
 
     /* W form addresses the lower 4 bytes word, and zeroes the top. */
     ldr x0, =0x1111222233334444

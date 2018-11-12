@@ -19,16 +19,22 @@ ENTRY
     mov r11, #11
     mov r12, #12
 
+    /* r13: aliased to SP (stack pointer)
+     * r14: aliased to LR (link register)
+     * r15: aliased to PC
+     *
+     * In ARMv8, SP and PC have dedicated registers in addition to
+     * the 32-general purpose ones.
+     */
+    ldr r15, =10f
+    FAIL
+10:
+
     /* It is possible to ldr into pc, and it works just like for any other register.
      *
      * This is very similar to what B does, except that B only works with constants.
      */
     ldr pc, =10f
-    FAIL
-10:
-
-    /* pc is just a mnemonic for r15. */
-    ldr r15, =10f
     FAIL
 10:
 
