@@ -39,10 +39,13 @@ ENTRY
      */
     /*ldr r0, myvar*/
 
+#if 0
     /* We could in theory write this to set the address of myvar,
      * but it will always segfault under Linux because the text segment is read-only.
+     * This is however useful in baremetal programming.
+     * This construct is not possible in ARMv8 for str:
+     * https://github.com/cirosantilli/arm-assembly-cheat#armv8-str
      */
-#if 0
     str r1, var_in_same_section
 var_in_same_section:
 #endif

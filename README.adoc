@@ -470,7 +470,7 @@ This kind of architecture is called a link:https://en.wikipedia.org/wiki/Load/st
 
 ===== ldr magic
 
-The `ldr` assembly directive can automatically create hidden variables and load them from memory with PC relative loads.
+The `ldr` assembly directive can automatically create hidden variables in a place called the "literal pool", and load them from memory with PC relative loads.
 
 Example: link:v7/ldr_magic.S[]
 
@@ -869,6 +869,18 @@ Described on <<armarm8>> C1.2.5 "Register names".
 Push a pair of registers to the stack.
 
 TODO minimal example. Currently used on link:v8/commmon_arch.h[] since it is the main way to restore register state.
+
+=== ARMv8 str
+
+PC-relative `str` is not possibl in ARMv8.
+
+For `ldr` it works <<ldr,as in ARMv7>>.
+
+As a result, it is not possible to load from the literal pool for `str`.
+
+Example: link:v8/str.S[]
+
+This can be seen from <<armarm8>> C3.2.1 "Load/Store registerthe": `ldr` simply has on extra PC encoding that `str` does not.
 
 == Floating point
 
