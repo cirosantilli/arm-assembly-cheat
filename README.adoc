@@ -446,6 +446,8 @@ Example: link:v8/cbz.S[]
 
 Only in ARMv8 and ARMv7 Thumb mode, not in armv7 ARM mode.
 
+Very handy!
+
 ==== Conditional execution
 
 Weirdly, <<b>> and family are not the only instructions that can execute conditionally on the flags: the same also applies to most instructions, e.g. `add`.
