@@ -1,1 +1,1 @@
-PHONY_MAKES = c linux
+RECURSE = c linux

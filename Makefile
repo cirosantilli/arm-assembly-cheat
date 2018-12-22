@@ -28,7 +28,7 @@ OBJDUMP = $(PREFIX_PATH)objdump
 OBJDUMP_EXT = .objdump
 OBJ_EXT = .o
 OUT_EXT = .out
-PHONY_MAKES =
+RECURSE =
 ROOT_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 BINUTILS_SRC_DIR = $(ROOT_DIR)/binutils-gdb
 BINUTILS_OUT_DIR = $(OUT_DIR)/binutils-gdb
@@ -75,11 +75,11 @@ ifeq ($(FREESTAND),y)
   COMMON_HEADER =
 endif
 
-.PHONY: all clean doc objdump binutils-gdb binutils-gdb-clean qemu qemu-clean test $(PHONY_MAKES)
+.PHONY: all clean doc objdump binutils-gdb binutils-gdb-clean qemu qemu-clean test $(RECURSE)
 .PRECIOUS: %$(OBJ_EXT)
 
 all: binutils-gdb $(OUTS) qemu
-	for phony in $(PHONY_MAKES); do \
+	for phony in $(RECURSE); do \
 	  $(MAKE) -C $${phony}; \
 	done
 
@@ -101,7 +101,7 @@ $(DRIVER_OBJ): $(DRIVER_BASENAME)
 
 clean:
 	rm -f *.html *.o *.objdump *.out *$(CPP_EXT)
-	for phony in $(PHONY_MAKES); do \
+	for phony in $(RECURSE); do \
 	  $(MAKE) -C $${phony} clean; \
 	done
 
@@ -145,7 +145,7 @@ gdb-%: %$(OUT_EXT) $(QEMU_EXE)
 	eval "$$gdb_cmd"
 
 objdump: $(OBJDUMPS)
-	for phony in $(PHONY_MAKES); do \
+	for phony in $(RECURSE); do \
 	  $(MAKE) -C $${phony} objdump; \
 	done
 
@@ -162,7 +162,7 @@ $(QEMU_EXE):
 
 qemu-clean:
 	rm -rf '$(QEMU_BUILD_DIR)'
-	for phony in $(QEMU_PHONY_MAKES); do \
+	for phony in $(QEMU_RECURSE); do \
 	  $(MAKE) -C $${phony} qemu-clean; \
 	done
 
@@ -198,7 +198,7 @@ test: all
 	    exit 1 ;\
 	  fi ;\
 	fi ;\
-	for phony in $(PHONY_MAKES); do \
+	for phony in $(RECURSE); do \
 	  $(MAKE) -C $${phony} test; \
 	done; \
 	echo 'ALL TESTS PASSED'
