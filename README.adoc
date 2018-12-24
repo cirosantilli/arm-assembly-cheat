@@ -185,7 +185,7 @@ Then inside the Pi:
 ....
 sudo apt-get update
 sudo apt-get install git make gcc gdb
-git clone https://github.com/cirosantilli/arm-assembly-cheat
+git clone --recursive https://github.com/cirosantilli/arm-assembly-cheat
 cd arm-assembly-cheat
 cd v7
 make NATIVE=y test
