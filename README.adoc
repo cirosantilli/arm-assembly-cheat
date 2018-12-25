@@ -172,7 +172,9 @@ Porting is not however impossible because we use the C standard library for port
 
 Yay! Let's see if this actually works on real hardware, or if it is just an emulation pipe dream?
 
-We will just compile natively, since I'm not in the mood for cross compilation hell today.
+Tested on Raspbian Lite 2018-11-13.
+
+For now, we will just compile natively, since I'm not in the mood for cross compilation hell today.
 
 link:https://en.wikipedia.org/wiki/Raspberry_Pi[According to Wikipedia] the Raspberry Pi 2 V 1.1 which I have has a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2836/README.md[BCM2836] SoC, which has 4 link:https://en.wikipedia.org/wiki/ARM_Cortex-A7[ARM Cortex-A7] cores, which link:https://en.wikipedia.org/wiki/List_of_ARM_microarchitectures[implement ARMv7-A], <<vfp,VFPv4>> and <<neon>>.
 
@@ -186,8 +188,7 @@ Then inside the Pi:
 sudo apt-get update
 sudo apt-get install git make gcc gdb
 git clone https://github.com/cirosantilli/arm-assembly-cheat
-cd arm-assembly-cheat
-cd v7
+cd arm-assembly-cheat/v7
 make NATIVE=y test
 make NATIVE=y gdb-add
 ....

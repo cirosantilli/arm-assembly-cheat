@@ -1,6 +1,7 @@
 .POSIX:
 
 AS = $(BINUTILS_BIN_DIR)/$(ARCH)-elf-as
+AS_TARGET = $(AS)
 ASM_EXT = .S
 ASFLAGS = --gdwarf-2 -march=$(MARCH_AS) $(ASFLAGS_EXTRA)
 BINUTILS_BIN_DIR = $(BINUTILS_INSTALL_DIR)/bin
@@ -33,6 +34,7 @@ ROOT_DIR = $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 BINUTILS_SRC_DIR = $(ROOT_DIR)/binutils-gdb
 BINUTILS_OUT_DIR = $(OUT_DIR)/binutils-gdb
 BINUTILS_BUILD_DIR = $(BINUTILS_OUT_DIR)/build/$(ARCH)
+BINUTILS_GDB_TARGET = binutils-gdb
 BINUTILS_INSTALL_DIR = $(BINUTILS_OUT_DIR)/install
 QEMU_SRC_DIR = $(ROOT_DIR)/qemu
 QEMU_EXE = $(QEMU_BUILD_DIR)/$(ARCH)-linux-user/qemu-$(ARCH)
@@ -58,11 +60,14 @@ INS_C_NOEXT = $(basename $(INS_C))
 OUTS_C = $(addsuffix $(OUT_EXT), $(INS_C_NOEXT))
 OBJDUMPS = $(addsuffix $(OBJDUMP_EXT), $(INS_ASM_NOEXT) $(INS_C_NOEXT))
 OUTS = $(OUTS_ASM) $(OUTS_C)
+TESTS = $(filter-out $(addsuffix $(OUT_EXT), $(SKIP_TESTS)),$(OUTS))
 
 -include params.mk
 -include params_private.mk
 
 ifeq ($(NATIVE),y)
+  AS = as
+  AS_TARGET =
   CFLAGS_QEMU =
   PREFIX_PATH =
   QEMU_EXE =
@@ -75,10 +80,10 @@ ifeq ($(FREESTAND),y)
   COMMON_HEADER =
 endif
 
-.PHONY: all clean doc objdump binutils-gdb binutils-gdb-clean qemu qemu-clean test $(RECURSE)
+.PHONY: all clean doc objdump $(BINUTILS_GDB_TARGET) binutils-gdb-clean qemu qemu-clean test $(RECURSE)
 .PRECIOUS: %$(OBJ_EXT)
 
-all: binutils-gdb $(OUTS) qemu
+all: $(BINUTILS_GDB_TARGET) $(OUTS) qemu
 	for phony in $(RECURSE); do \
 	  $(MAKE) -C $${phony}; \
 	done
@@ -166,7 +171,7 @@ qemu-clean:
 	  $(MAKE) -C $${phony} qemu-clean; \
 	done
 
-binutils-gdb: $(AS)
+binutils-gdb: $(AS_TARGET)
 
 $(AS):
 	mkdir -p '$(BINUTILS_BUILD_DIR)'
@@ -187,7 +192,7 @@ test: all
 	  ./$(TEST) '$(OUT_EXT)' ;\
 	else\
 	  fail=false ;\
-	  for t in $(OUTS); do\
+	  for t in $(TESTS); do\
 	    if ! $(RUN_CMD) "$$t"; then \
 	      fail=true ;\
 	      break ;\
