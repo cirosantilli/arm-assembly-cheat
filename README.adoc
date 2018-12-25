@@ -172,7 +172,7 @@ Porting is not however impossible because we use the C standard library for port
 
 Yay! Let's see if this actually works on real hardware, or if it is just an emulation pipe dream?
 
-Tested on Raspbian Lite 2018-11-13.
+Tested on link:https://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-11-15/2018-11-13-raspbian-stretch-lite.zip[Raspbian Lite 2018-11-13] with this repo at commit bcddf29c8e00b30afe7b3643558b25f22a64405b.
 
 For now, we will just compile natively, since I'm not in the mood for cross compilation hell today.
 

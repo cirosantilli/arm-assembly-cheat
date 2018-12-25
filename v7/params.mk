@@ -12,5 +12,6 @@ CFLAGS_EXTRA = -marm
 MARCH = armv7-a
 PREFIX = arm-linux-gnueabihf
 ifeq ($(NATIVE),y)
+  # TODO understand why it is failing.
   SKIP_TESTS = vfp
 endif
