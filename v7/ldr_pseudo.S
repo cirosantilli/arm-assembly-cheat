@@ -1,4 +1,4 @@
-/* https://github.com/cirosantilli/arm-assembly-cheat#ldr-magic */
+/* https://github.com/cirosantilli/arm-assembly-cheat#ldr-pseudo-instruction */
 
 #include "common.h"
 
@@ -48,6 +48,8 @@ ENTRY
      *
      * This results in one extra 4 byte instruction read from memory,
      * and one less data read, so it is likely more cache efficient.
+     *
+     * https://sourceware.org/binutils/docs-2.19/as/ARM_002dRelocations.html
      */
     movw r0, #:lower16:myvar
     movt r0, #:upper16:myvar

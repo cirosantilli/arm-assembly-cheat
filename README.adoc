@@ -471,11 +471,15 @@ This kind of architecture is called a link:https://en.wikipedia.org/wiki/Load/st
 
 ==== ldr
 
-===== ldr magic
+===== ldr pseudo-instruction
 
-The `ldr` assembly directive can automatically create hidden variables in a place called the "literal pool", and load them from memory with PC relative loads.
+`ldr` can be either a regular instruction that loads stuff into memory, or also a pseudo-instruction (assembler magic): http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0041c/Babbfdih.html
 
-Example: link:v7/ldr_magic.S[]
+The pseudo instruction version is when an equal sign appears on one of the operators.
+
+The `ldr` pseudo instruction can automatically create hidden variables in a place called the "literal pool", and load them from memory with PC relative loads.
+
+Example: link:v7/ldr_pseudo.S[]
 
 This is done basically because all instructions are 32-bit wide, and there is not enough space to encode 32-bit addresses in them.
 
@@ -591,6 +595,7 @@ AArch64 loses those instructions, likely because it was not possible anymore to 
 Arithmetic:
 
 * link:v7/add.S[]. We use this simple instruction to explain syntax common to most data processing instructions, so have a good look at that file.
+** link:v8/add.S[]
 * link:v7/mul.S[]
 * link:v7/sub.S[]
 * link:v7/tst.S[]
@@ -700,6 +705,12 @@ Alias for:
 ....
 UBFM <Wd>, <Wn>, #<lsb>, #(<lsb>+<width>-1)
 ....
+
+==== adr
+
+https://stackoverflow.com/questions/41906688/what-are-the-semantics-of-adrp-and-adrl-instructions-in-arm-assembly/54042899#54042899
+
+Example: link:v7/adr.S[]
 
 === Miscellaneous instructions
 
