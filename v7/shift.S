@@ -49,12 +49,12 @@ ENTRY
      * Here we illustrate a shifted add instruction which calculates:
      *
      * ....
-     * r1 = r0 + shift(r2)
+     * r1 = r1 + (r0 << 1)
      * ....
      */
     ldr r0, =0x10
     ldr r1, =0x100
-    add r1, r0, lsl #1
+    add r1, r1, r0, lsl 1
     ldr r2, =0x00000120
     ASSERT_EQ_REG(r1, r2)
 

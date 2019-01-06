@@ -69,7 +69,7 @@ reconfig:
     sub r1, r1, #1
     and r1, r1, #7
     mov r0, r0, lsl #20
-    orr r0, r1, lsl #16
+    orr r0, r0, r1, lsl #16
     fmrx r2, fpscr
     bic r2, #55*65536
     orr r2, r2, r0
