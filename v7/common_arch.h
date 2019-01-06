@@ -3,6 +3,8 @@
 
 /* Assert that a register equals a constant.
  * * reg: the register to check. Can be r0-r10, but not r11. r11 is overwritten.
+ * * const: the constant to compare to. Only works for literals or labels, not for registers.
+ *          For register / register comparision, use ASSERT_EQ_REG.
  */
 #define ASSERT_EQ(reg, const) \
     ldr r11, =const; \

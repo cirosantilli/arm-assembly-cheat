@@ -1,6 +1,9 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+/* We define in this header only macros that are the same on all archs. */
+
+/* common_arch.h contains arch specific macros. */
 #include "common_arch.h"
 
 .extern \
@@ -17,7 +20,7 @@
 ;
 
 /* Assert that a register equals another register. */
-#define ASSERT_REG_EQ(reg1, reg2) \
+#define ASSERT_EQ_REG(reg1, reg2) \
 	cmp reg1, reg2; \
 	ASSERT(beq); \
 ;

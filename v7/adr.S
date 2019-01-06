@@ -10,6 +10,5 @@ ENTRY
      */
     ldr r1, =label
 label:
-    cmp r0, r1
-    ASSERT(beq)
+    ASSERT_EQ_REG(r0, r1)
 EXIT

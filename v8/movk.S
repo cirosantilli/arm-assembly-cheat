@@ -13,11 +13,10 @@ ENTRY
      * https://sourceware.org/binutils/docs-2.26/as/AArch64_002dRelocations.html
      * TODO understand `movz` vs movk.
      */
-    movz x0, #:abs_g2:label     // bits 32-47, overflow check
-    movk x0, #:abs_g1_nc:label  // bits 16-31, no overflow check
-    movk x0, #:abs_g0_nc:label  // bits  0-15, no overflow check
+    movz x0, #:abs_g2:label     /* bits 32-47, overflow check */
+    movk x0, #:abs_g1_nc:label  /* bits 16-31, no overflow check */
+    movk x0, #:abs_g0_nc:label  /* bits  0-15, no overflow check */
     ldr x1, =label
 label:
-    cmp x0, x1
-    ASSERT(beq)
+    ASSERT_EQ_REG(x0, x1)
 EXIT

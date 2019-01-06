@@ -24,6 +24,8 @@ ENTRY
      * a new variable containing the address and PC-relative addresses it
      * https://stackoverflow.com/questions/17214962/what-is-the-difference-between-label-equals-sign-and-label-brackets-in-ar
      *
+     * Use the adr instruction would likely be better for this application however.
+     *
      * ....
      * r0 = &myvar
      * r1 = *r0

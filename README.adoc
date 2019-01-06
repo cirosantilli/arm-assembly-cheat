@@ -364,12 +364,16 @@ Bibliography: <<armarm7>> A2.3 "ARM core registers".
 
 ==== Immediates
 
-Full explanation: https://stackoverflow.com/questions/21652884/is-the-hash-required-for-immediate-values-in-arm-assembly/51987780#51987780
+The requirement for hash `#` and dollar `$` prefixes varies across v7, where it depends on `.syntax`, and v8.
+
+Fuller explanation: https://stackoverflow.com/questions/21652884/is-the-hash-required-for-immediate-values-in-arm-assembly/51987780#51987780
 
 Examples:
 
 * link:v7/immediates.S[]
 * link:v8/immediates.S[]
+
+For the grep: integer literals.
 
 ==== Comments
 
@@ -708,9 +712,14 @@ UBFM <Wd>, <Wn>, #<lsb>, #(<lsb>+<width>-1)
 
 ==== adr
 
-https://stackoverflow.com/questions/41906688/what-are-the-semantics-of-adrp-and-adrl-instructions-in-arm-assembly/54042899#54042899
+Similar rationale to the <<ldr-pseudo-instruction>>, allowing to easily store a PC-relative reachable address into a register in one go, to overcome the 4-byte fixed instruction size.
 
-Example: link:v7/adr.S[]
+Examples:
+
+* link:v7/adr.S[]
+* link:v8/adrp.S[]
+
+More details: https://stackoverflow.com/questions/41906688/what-are-the-semantics-of-adrp-and-adrl-instructions-in-arm-assembly/54042899#54042899
 
 === Miscellaneous instructions
 
@@ -921,7 +930,7 @@ When a certain version of VFP is present on a CPU, the compiler prefix typically
 
 Bibliography:
 
-* [[armarm7]] Appendix D6 "Common VFP Subarchitecture Specification". It is not part of the ISA, but just an extension.
+* <<armarm7>> Appendix D6 "Common VFP Subarchitecture Specification". It is not part of the ISA, but just an extension.
 * https://mindplusplus.wordpress.com/2013/06/25/arm-vfp-vector-programming-part-1-introduction/
 * https://en.wikipedia.org/wiki/ARM_architecture#Floating-point_(VFP)
 

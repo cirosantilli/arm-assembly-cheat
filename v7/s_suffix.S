@@ -12,7 +12,6 @@ ENTRY
     movs r0, #1
     ASSERT(bne)
 
-
     /* mov without s does not set the status. */
     movs r0, #0
     mov r0, #1

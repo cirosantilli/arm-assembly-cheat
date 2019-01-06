@@ -21,7 +21,7 @@ ENTRY
     push {r2}
     ldr sp, [r1]
     ldr r3, [r0]
-    ASSERT_REG_EQ(r2, r3)
+    ASSERT_EQ_REG(r2, r3)
 
     /* Can load into pc. */
     ldr r2, =jumpto
@@ -35,5 +35,5 @@ jumpto:
     ldr r3, [r0]
     /* https://stackoverflow.com/questions/24091566/why-does-the-arm-pc-register-point-to-the-instruction-after-the-next-one-to-be-e */
     sub r3, #8
-    ASSERT_REG_EQ(r2, r3)
+    ASSERT_EQ_REG(r2, r3)
 EXIT
