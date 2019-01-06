@@ -9,6 +9,8 @@ ENTRY
      * alternative here.
      */
     ldr r1, =label
+    adrl r2, label
 label:
     ASSERT_EQ_REG(r0, r1)
+    ASSERT_EQ_REG(r0, r2)
 EXIT

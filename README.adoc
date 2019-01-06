@@ -721,6 +721,10 @@ Examples:
 
 More details: https://stackoverflow.com/questions/41906688/what-are-the-semantics-of-adrp-and-adrl-instructions-in-arm-assembly/54042899#54042899
 
+===== adrl
+
+See: <<adr>>.
+
 === Miscellaneous instructions
 
 ==== nop
