@@ -5,13 +5,13 @@
 ENTRY
 
     /* Branch. */
-    mov x0, #0x0
+    mov x0, 0x0
     cbz x0, ok
     FAIL
 ok:
 
     /* Don't branch. */
-    mov x0, #0x1
+    mov x0, 0x1
     cbz x0, ko
 
 EXIT

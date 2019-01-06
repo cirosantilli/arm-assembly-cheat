@@ -4,7 +4,7 @@
 
 ENTRY
     /* ERROR, cannot use this name. */
-    /* mov x31, #31 */
+    /* mov x31, 31 */
 
     /* For mov, it is xzr. */
     mov x0, 1

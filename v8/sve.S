@@ -35,14 +35,14 @@ EXIT
  */
 daxpy:
     ldrsw x3, [x3]
-    mov x4, #0
+    mov x4, 0
     whilelt p0.d, x4, x3
     ld1rd z0.d, p0/z, [x2]
 .loop:
-    ld1d z1.d, p0/z, [x0, x4, lsl #3]
-    ld1d z2.d, p0/z, [x1, x4, lsl #3]
+    ld1d z1.d, p0/z, [x0, x4, lsl 3]
+    ld1d z2.d, p0/z, [x1, x4, lsl 3]
     fmla z2.d, p0/m, z1.d, z0.d
-    st1d z2.d, p0, [x1, x4, lsl #3]
+    st1d z2.d, p0, [x1, x4, lsl 3]
     incd x4
     whilelt p0.d, x4, x3
     b.first .loop
