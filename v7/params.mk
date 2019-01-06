@@ -8,7 +8,8 @@ ARCH = arm
 # > The extension +neon-vfpv3 can be used as an alias for this extension.
 ASFLAGS_EXTRA = -mfpu=neon -meabi=5
 # -marm: the opposite of -mthumb.
-CFLAGS_EXTRA = -marm
+# -masm-syntax-unified: make gcc generate .syntax unified code
+CFLAGS_EXTRA = -masm-syntax-unified -marm
 MARCH = armv7-a
 PREFIX = arm-linux-gnueabihf
 ifeq ($(NATIVE),y)

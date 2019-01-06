@@ -2,8 +2,8 @@
 
 #include "common.h"
 
-#define NELEM #4
-#define ELEM_SIZE #4
+#define NELEM 4
+#define ELEM_SIZE 4
 
 .data;
 my_array_0:

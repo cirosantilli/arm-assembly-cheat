@@ -13,19 +13,19 @@ ENTRY
 
     /* Sanity check. */
     ldr r1, [r0]
-    movw r2, #0x5678
-    movt r2, #0x1234
+    movw r2, 0x5678
+    movt r2, 0x1234
     ASSERT_EQ_REG(r1, r2)
 
     /* Modify the value. */
-    movw r1, #0xDEF0
-    movt r1, #0x9ABC
+    movw r1, 0xDEF0
+    movt r1, 0x9ABC
     str r1, [r0]
 
     /* Check that it changed. */
     ldr r1, [r0]
-    movw r2, #0xDEF0
-    movt r2, #0x9ABC
+    movw r2, 0xDEF0
+    movt r2, 0x9ABC
     ASSERT_EQ_REG(r1, r2)
 
     /* Cannot use PC relative addressing to a different segment,

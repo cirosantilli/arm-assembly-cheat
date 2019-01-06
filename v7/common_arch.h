@@ -42,15 +42,15 @@ asm_main_after_prologue: \
  * Restore LR and bx jump to it to return from asm_main.
  */
 #define EXIT \
-    mov r0, #0; \
-    mov r1, #0; \
+    mov r0, 0; \
+    mov r1, 0; \
     b pass; \
 fail: \
     ldr r1, [sp]; \
     str r0, [r1]; \
-    mov r0, #1; \
+    mov r0, 1; \
 pass: \
-    add sp, #16; \
+    add sp, 16; \
     ldmia sp!, {r4-r12, lr}; \
     bx lr; \
 ;

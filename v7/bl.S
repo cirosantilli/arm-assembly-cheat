@@ -4,7 +4,7 @@
 
 ENTRY
 
-    mov r0, #1
+    mov r0, 1
     bl inc
     ASSERT_EQ(r0, 2)
 
@@ -12,5 +12,5 @@ EXIT
 
 /* void inc(int *i) { (*i)++ } */
 inc:
-    add r0, #1
+    add r0, 1
     bx lr

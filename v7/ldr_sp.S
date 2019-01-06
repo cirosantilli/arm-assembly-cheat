@@ -16,7 +16,7 @@ ENTRY
     str sp, [r1]
     /* Can be encoded. */
     ldr sp, [r0]
-    add sp, #4
+    add sp, 4
     ldr r2, =0x12345678
     push {r2}
     ldr sp, [r1]
@@ -34,6 +34,6 @@ jumpto:
     str pc, [r0]
     ldr r3, [r0]
     /* https://stackoverflow.com/questions/24091566/why-does-the-arm-pc-register-point-to-the-instruction-after-the-next-one-to-be-e */
-    sub r3, #8
+    sub r3, 8
     ASSERT_EQ_REG(r2, r3)
 EXIT

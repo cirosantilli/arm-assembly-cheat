@@ -18,14 +18,14 @@ ENTRY
     ldr r0, =puts_s
     bl puts
     /* Check exit statut >= 0 for success. */
-    cmp r0, #0
+    cmp r0, 0
     ASSERT(bge)
 
     /* printf */
     ldr r0, =printf_format
     ldr r1, =0x12345678
     bl printf
-    cmp r0, #0
+    cmp r0, 0
     ASSERT(bge)
 
     /* memcpy and memcmp. */
@@ -35,7 +35,7 @@ ENTRY
         ldr r1, =my_array_1
         ldr r2, =0x10
         bl memcmp
-        cmp r0, #0
+        cmp r0, 0
         ASSERT(blt)
 
         /* Copy. */
@@ -52,7 +52,7 @@ ENTRY
         ASSERT_EQ(r0, 0)
 
     /* exit(0) */
-    mov r0, #0
+    mov r0, 0
     bl exit
 
     /* Never reached, just for the fail symbol. */

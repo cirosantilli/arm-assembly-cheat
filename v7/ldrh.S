@@ -4,7 +4,7 @@
 
 ENTRY
     ldr r0, =myvar
-    mov r1, #0x0
+    mov r1, 0x0
     ldrh r1, [r0]
     ASSERT_EQ(r1, 0x00005678)
 EXIT

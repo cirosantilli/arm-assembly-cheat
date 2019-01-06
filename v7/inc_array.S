@@ -2,8 +2,8 @@
 
 #include "common.h"
 
-#define NELEM #4
-#define ELEM_SIZE #4
+#define NELEM 4
+#define ELEM_SIZE 4
 
 .data;
 my_array:
@@ -17,11 +17,11 @@ ENTRY
     mov r1, NELEM
 increment:
     ldr r2, [r0]
-    add r2, #1
+    add r2, 1
     /* Post index usage. */
     str r2, [r0], ELEM_SIZE
-    sub r1, #1
-    cmp r1, #0
+    sub r1, 1
+    cmp r1, 0
     bne increment
     ASSERT_MEMCMP(my_array, my_array_expect, 0x10)
 EXIT

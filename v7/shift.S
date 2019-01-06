@@ -6,31 +6,31 @@ ENTRY
 
     /* lsr */
     ldr r0, =0xFFF00FFF
-    mov r1, r0, lsl #8
+    mov r1, r0, lsl 8
     ldr r2, =0xF00FFF00
     ASSERT_EQ_REG(r1, r2)
 
     /* lsl */
     ldr r0, =0xFFF00FFF
-    mov r1, r0, lsr #8
+    mov r1, r0, lsr 8
     ldr r2, =0x00FFF00F
     ASSERT_EQ_REG(r1, r2)
 
     /* ror */
     ldr r0, =0xFFF00FFF
-    mov r1, r0, ror #8
+    mov r1, r0, ror 8
     ldr r2, =0xFFFFF00F
     ASSERT_EQ_REG(r1, r2)
 
     /* asr negative */
     ldr r0, =0x80000008
-    mov r1, r0, asr #1
+    mov r1, r0, asr 1
     ldr r2, =0xC0000004
     ASSERT_EQ_REG(r1, r2)
 
     /* asr positive */
     ldr r0, =0x40000008
-    mov r1, r0, asr #1
+    mov r1, r0, asr 1
     ldr r2, =0x20000004
     ASSERT_EQ_REG(r1, r2)
 
@@ -39,7 +39,7 @@ ENTRY
      * They assembly to the exact same bytes as the mov version
      */
     ldr r0, =0xFFF00FFF
-    lsl r1, r0, #8
+    lsl r1, r0, 8
     ldr r2, =0xF00FFF00
     ASSERT_EQ_REG(r1, r2)
 
@@ -61,10 +61,10 @@ ENTRY
     /* The shift takes up the same encoding slot as the immediate,
      * therefore it is not possible to both use an immediate and shift.
      *
-     * Error: shift expression expected -- `add r1,r0,#1,lsl#1'
+     * Error: shift expression expected -- `add r1,r0,1,lsl#1'
      */
 #if 0
-    add r1, r0, #1, lsl #1
+    add r1, r0, 1, lsl 1
 #endif
 
 EXIT

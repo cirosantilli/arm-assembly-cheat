@@ -8,16 +8,16 @@ ENTRY
     mov r0, sp
 
     /* Push. */
-    mov r1, #1
-    mov r2, #2
+    mov r1, 1
+    mov r2, 2
     push {r1, r2}
 
     /* Save sp after push. */
     mov r1, sp
 
     /* Restore. */
-    mov r3, #0
-    mov r4, #0
+    mov r3, 0
+    mov r4, 0
     pop {r3, r4}
     ASSERT_EQ(r3, 1)
     ASSERT_EQ(r4, 2)

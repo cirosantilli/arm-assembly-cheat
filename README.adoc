@@ -362,6 +362,25 @@ Bibliography: <<armarm7>> A2.3 "ARM core registers".
 
 === GAS syntax
 
+==== Unified syntax
+
+There are two types of ARMv7 assemblies:
+
+* `.syntax divided`
+* `.syntax unified`
+
+They are very similar, but unified is the new and better one, which we use in this tutorial.
+
+Unfortunately, for backwards compatibility, GNU AS 2.31.1 and GCC 8.2.0 still use `.syntax divided` by default.
+
+The concept of unified asssembly is mentioned in ARM's official assembler documentation: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473c/BABJIHGJ.html and is often called Unified Assembly Language (UAL).
+
+Some of the differences include:
+
+* `#` is optional in unified syntax int literals, see <<immediates>>
+* `andseq` vs `andeqs`: https://stackoverflow.com/questions/51184921/wierd-gcc-behaviour-with-arm-assembler-andseq-instruction
+* cannot have implicit destination with shift, see: <<shift-suffixes>>
+
 ==== Immediates
 
 The requirement for hash `#` and dollar `$` prefixes varies across v7, where it depends on `.syntax`, and v8.

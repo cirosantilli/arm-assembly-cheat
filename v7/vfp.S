@@ -18,7 +18,7 @@ ENTRY
     ldr r0, =sum
     ldr r1, =a1
     ldr r2, =a2
-    mov r3, #8
+    mov r3, 8
     bl vec_sum
     /* The assert works easily because all floats used
      * have exact base-2 representation. */
@@ -35,11 +35,11 @@ vec_sum:
     /* Setup */
     push {r0, r1, r4, lr}
     push {r0, r1}
-    mov r0, #1
-    mov r1, #8
+    mov r0, 1
+    mov r1, 8
     bl reconfig
     pop {r0, r1}
-    asr r3, #3
+    asr r3, 3
 
     /* Do the sum. */
 1:
@@ -47,7 +47,7 @@ vec_sum:
     fldmias r2!, {s16-s23}
     fadds s24, s8, s16
     fstmias r0!, {s24-s31}
-    subs r3, r3, #1
+    subs r3, r3, 1
     bne 1b
 
     /* Teardown. */
@@ -64,14 +64,14 @@ vec_sum:
  */
 reconfig:
     push {r0-r2}
-    and r0, r0, #3
-    eor r0, r0, #1
-    sub r1, r1, #1
-    and r1, r1, #7
-    mov r0, r0, lsl #20
-    orr r0, r0, r1, lsl #16
+    and r0, r0, 3
+    eor r0, r0, 1
+    sub r1, r1, 1
+    and r1, r1, 7
+    mov r0, r0, lsl 20
+    orr r0, r0, r1, lsl 16
     fmrx r2, fpscr
-    bic r2, #55*65536
+    bic r2, 55*65536
     orr r2, r2, r0
     fmxr fpscr, r0
     pop {r0-r2}
@@ -79,7 +79,7 @@ reconfig:
 
 deconfig:
     push {r0, r1, lr}
-    mov r0, #1
-    mov r1, #1
+    mov r0, 1
+    mov r1, 1
     bl reconfig
     pop {r0, r1, pc}

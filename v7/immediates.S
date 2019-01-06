@@ -17,9 +17,8 @@ ENTRY
 .syntax unified
     mov r0, 1
     mov r0, 0x1
-    mov r0, #1
-    mov r0, #0x1
+    mov r0, 1
+    mov r0, 0x1
     mov r0, $1
     mov r0, $0x1
-.syntax divided
 EXIT
