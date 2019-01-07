@@ -378,7 +378,9 @@ The concept of unified asssembly is mentioned in ARM's official assembler docume
 Some of the differences include:
 
 * `#` is optional in unified syntax int literals, see <<immediates>>
-* `andseq` vs `andeqs`: https://stackoverflow.com/questions/51184921/wierd-gcc-behaviour-with-arm-assembler-andseq-instruction
+* many mnemonics changed:
+** most of them are condition code position changes, e.g. `andseq` vs `andeqs`: https://stackoverflow.com/questions/51184921/wierd-gcc-behaviour-with-arm-assembler-andseq-instruction
+** but there are some more drastic ones, e.g. `swi` vs `svc`: https://stackoverflow.com/questions/8459279/are-arm-instructuons-swi-and-svc-exactly-same-thing/54078731#54078731
 * cannot have implicit destination with shift, see: <<shift-suffixes>>
 
 ==== Immediates
