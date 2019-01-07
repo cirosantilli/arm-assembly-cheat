@@ -822,8 +822,10 @@ Bibliography:
 
 == Inline assembly
 
-Somewhat like x86, but with a few quirks, so let's make a list of what works here.
+Very similar to x86, so we will just focus on giving a few basic examples and pointing out any differences from x86:
 
+* link:v7/c/inc.c[]
+* link:v7/c/add.c[]
 * link:v7/c/reg_var.c[]
 * link:v8/c/reg_var.c[]
 * link:v8/c/reg_var_float.c[]
@@ -1127,6 +1129,7 @@ arm-linux-gnueabihf-gcc -o 'sub.out' 'sub.o' main.o
 The C driver then just calls `asm_main`, which each `.S` example implements.
 
 This allows us to easily use the C standard library portably: from the point of view of GCC, everything looks like a regular C program, which does the required glibc initialization before `main()`.
+
 === Introduction to ARM
 
 The link:https://en.wikipedia.org/wiki/ARM_architecture[ARM architecture] is has been used on the vast majority of mobile phones in the 2010's, and on a large fraction of micro controllers.

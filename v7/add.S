@@ -26,7 +26,7 @@ ENTRY
     add r0, r0, 2
     ASSERT_EQ(r0, 3)
 
-#if 1
+#if 0
     /* But we cannot omit the register if there is a shift when using .syntx unified:
      * https://github.com/cirosantilli/arm-assembly-cheat#shift-suffixes
      */
