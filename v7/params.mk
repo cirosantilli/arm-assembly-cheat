@@ -8,8 +8,11 @@ ARCH = arm
 # > The extension +neon-vfpv3 can be used as an alias for this extension.
 ASFLAGS_EXTRA = -mfpu=neon -meabi=5
 # -marm: the opposite of -mthumb.
-# -masm-syntax-unified: make gcc generate .syntax unified code
-CFLAGS_EXTRA = -masm-syntax-unified -marm
+# -masm-syntax-unified: make gcc generate .syntax unified for inline assembly.
+#     However, it gets ignored if -marm is given, which might be a GCC bug:
+#     https://stackoverflow.com/questions/54078112/how-to-write-syntax-unified-ual-armv7-inline-assembly-in-gcc
+#     So we just write divided inline assembly for now.
+CFLAGS_EXTRA = -marm -masm-syntax-unified
 MARCH = armv7-a
 PREFIX = arm-linux-gnueabihf
 ifeq ($(NATIVE),y)
