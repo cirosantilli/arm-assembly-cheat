@@ -4,10 +4,10 @@
 _start:
 asm_main_after_prologue:
     /* write */
-    mov r0, 1     /* stdout */
-    ldr r1, =msg  /* buffer */
+    mov r0, 1    /* stdout */
+    adr r1, msg  /* buffer */
     ldr r2, =len  /* len */
-    mov r7, 4     /* syscall id. */
+    mov r7, 4    /* syscall id. */
     svc 0
 
     /* exit */

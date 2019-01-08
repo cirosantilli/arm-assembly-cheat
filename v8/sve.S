@@ -10,10 +10,10 @@
     n: .word          4
 
 ENTRY
-    ldr x0, =x
-    ldr x1, =y
-    ldr x2, =a
-    ldr x3, =n
+    adr x0, x
+    adr x1, y
+    adr x2, a
+    adr x3, n
     bl daxpy
     ASSERT_MEMCMP(y, y_expect, 0x20)
 EXIT

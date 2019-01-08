@@ -55,8 +55,8 @@ pass: \
 ;
 
 #define MEMCMP(s1, s2, n) \
-    ldr x0, =s1; \
-    ldr x1, =s2; \
+    adr x0, s1; \
+    adr x1, s2; \
     ldr x2, =n; \
     bl memcmp; \
 ;

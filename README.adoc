@@ -555,7 +555,7 @@ As an application of the post-indexed addressing mode, let's increment an array.
 
 Example: link:v7/inc_array.S[]
 
-===== ldr and ldrb
+===== ldrh and ldrb
 
 There are `ldr` variants that load less than full 4 bytes:
 

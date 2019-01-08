@@ -17,12 +17,12 @@ ENTRY
 .bss
     u32_sum:        .skip 16
 .text
-    ldr x0, =u32_0
+    adr x0, u32_0
     ld1 {v0.4s}, [x0]
-    ldr x1, =u32_1
+    adr x1, u32_1
     ld1 {v1.4s}, [x1]
     add v2.4s, v0.4s, v1.4s
-    ldr x0, =u32_sum
+    adr x0, u32_sum
     st1 {v2.4s}, [x0]
     ASSERT_MEMCMP(u32_sum, u32_sum_expect, 0x10)
 
@@ -37,12 +37,12 @@ ENTRY
 .bss
     u64_sum: .skip 16
 .text
-    ldr x0, =u64_0
+    adr x0, u64_0
     ld1 {v0.2d}, [x0]
-    ldr x1, =u64_1
+    adr x1, u64_1
     ld1 {v1.2d}, [x1]
     add v2.2d, v0.2d, v1.2d
-    ldr x0, =u64_sum
+    adr x0, u64_sum
     st1 {v2.2d}, [x0]
     ASSERT_MEMCMP(u64_sum, u64_sum_expect, 0x10)
 
@@ -58,12 +58,12 @@ ENTRY
 .bss
     f32_sum: .skip 16
 .text
-    ldr x0, =f32_0
+    adr x0, f32_0
     ld1 {v0.4s}, [x0]
-    ldr x1, =f32_1
+    adr x1, f32_1
     ld1 {v1.4s}, [x1]
     fadd v2.4s, v0.4s, v1.4s
-    ldr x0, =f32_sum
+    adr x0, f32_sum
     st1 {v2.4s}, [x0]
     ASSERT_MEMCMP(f32_sum, f32_sum_expect, 0x10)
 
@@ -75,12 +75,12 @@ ENTRY
 .bss
     f64_sum: .skip 16
 .text
-    ldr x0, =f64_0
+    adr x0, f64_0
     ld1 {v0.2d}, [x0]
-    ldr x1, =f64_1
+    adr x1, f64_1
     ld1 {v1.2d}, [x1]
     fadd v2.2d, v0.2d, v1.2d
-    ldr x0, =f64_sum
+    adr x0, f64_sum
     st1 {v2.2d}, [x0]
     ASSERT_MEMCMP(f64_sum, f64_sum_expect, 0x10)
 EXIT

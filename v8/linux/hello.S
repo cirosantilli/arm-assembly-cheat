@@ -4,7 +4,7 @@ _start:
 asm_main_after_prologue:
     /* write */
     mov x0, 1
-    ldr x1, =msg
+    adr x1, msg
     ldr x2, =len
     mov x8, 64
     svc 0

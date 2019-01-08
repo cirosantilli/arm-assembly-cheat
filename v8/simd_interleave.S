@@ -17,10 +17,10 @@ ENTRY
 .bss
     u32_interleave_sum: .skip 16
 .text
-    ldr x0, =u32_interleave
+    adr x0, u32_interleave
     ld2 {v0.4s, v1.4s}, [x0]
     add v2.4s, v0.4s, v1.4s
-    ldr x0, =u32_interleave_sum
+    adr x0, u32_interleave_sum
     st1 {v2.4s}, [x0]
     ASSERT_MEMCMP(u32_interleave_sum, u32_interleave_sum_expect, 0x10)
 EXIT
