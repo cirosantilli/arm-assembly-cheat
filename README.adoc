@@ -738,6 +738,7 @@ Similar rationale to the <<ldr-pseudo-instruction>>, allowing to easily store a 
 Examples:
 
 * link:v7/adr.S[]
+* link:v8/adr.S[]
 * link:v8/adrp.S[]
 
 More details: https://stackoverflow.com/questions/41906688/what-are-the-semantics-of-adrp-and-adrl-instructions-in-arm-assembly/54042899#54042899
