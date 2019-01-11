@@ -1134,17 +1134,6 @@ We then download the zip from: https://developer.arm.com/docs/ddi0584/latest/arm
 
 That document then describes the SVE instructions and registers.
 
-== Theory
-
-TODO review all of those and move them into the main README. They are from a previous life.
-
-. link:how-to-play-with-arm.md[How to play with ARM]
-. link:versions.md[Versions]
-.. link:thumb.md[Thumb]
-. link:vs-x86.md[Vs x86]
-. link:compilers.md[Compilers]
-. link:gas.md[GAS]
-
 === Architecture of this repo
 
 `qemu-arm-static` is used for emulation on x86 hosts. It translates ARM to x86, and forwards system calls to the host kernel.
