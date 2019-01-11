@@ -464,6 +464,19 @@ The current ARM / Thumb mode is encoded in the least significant bit of lr.
 
 Since `bl` encodes the current ARM / Thumb in the register, `bx` keeps the mode unchanged by default.
 
+===== ret
+
+Example: link:v8/ret.S[]
+
+In ARMv8 aarch64:
+
+* there is no `bx` since no Thumb to worry about, so it is called just `br`
+* the `ret` instruction was added in addition to `br`, with the following differences:
+** provides a hint that this is a function call return
+** has a default argument `x30` if none is given. This is where `bl` puts the return value.
+
+See also: https://stackoverflow.com/questions/32304646/arm-assembly-branch-to-address-inside-register-or-memory/54145818#54145818
+
 ==== cbz
 
 Compare and branch if zero.
@@ -797,10 +810,18 @@ Bibliography: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui047
 [[aapcs]]
 == Calling convention
 
-Call C standard library functions from assembly:
+Call C standard library functions from assembly and vice versa.
+
+Examples:
+
+* link:v7/c_from_asm.S[]
+* link:v8/c/asm_from_c.c[]
+
+`c_from_asm` usage:
 
 ....
-make test-c_from_asm
+cd v7
+./t c_from_asm
 ....
 
 Output:
@@ -809,8 +830,6 @@ Output:
 hello puts
 hello printf 12345678
 ....
-
-Source: link:v7/c_from_asm.S[]
 
 ARM Architecture Procedure Call Standard (AAPCS) is the name that ARM Holdings gives to the calling convention.
 
