@@ -7,7 +7,7 @@ ENTRY
     /* Mnemonic for a PC relative load:
      *
      * ....
-     * ldr r0, [pc, #offset]
+     * ldr r0, [pc, offset]
      * r0 = myvar
      * ....
      */

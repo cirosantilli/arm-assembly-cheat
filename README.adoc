@@ -536,17 +536,17 @@ Load and store instructions can update the source register with the following mo
 * offset: add an offset, don't change the address register. Notation:
 +
 ....
-ldr r1, [r0, #4]
+ldr r1, [r0, 4]
 ....
 * pre-indexed: change the address register, and then use it modified. Notation:
 +
 ....
-ldr r1, [r0, #4]!
+ldr r1, [r0, 4]!
 ....
 * post-indexed: use the address register unmodified, and then modify it. Notation:
 +
 ....
-ldr r1, [r0] #4
+ldr r1, [r0], 4
 ....
 
 The offset itself can come from the following sources:
