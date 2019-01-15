@@ -356,9 +356,64 @@ make CFLAGS_CLI=-static
 
 === Registers
 
-Examples: link:v7/regs.S[]
+Examples:
+
+* link:v7/regs.S[]
+* link:v8/regs.S[]
+* link:v8/pc.S[]
 
 Bibliography: <<armarm7>> A2.3 "ARM core registers".
+
+==== ARMv8 x31
+
+Example: link:v8/x31.S[]
+
+There is no `x31` name, and the encoding can have two different names depending on the instruction:
+
+* `xzr`: zero register:
+** https://stackoverflow.com/questions/42788696/why-might-one-use-the-xzr-register-instead-of-the-literal-0-on-armv8
+** https://community.arm.com/processors/f/discussions/3185/wzr-xzr-register-s-purpose
+* `sp`: stack pointer
+
+To make things more confusing, some aliases can take either name, which makes them alias to different things, e.g. `mov` accepts both:
+
+....
+mov x0, sp
+mov x0, xzr
+....
+
+and the first one is an alias to `add` while the second an alias to `orr`.
+
+The difference is documented on a per instruction basis. Instructions that encode 31 as SP say:
+
+....
+if d == 31 then
+  SP[] = result;
+else
+  X[d] = result;
+....
+
+And then those that don't say that, B1.2.1 "Registers in AArch64 state" implies the zero register:
+
+____
+In instruction encodings, the value 0b11111 (31) is used to indicate the ZR (zero register). This 
+indicates that the argument takes the value zero, but does not indicate that the ZR is implemented 
+as a physical register.
+____
+
+This is also described on <<armarm8>> C1.2.5 "Register names":
+
+____
+There is no register named W31 or X31.
+
+The name SP represents the stack pointer for 64-bit operands where an encoding of the value 31 in the
+corresponding register field is interpreted as a read or write of the current stack pointer. When instructions
+do not interpret this operand encoding as the stack pointer, use of the name SP is an error.
+
+The name XZR represents the zero register for 64-bit operands where an encoding of the value 31 in the
+corresponding register field is interpreted as returning zero when read or discarding the result when written.
+When instructions do not interpret this operand encoding as the zero register, use of the name XZR is an error
+____
 
 === GAS syntax
 
@@ -574,21 +629,6 @@ There are `ldr` variants that load less than full 4 bytes:
 
 * link:v7/ldrb.S[]: load byte
 * link:v7/ldrh.S[]: load half word
-
-===== ldr ARMv8
-
-Unlike in ARMv7, the target register cannot be SP or PC, otherwise assembly fails with:
-
-....
-Error: operand 1 should be an integer register -- `ldr sp,=0x1111222233334444'
-....
-
-Examples:
-
-* link:v7/ldr_sp.S[]
-* link:v8/ldr_sp.S[]
-
-TODO rationale.
 
 ==== str
 
@@ -916,23 +956,6 @@ Similar to <<movw-and-movt>> in v7.
 Example: link:v8/movk.S[]
 
 Bibliography: https://stackoverflow.com/questions/27938768/moving-a-32-bit-constant-in-arm-arch64-register
-
-=== ARMv8 registers
-
-Example: link:v8/regs.S[]
-
-==== x31
-
-Example: link:v8/x31.S[]
-
-There is no `x31` name, and the encoding can have two different names depending on the instruction:
-
-* `xzr`: zero register:
-** https://stackoverflow.com/questions/42788696/why-might-one-use-the-xzr-register-instead-of-the-literal-0-on-armv8
-** https://community.arm.com/processors/f/discussions/3185/wzr-xzr-register-s-purpose
-* `sp`: stack pointer
-
-Described on <<armarm8>> C1.2.5 "Register names".
 
 === stp
 

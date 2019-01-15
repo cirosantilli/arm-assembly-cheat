@@ -19,23 +19,35 @@ ENTRY
     mov r11, 11
     mov r12, 12
 
-    /* r13: aliased to SP (stack pointer)
-     * r14: aliased to LR (link register)
-     * r15: aliased to PC
+    /* - r13: aliased to SP (stack pointer)
+     * - r14: aliased to LR (link register)
+     * - r15: aliased to PC
      *
      * In ARMv8, SP and PC have dedicated registers in addition to
-     * the 32-general purpose ones.
-     */
-    ldr r15, =10f
-    FAIL
-10:
-
-    /* It is possible to ldr into pc, and it works just like for any other register.
+     * the 32-general purpose ones. LR is still general purpose as before.
      *
-     * This is very similar to what B does, except that B only works with constants.
+     * Therefore, it is possible to use those registers in any place
+     * other registers may be used.
+     *
+     * This is not possible in ARMv8 anymore.
+     *
+     * For example, we can load an address into PC, which is very similar to what B / BX does:
+     * https://stackoverflow.com/questions/32304646/arm-assembly-branch-to-address-inside-register-or-memory/54145818#54145818
      */
     ldr pc, =10f
     FAIL
 10:
 
+    /* Same with r15, which is the same as pc. */
+    ldr r15, =10f
+    FAIL
+10:
+
+    /* Another example with mov reading from pc. */
+pc_addr:
+    mov r0, pc
+    /* Why sub 8:
+     * https://stackoverflow.com/questions/24091566/why-does-the-arm-pc-register-point-to-the-instruction-after-the-next-one-to-be-e
+     */
+    sub r0, r0, 8
 EXIT
