@@ -6,15 +6,19 @@ ASM_EXT = .S
 ASFLAGS = --gdwarf-2 -march=$(MARCH_AS) $(ASFLAGS_EXTRA)
 BINUTILS_BIN_DIR = $(BINUTILS_INSTALL_DIR)/bin
 CC = $(PREFIX_PATH)gcc
-CFLAGS = -ggdb3 -march=$(MARCH) -pedantic -std=c99 -Wall -Wextra $(CFLAGS_QEMU) $(CFLAGS_EXTRA) $(CFLAGS_CLI)
+CXX = $(PREFIX_PATH)g++
+CFLAGS = -std=c99 $(CCFLAGS)
+CCFLAGS = -ggdb3 -march=$(MARCH) -pedantic -Wall -Wextra $(CCFLAGS_QEMU) $(CCFLAGS_EXTRA) $(CCFLAGS_CLI)
+CXXFLAGS = -std=c++11 $(CCFLAGS)
 CPP = $(PREFIX_PATH)cpp
 CPP_EXT = $(ASM_EXT).tmp
 # no-pie: https://stackoverflow.com/questions/51310756/how-to-gdb-step-debug-a-dynamically-linked-executable-in-qemu-user-mode
 # And the flag not present in Raspbian 2017 which has an ancient gcc 4.9, so we have to remove it.
-CFLAGS_QEMU = -fno-pie -no-pie
+CCFLAGS_QEMU = -fno-pie -no-pie
 COMMON_HEADER = common.h
 CTNG =
 C_EXT = .c
+CXX_EXT = .cpp
 DEFAULT_SYSROOT = /usr/$(PREFIX)
 DRIVER_BASENAME_NOEXT = main
 DRIVER_BASENAME = main$(C_EXT)
@@ -58,8 +62,11 @@ OUTS_ASM = $(addsuffix $(OUT_EXT), $(INS_ASM_NOEXT))
 INS_C = $(filter-out $(DRIVER_BASENAME), $(wildcard *$(C_EXT)))
 INS_C_NOEXT = $(basename $(INS_C))
 OUTS_C = $(addsuffix $(OUT_EXT), $(INS_C_NOEXT))
+INS_CXX = $(filter-out $(DRIVER_BASENAME), $(wildcard *$(CXX_EXT)))
+INS_CXX_NOEXT = $(basename $(INS_CXX))
+OUTS_CXX = $(addsuffix $(OUT_EXT), $(INS_CXX_NOEXT))
 OBJDUMPS = $(addsuffix $(OBJDUMP_EXT), $(INS_ASM_NOEXT) $(INS_C_NOEXT))
-OUTS = $(OUTS_ASM) $(OUTS_C)
+OUTS = $(OUTS_ASM) $(OUTS_C) $(OUTS_CXX)
 TESTS = $(filter-out $(addsuffix $(OUT_EXT), $(SKIP_TESTS)),$(OUTS))
 
 -include params.mk
@@ -68,14 +75,14 @@ TESTS = $(filter-out $(addsuffix $(OUT_EXT), $(SKIP_TESTS)),$(OUTS))
 ifeq ($(NATIVE),y)
   AS = as
   AS_TARGET =
-  CFLAGS_QEMU =
+  CCFLAGS_QEMU =
   PREFIX_PATH =
   QEMU_EXE =
   RUN_CMD = PATH=".:${PATH}"
 endif
 
 ifeq ($(FREESTAND),y)
-  CFLAGS_EXTRA += -nostdlib
+  CCFLAGS_EXTRA += -nostdlib
   DRIVER_OBJ =
   COMMON_HEADER =
 endif
@@ -96,6 +103,9 @@ all: $(BINUTILS_GDB_TARGET) $(OUTS) qemu
 
 %$(OBJ_EXT): %$(C_EXT)
 	$(CC) -c $(CFLAGS) -o '$@' '$<'
+
+%$(OBJ_EXT): %$(CXX_EXT)
+	$(CXX) -c $(CXXFLAGS) -o '$@' '$<'
 
 %$(OBJ_EXT): %$(ASM_EXT) $(COMMON_HEADER)
 	$(CPP) -o '$(basename $<)$(CPP_EXT)' '$<'

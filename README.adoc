@@ -349,7 +349,7 @@ xdg-open out/README.html
 E.g., to pass `-static` for an emulator that does not support dynamically linked executables like link:https://stackoverflow.com/questions/50542222/how-to-run-a-dynamically-linked-executable-syscall-emulation-mode-se-py-in-gem5[gem5]:
 
 ....
-make CFLAGS_CLI=-static
+make CCFLAGS_CLI=-static
 ....
 
 == ARM assembly basics
@@ -889,8 +889,10 @@ Very similar to x86, so we will just focus on giving a few basic examples and po
 * link:v7/c/inc.c[]
 * link:v7/c/add.c[]
 * link:v7/c/reg_var.c[]
+* link:v8/c/inc.c[]
 * link:v8/c/reg_var.c[]
 * link:v8/c/reg_var_float.c[]
+* link:v8/c/multiline.cpp[]
 
 == Linux system calls
 
@@ -1255,7 +1257,7 @@ https://developer.arm.com/docs/ddi0487/latest/arm-architecture-reference-manual-
 
 We use: ARM DDI 0487C.a: https://static.docs.arm.com/ddi0487/ca/DDI0487C_a_armv8_arm.pdf
 
-==== Programmer’s Guide for ARMv8-A
+==== Programmer's Guide for ARMv8-A
 
 https://developer.arm.com/docs/den0024/latest/preface
 

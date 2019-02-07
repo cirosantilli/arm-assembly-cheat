@@ -12,7 +12,7 @@ ASFLAGS_EXTRA = -mfpu=neon -meabi=5
 #     However, it gets ignored if -marm is given, which might be a GCC bug:
 #     https://stackoverflow.com/questions/54078112/how-to-write-syntax-unified-ual-armv7-inline-assembly-in-gcc
 #     So we just write divided inline assembly for now.
-CFLAGS_EXTRA = -marm -masm-syntax-unified
+CCFLAGS_EXTRA = -marm -masm-syntax-unified
 MARCH = armv7-a
 PREFIX = arm-linux-gnueabihf
 ifeq ($(NATIVE),y)

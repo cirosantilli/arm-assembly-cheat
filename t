@@ -27,4 +27,4 @@ if [ -n "$gdb_break" ]; then
 else
   gdb_break_cmd=
 fi
-make $gdb_break_cmd CFLAGS_CLI="$cflags_cli" GDB_EXPERT="$gdb_expert" "${action}-${target}"
+make $gdb_break_cmd CCFLAGS_CLI="$cflags_cli" GDB_EXPERT="$gdb_expert" "${action}-${target}"
