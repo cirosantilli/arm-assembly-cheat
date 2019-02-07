@@ -34,6 +34,15 @@ pc_relative_ldr:
 1:
     ASSERT_EQ(x0, 0x123456789ABCDEF0)
 
+    /* Just for fun, we can also use relative numbers instead of labels.
+     * https://reverseengineering.stackexchange.com/questions/17666/how-does-the-ldr-instruction-work-on-arm/20567#20567
+     */
+    ldr x0, 0x8
+    b 1f
+    .quad 0x123456789ABCDEF0
+1:
+    ASSERT_EQ(x0, 0x123456789ABCDEF0)
+
     /* Trying to use the old "LDR (immediate)" PC-relative
      * syntax does not work.
      */
