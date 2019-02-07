@@ -2,7 +2,7 @@
 
 #include "common.h"
 ENTRY
-    /* Jump over the fail. */
+    /* Jump over the fail. 26-bit PC-relative. */
     b ok
     FAIL
 ok:

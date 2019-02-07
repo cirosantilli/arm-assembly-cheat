@@ -50,4 +50,11 @@ pc_addr:
      * https://stackoverflow.com/questions/24091566/why-does-the-arm-pc-register-point-to-the-instruction-after-the-next-one-to-be-e
      */
     sub r0, r0, 8
+
+    /* pc-relative load also just work just like any other register. */
+    ldr r0, [pc]
+    b 1f
+    .word 0x12345678
+1:
+    ASSERT_EQ(r0, 0x12345678)
 EXIT

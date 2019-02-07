@@ -10,6 +10,9 @@ ENTRY
      * objdump says that this generates a R_AARCH64_ADR_PRE relocation.
      * which looks specific to ADR, and therefore makes it more likely
      * that there was no such relocation in v7.
+     *
+     * This relocation is particularly important because str does not have a
+     * pc-relative mode in ARMv8.
      */
     adr x0, data_label
     ldr x1, =data_label
