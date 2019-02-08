@@ -203,6 +203,7 @@ test: all
 	else\
 	  fail=false ;\
 	  for t in $(TESTS); do\
+	    echo "$(RUN_CMD) $$t"; \
 	    if ! $(RUN_CMD) "$$t"; then \
 	      fail=true ;\
 	      break ;\
