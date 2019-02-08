@@ -1022,6 +1022,26 @@ The Linux kernel shows `/proc/cpuinfo` compatibility as `neon`.
 
 Vs <<vfp>>: https://stackoverflow.com/questions/4097034/arm-cortex-a8-whats-the-difference-between-vfp-and-neon
 
+==== vcvt
+
+Example: link:v7/vcvt.S[]
+
+Convert between integers and floating point.
+
+<<armarm7>> on rounding:
+
+____
+The floating-point to fixed-point operation uses the Round towards Zero rounding mode. The fixed-point to floating-point operation uses the Round to Nearest rounding mode.
+____
+
+Notice how the opcode takes two types.
+
+E.g., in our 32-bit float to 32-bit unsigned example we use:
+
+....
+vld1.u32.f32
+....
+
 ==== SIMD interleaving
 
 Example: link:v8/simd_interleave.S[]

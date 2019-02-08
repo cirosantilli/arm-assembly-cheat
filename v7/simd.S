@@ -3,7 +3,9 @@
 #include "common.h"
 
 ENTRY
-    /* Add 4 32-bit unsigned integers in one go.
+    /* vadd.u32
+     *
+     * Add 4x 32-bit unsigned integers in one go.
      *
      * q means 128-bits.
      *
@@ -30,7 +32,7 @@ ENTRY
     vst1.u32 {q2}, [r0]
     ASSERT_MEMCMP(u32_sum, u32_sum_expect, 0x10)
 
-    /* 2x 64-bit add. */
+    /* vadd.u64: 2x 64-bit add. */
 .data
     u64_0:          .quad 0xF1111111F1111111, 0xF2222222F2222222
     u64_1:          .quad 0x1555555515555555, 0x1666666616666666
@@ -47,7 +49,7 @@ ENTRY
     vst1.u64 {q2}, [r0]
     ASSERT_MEMCMP(u64_sum, u64_sum_expect, 0x10)
 
-    /* 4x 32-bit float add. */
+    /* vadd.f32: 4x 32-bit float add. */
 .data
     f32_0:          .float 1.5, 2.5,  3.5,  4.5
     f32_1:          .float 5.5, 6.5,  7.5,  8.5
@@ -64,7 +66,7 @@ ENTRY
     vst1.f32 {q2}, [r0]
     ASSERT_MEMCMP(f32_sum, f32_sum_expect, 0x10)
 
-    /* 2x 64-bit float add: appears not possible.
+    /* vadd.f64: 2x 64-bit float add: appears not possible.
      *
      * https://stackoverflow.com/questions/36052564/does-arm-support-simd-operations-for-64-bit-floating-point-numbers
      */
