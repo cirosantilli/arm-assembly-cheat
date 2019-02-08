@@ -3,7 +3,7 @@
 #include "common.h"
 
 ENTRY
-    /* 4x 32-bit float add.
+    /* 4x 32-bit integer add.
      *
      * s stands for single == 32 bits.
      *
@@ -26,7 +26,7 @@ ENTRY
     st1 {v2.4s}, [x0]
     ASSERT_MEMCMP(u32_sum, u32_sum_expect, 0x10)
 
-    /* 2x 64-bit float add.
+    /* 2x 64-bit integer add.
      *
      * d stands for double == 64 bits.
      */
@@ -48,7 +48,7 @@ ENTRY
 
     /* 4x 32-bit float add.
      *
-     * The only difference between the floating point version
+     * The only difference between the integer point version
      * is that we use fadd instead of add.
      */
 .data

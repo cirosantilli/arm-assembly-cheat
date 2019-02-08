@@ -32,7 +32,7 @@ ENTRY
     vst1.u32 {q2}, [r0]
     ASSERT_MEMCMP(u32_sum, u32_sum_expect, 0x10)
 
-    /* vadd.u64: 2x 64-bit add. */
+    /* vadd.u64: 2x 64-bit unsigned integer add. */
 .data
     u64_0:          .quad 0xF1111111F1111111, 0xF2222222F2222222
     u64_1:          .quad 0x1555555515555555, 0x1666666616666666
@@ -48,6 +48,28 @@ ENTRY
     ldr r0, =u64_sum
     vst1.u64 {q2}, [r0]
     ASSERT_MEMCMP(u64_sum, u64_sum_expect, 0x10)
+
+    /* vadd.s64: 2x 64-bit signed integer add. TODO: how to differentiate
+     * it from signed? I think signed and unsigned addition are identical
+     * in two's complement, the only difference is overflow / carry detection
+     * flags. But how do flags work when there are many values being added
+     * at once?
+     */
+.data
+    s64_0:          .quad -1, -2
+    s64_1:          .quad -1, -2
+    s64_sum_expect: .quad -2, -4
+.bss
+    s64_sum: .skip 16
+.text
+    ldr r0, =s64_0
+    vld1.s64 {q0}, [r0]
+    ldr r0, =s64_1
+    vld1.s64 {q1}, [r0]
+    vadd.s64 q2, q0, q1
+    ldr r0, =s64_sum
+    vst1.s64 {q2}, [r0]
+    ASSERT_MEMCMP(s64_sum, s64_sum_expect, 0x10)
 
     /* vadd.f32: 4x 32-bit float add. */
 .data
