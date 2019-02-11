@@ -1042,6 +1042,17 @@ E.g., in our 32-bit float to 32-bit unsigned example we use:
 vld1.u32.f32
 ....
 
+===== vcvta
+
+Example: link:v7/vcvt.S[]
+
+Added in ARMv8 aarch32 only, not in ARMv7.
+
+Very similar to <<vcvt>>, but:
+
+* can only do float to int
+* rounds to nearest with Ties to Away (from 0.0): e.g. `1.5` ties, so it goes away from `0` to `2`
+
 ==== SIMD interleaving
 
 Example: link:v8/simd_interleave.S[]
