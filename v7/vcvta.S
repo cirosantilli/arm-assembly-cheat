@@ -3,31 +3,46 @@
 #include "common.h"
 
 ENTRY
-    /* Positive. */
+    /* SIMD positive. */
 .data
-    vcvt_positive_0:      .float 1.25, 2.5, 3.75, 4.0
-    vcvt_positive_expect: .word  1,    3,   4,    4
+    vcvta_positive_0:      .float 1.25, 2.5, 3.75, 4.0
+    vcvta_positive_expect: .word  1,    3,   4,    4
 .bss
-    vcvt_positive_result: .skip 16
+    vcvta_positive_result: .skip 0x10
 .text
-    ldr r0, =vcvt_positive_0
-    vld1.f32 {q0}, [r0]
+    ldr r0, =vcvta_positive_0
+    vld1.32 {q0}, [r0]
     vcvta.u32.f32 q1, q0
-    ldr r0, =vcvt_positive_result
-    vst1.f32 {q1}, [r0]
-    ASSERT_MEMCMP(vcvt_positive_result, vcvt_positive_expect, 0x10)
+    ldr r0, =vcvta_positive_result
+    vst1.32 {q1}, [r0]
+    ASSERT_MEMCMP(vcvta_positive_result, vcvta_positive_expect, 0x10)
 
-    /* Negative. */
+    /* SIMD negative. */
 .data
-    vcvt_negative_0:      .float -1.25, -2.5, -3.75, -4.0
-    vcvt_negative_expect: .word  -1,    -3,   -4,    -4
+    vcvta_negative_0:      .float -1.25, -2.5, -3.75, -4.0
+    vcvta_negative_expect: .word  -1,    -3,   -4,    -4
 .bss
-    vcvt_negative_result: .skip 16
+    vcvta_negative_result: .skip 0x10
 .text
-    ldr r0, =vcvt_negative_0
-    vld1.f32 {q0}, [r0]
+    ldr r0, =vcvta_negative_0
+    vld1.32 {q0}, [r0]
     vcvta.s32.f32 q1, q0
-    ldr r0, =vcvt_negative_result
-    vst1.f32 {q1}, [r0]
-    ASSERT_MEMCMP(vcvt_negative_result, vcvt_negative_expect, 0x10)
+    ldr r0, =vcvta_negative_result
+    vst1.32 {q1}, [r0]
+    ASSERT_MEMCMP(vcvta_negative_result, vcvta_negative_expect, 0x10)
+
+    /* Floating point version. */
+.data
+    vcvta_positive_float_0:      .float 1.25, 2.5
+    vcvta_positive_float_expect: .word  1
+                                 .float       2.5
+.bss
+    vcvta_positive_float_result: .skip 0x8
+.text
+    ldr r0, =vcvta_positive_float_0
+    vld1.32 {d0}, [r0]
+    vcvta.u32.f32 s0, s0
+    ldr r0, =vcvta_positive_float_result
+    vst1.32 {d0}, [r0]
+    ASSERT_MEMCMP(vcvta_positive_float_result, vcvta_positive_float_expect, 0x8)
 EXIT
