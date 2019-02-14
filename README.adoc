@@ -676,6 +676,7 @@ Arithmetic:
 ** link:v8/add.S[]
 * link:v7/mul.S[]
 * link:v7/sub.S[]
+* link:v7/rev.S[]: reverse byte order
 * link:v7/tst.S[]
 
 ==== Bitwise
