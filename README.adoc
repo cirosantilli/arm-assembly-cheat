@@ -959,6 +959,12 @@ Example: link:v8/movk.S[]
 
 Bibliography: https://stackoverflow.com/questions/27938768/moving-a-32-bit-constant-in-arm-arch64-register
 
+==== movn
+
+Set 16-bits negated and the rest to `1`.
+
+Example: link:v8/movn.S[]
+
 === stp
 
 Push a pair of registers to the stack.

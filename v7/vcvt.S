@@ -3,7 +3,7 @@
 #include "common.h"
 
 ENTRY
-    /* Positive. */
+    /* SIMD positive. */
 .data
     vcvt_positive_0:      .float 1.25, 2.5, 3.75, 4.0
     vcvt_positive_expect: .word  1,    2,   3,    4
@@ -17,7 +17,7 @@ ENTRY
     vst1.32 {q1}, [r0]
     ASSERT_MEMCMP(vcvt_positive_result, vcvt_positive_expect, 0x10)
 
-    /* Negative. */
+    /* SIMD negative. */
 .data
     vcvt_negative_0:      .float -1.25, -2.5, -3.75, -4.0
     vcvt_negative_expect: .word  -1,    -2,   -3,    -4
@@ -30,4 +30,19 @@ ENTRY
     ldr r0, =vcvt_negative_result
     vst1.32 {q1}, [r0]
     ASSERT_MEMCMP(vcvt_negative_result, vcvt_negative_expect, 0x10)
+
+    /* Floating point. */
+.data
+    vcvt_positive_float_0:      .float 1.5, 2.5
+    vcvt_positive_float_expect: .word  1
+                                .float      2.5
+.bss
+    vcvt_positive_float_result: .skip 0x8
+.text
+    ldr r0, =vcvt_positive_float_0
+    vld1.32 {d0}, [r0]
+    vcvt.u32.f32 s0, s0
+    ldr r0, =vcvt_positive_float_result
+    vst1.32 {d0}, [r0]
+    ASSERT_MEMCMP(vcvt_positive_float_result, vcvt_positive_float_expect, 0x8)
 EXIT

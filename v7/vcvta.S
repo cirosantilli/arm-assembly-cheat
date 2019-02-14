@@ -31,11 +31,11 @@ ENTRY
     vst1.32 {q1}, [r0]
     ASSERT_MEMCMP(vcvta_negative_result, vcvta_negative_expect, 0x10)
 
-    /* Floating point version. */
+    /* Floating point. */
 .data
-    vcvta_positive_float_0:      .float 1.25, 2.5
-    vcvta_positive_float_expect: .word  1
-                                 .float       2.5
+    vcvta_positive_float_0:      .float 1.5, 2.5
+    vcvta_positive_float_expect: .word  2
+                                 .float      2.5
 .bss
     vcvta_positive_float_result: .skip 0x8
 .text
@@ -45,4 +45,5 @@ ENTRY
     ldr r0, =vcvta_positive_float_result
     vst1.32 {d0}, [r0]
     ASSERT_MEMCMP(vcvta_positive_float_result, vcvta_positive_float_expect, 0x8)
+
 EXIT
