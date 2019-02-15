@@ -1,4 +1,4 @@
-/* https://github.com/cirosantilli/arm-assembly-cheat#rev */
+/* https://github.com/cirosantilli/arm-assembly-cheat#data-processing-instructions */
 
 #include "common.h"
 

@@ -67,4 +67,13 @@ ENTRY
     add r1, r0, 1, lsl 1
 #endif
 
+    /* However, you can still encode shifted bitmasks of
+     * limited width in immediates, so why not just use the
+     * assembler pre-processing for it?
+     */
+    ldr r1, =0x100
+    add r1, r1, (0x10 << 1)
+    ldr r2, =0x00000120
+    ASSERT_EQ_REG(r1, r2)
+
 EXIT

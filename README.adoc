@@ -256,6 +256,10 @@ i r r0
 ....
 +
 Bibliography: https://stackoverflow.com/questions/5429137/how-to-print-register-values-in-gdb
+* print floating point registers:
++
+** https://reverseengineering.stackexchange.com/questions/8992/floating-point-registers-on-arm/20623#20623
+** https://stackoverflow.com/questions/35518673/gdb-print-aarch64-advanced-simd-vector-registers-is-it-possible/54711214#54711214
 * print an array of 4 32-bit integers in hex:
 +
 ....
@@ -674,8 +678,9 @@ Arithmetic:
 
 * link:v7/add.S[]. We use this simple instruction to explain syntax common to most data processing instructions, so have a good look at that file.
 ** link:v8/add.S[]
-* link:v7/mul.S[]
-* link:v7/sub.S[]
+* link:v7/mul.S[]: multiply
+* link:v7/sub.S[]: subtract
+* link:v7/rbit.S[]: reverse bit order
 * link:v7/rev.S[]: reverse byte order
 * link:v7/tst.S[]
 
@@ -683,7 +688,7 @@ Arithmetic:
 
 * link:v7/and.S[]
 * `eor`: exclusive OR
-* `oor`: OR
+* `orr`: OR
 * link:v7/clz.S[]: count leading zeroes
 
 ===== bic
@@ -763,19 +768,12 @@ Example: link:v7/s_suffix.S[]
 Unsigned Bitfield Move.
 
 ____
-copies any number of low-order bits from a source register into the same number of
-adjacent bits at any position in the destination register, with zeros in the upper and lower bits.
+copies any number of low-order bits from a source register into the same number of adjacent bits at any position in the destination register, with zeros in the upper and lower bits.
 ____
 
 Example: link:v8/ubfm.S[]
 
-Operation:
-
-....
-dest = (src & ((1 << width) - 1)) >> lsb;
-....
-
-Bibliography: https://stackoverflow.com/questions/8366625/arm-bit-field-extract
+TODO: explain full behaviour. Very complicated. Has several simpler to understand aliases.
 
 ===== ubfx
 
@@ -784,6 +782,38 @@ Alias for:
 ....
 UBFM <Wd>, <Wn>, #<lsb>, #(<lsb>+<width>-1)
 ....
+
+Example: link:v8/ubfx.S[]
+
+The operation:
+
+....
+UBFX dest, src, lsb, width
+....
+
+does:
+
+....
+dest = (src & ((1 << width) - 1)) >> lsb;
+....
+
+Bibliography: https://stackoverflow.com/questions/8366625/arm-bit-field-extract
+
+==== bfm
+
+TODO: explain. Similar to <<ubfm>> but leave untouched bits unmodified.
+
+===== bfi
+
+Examples:
+
+* link:v7/bfi[]
+* link:v8/bfi[]
+
+Move the lower bits of source register into any position in the destination:
+
+* ARMv8: an alias for <<bfm>>
+* ARMv7: a real instruction
 
 ==== adr
 
@@ -1044,6 +1074,13 @@ The Linux kernel shows `/proc/cpuinfo` compatibility as `neon`.
 
 Vs <<vfp>>: https://stackoverflow.com/questions/4097034/arm-cortex-a8-whats-the-difference-between-vfp-and-neon
 
+Register files are documented at:
+
+* v8: <<armarm8>> B1.2.1 "Registers in AArch64 state" Figure B1-2 "SIMD and floating-point register naming"
+* v7: <<armarm8>> E1.3.1 "The SIMD and floating-point register file" Figure E1-1 "SIMD and floating-point register file, AArch32 operation":
+
+Notice how Sn is very different between v7 and v8! In v7 it goes across Dn, and in v8 inside each Dn.
+
 ==== vcvt
 
 Example: link:v7/vcvt.S[]
@@ -1063,6 +1100,16 @@ E.g., in our 32-bit float to 32-bit unsigned example we use:
 ....
 vld1.32.f32
 ....
+
+===== vcvtr
+
+Example: link:v7/vcvtr.S[]
+
+Like <<vcvt>>, but the rounding mode is selected by the FPSCR.RMode field.
+
+Selecting rounding mode explicitly per instruction was apparently not possible in ARMv7, but was made possible in <<aarch32>> e.g. with <<vcvta>>.
+
+TODO: is the initial rounding mode specified by the ELF standard? Could not find a reference.
 
 ===== vcvta
 
