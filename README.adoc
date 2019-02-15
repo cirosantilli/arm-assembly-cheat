@@ -204,7 +204,7 @@ Bibliography: https://raspberrypi.stackexchange.com/questions/1732/writing-arm-a
 
 The Raspberry Pi 3 has a link:https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2837/README.md[BCM2837] SoC, which has 4 link:https://en.wikipedia.org/wiki/ARM_Cortex-A53[Cortex A53] cores, which implement ARMv8-A.
 
-However, as of July 2018, there is no official ARMv8 image for the Pi 3, the same ARMv7 image is provided for both: https://raspberrypi.stackexchange.com/questions/43921/raspbian-moving-to-64-bit-mode
+However, as of July 2018, there is no official <<armv8>> image for the Pi 3, the same ARMv7 image is provided for both: https://raspberrypi.stackexchange.com/questions/43921/raspbian-moving-to-64-bit-mode
 
 Then we look at the following threads:
 
@@ -734,7 +734,7 @@ Set the higher or lower 16 bits of a register to an immediate in one go.
 
 Example: link:v7/movw.S[]
 
-The ARMv8 version analogue is <<movk>>.
+The <<armv8>> version analogue is <<movk>>.
 
 ==== Shift suffixes
 
@@ -939,7 +939,7 @@ ARMv8 is the 64 bit version of the ARM architecture.
 
 It has two states:
 
-* AArch32: 32-bit legacy compatibility mode, similar to ARMv7
+* <<aarch32>>
 * AArch64: 64-bit mode, the main mode of operation
 
 Great summary of differences from AArch32: <https://en.wikipedia.org/wiki/ARM_architecture#AArch64_features>
@@ -949,6 +949,21 @@ ARMv8 was link:https://developer.arm.com/docs/den0024/latest/preface[released in
 Some random ones, TODO create clean examples of them:
 
 * the stack has to 16-byte aligned. Therefore, the main way to push things to stack is `ldp` and  `stp`, which push two 8 byte registers at a time
+
+=== AArch32
+
+32-bit mode of operation of ARMv8.
+
+Userland is highly / fully backwards compatible with ARMv7:
+
+* https://stackoverflow.com/questions/42972096/armv8-backward-compatibility-with-armv7-snapdragon-820-vs-cortex-a15
+* https://stackoverflow.com/questions/31848185/does-armv8-aarch32-mode-has-backward-compatible-with-armv4-armv5-or-armv6
+
+For this reason, QEMU and GAS seems to enable both AArch32 and ARMv7 under `arm` rather than `aarch64`.
+
+There are however some extensions over ARMv7, many of them are functionality that ARMv8 has and that designers decided to expose on AArch32 as well, e.g.:
+
+* <<vcvta>>
 
 === movk
 
@@ -1053,7 +1068,7 @@ vld1.32.f32
 
 Example: link:v7/vcvt.S[]
 
-Added in ARMv8 aarch32 only, not in ARMv7.
+Added in ARMv8 <<aarch32>> only, not present in ARMv7, likely because different rounding modes were not available back then.
 
 Very similar to <<vcvt>>, but:
 
