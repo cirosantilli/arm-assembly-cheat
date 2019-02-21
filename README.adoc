@@ -701,6 +701,58 @@ dest = `left & ~right`
 
 Example: link:v7/bic.S[]
 
+===== ubfm
+
+Unsigned Bitfield Move.
+
+____
+copies any number of low-order bits from a source register into the same number of adjacent bits at any position in the destination register, with zeros in the upper and lower bits.
+____
+
+Example: link:v8/ubfm.S[]
+
+TODO: explain full behaviour. Very complicated. Has several simpler to understand aliases.
+
+====== ubfx
+
+Alias for:
+
+....
+UBFM <Wd>, <Wn>, #<lsb>, #(<lsb>+<width>-1)
+....
+
+Example: link:v8/ubfx.S[]
+
+The operation:
+
+....
+UBFX dest, src, lsb, width
+....
+
+does:
+
+....
+dest = (src & ((1 << width) - 1)) >> lsb;
+....
+
+Bibliography: https://stackoverflow.com/questions/8366625/arm-bit-field-extract
+
+===== bfm
+
+TODO: explain. Similar to <<ubfm>> but leave untouched bits unmodified.
+
+====== bfi
+
+Examples:
+
+* link:v7/bfi[]
+* link:v8/bfi[]
+
+Move the lower bits of source register into any position in the destination:
+
+* ARMv8: an alias for <<bfm>>
+* ARMv7: a real instruction
+
 ==== mov
 
 Move an immediate to a register, or a register to another register.
@@ -762,58 +814,6 @@ The `S` suffix, present on most <<data-processing-instructions>>, makes the inst
 If the result of the operation is `0`, then it triggers `beq`, since comparison is a subtraction, with success on 0.
 
 Example: link:v7/s_suffix.S[]
-
-==== ubfm
-
-Unsigned Bitfield Move.
-
-____
-copies any number of low-order bits from a source register into the same number of adjacent bits at any position in the destination register, with zeros in the upper and lower bits.
-____
-
-Example: link:v8/ubfm.S[]
-
-TODO: explain full behaviour. Very complicated. Has several simpler to understand aliases.
-
-===== ubfx
-
-Alias for:
-
-....
-UBFM <Wd>, <Wn>, #<lsb>, #(<lsb>+<width>-1)
-....
-
-Example: link:v8/ubfx.S[]
-
-The operation:
-
-....
-UBFX dest, src, lsb, width
-....
-
-does:
-
-....
-dest = (src & ((1 << width) - 1)) >> lsb;
-....
-
-Bibliography: https://stackoverflow.com/questions/8366625/arm-bit-field-extract
-
-==== bfm
-
-TODO: explain. Similar to <<ubfm>> but leave untouched bits unmodified.
-
-===== bfi
-
-Examples:
-
-* link:v7/bfi[]
-* link:v8/bfi[]
-
-Move the lower bits of source register into any position in the destination:
-
-* ARMv8: an alias for <<bfm>>
-* ARMv7: a real instruction
 
 ==== adr
 
