@@ -2,14 +2,6 @@
 
 #include "common.h"
 
-.data;
-big0:
-    .double 1.5
-big1:
-    .double 2.5
-big_sum:
-    .double 4.0
-
 ENTRY
     /* 1.5 + 2.5 == 4.0
      * using 64-bit double immediates.
@@ -18,20 +10,27 @@ ENTRY
     fmov d1, 2.5
     fadd d2, d0, d1
     fmov d3, 4.0
+    /* Unlike VFP vcmp, this stores the status
+     * automatically in the main CPSR.
+     */
     fcmp d2, d3
-    beq 1f
-    FAIL
-1:
+    ASSERT(beq)
 
     /* Now with a memory stored value. */
-    ldr d0, big0
-    ldr d1, big1
+.data
+my_double_0:
+    .double 1.5
+my_double_1:
+    .double 2.5
+my_double_sum_expect:
+    .double 4.0
+.text
+    ldr d0, my_double_0
+    ldr d1, my_double_1
     fadd d2, d0, d1
-    ldr d3, big_sum
+    ldr d3, my_double_sum_expect
     fcmp d2, d3
-    beq 1f
-    FAIL
-1:
+    ASSERT(beq)
 
     /* Now in 32-bit. */
     fmov s0, 1.5
@@ -39,9 +38,7 @@ ENTRY
     fadd s2, s0, s1
     fmov s3, 4.0
     fcmp s2, s3
-    beq 1f
-    FAIL
-1:
+    ASSERT(beq)
 
     /* TODO why? What's the point of q then?
      * Error: operand mismatch -- `fmov q0,1.5'

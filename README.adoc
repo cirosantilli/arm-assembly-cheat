@@ -432,7 +432,7 @@ They are very similar, but unified is the new and better one, which we use in th
 
 Unfortunately, for backwards compatibility, GNU AS 2.31.1 and GCC 8.2.0 still use `.syntax divided` by default.
 
-The concept of unified asssembly is mentioned in ARM's official assembler documentation: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473c/BABJIHGJ.html and is often called Unified Assembly Language (UAL).
+The concept of unified assembly is mentioned in ARM's official assembler documentation: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473c/BABJIHGJ.html and is often called Unified Assembly Language (UAL).
 
 Some of the differences include:
 
@@ -1059,6 +1059,16 @@ Bibliography:
 * <<armarm7>> Appendix D6 "Common VFP Subarchitecture Specification". It is not part of the ISA, but just an extension. TODO: that spec does not seem to have the instructions documented, and instruction like `VMOV` just live with the main instructions. Is `VMOV` part of VFP?
 * https://mindplusplus.wordpress.com/2013/06/25/arm-vfp-vector-programming-part-1-introduction/
 * https://en.wikipedia.org/wiki/ARM_architecture#Floating-point_(VFP)
+
+==== fadd vs vadd
+
+It is very confusing, but `fadds` and `faddd` in ARMv7 and Aarch32 are <<unified-syntax,pre-UAL>> for `vadd.f32` and `vadd.f64`.
+
+The same goes for most ARMv7 mnemonics: `f*` is old, and `v*` is the newer better syntax.
+
+But then, in ARMv8, they decided to use `fadd` as the main floating point add name, and get rid of `vadd`!
+
+Also keep in mind that fused multiply add is `fmadd`.
 
 === Advanced SIMD instructions
 

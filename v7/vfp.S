@@ -28,6 +28,35 @@ ENTRY
     /* This branch uses the Z bit of apsr, which was set accordingly. */
     ASSERT(beq)
 
+    /* Now the same from memory with vldr and vstr. */
+.data
+my_float_0:
+    .float 1.5
+my_float_1:
+    .float 2.5
+my_float_sum_expect:
+    .float 4.0
+.bss
+my_float_sum:
+    .skip 4
+.text
+    ldr r0, =my_float_0
+    vldr s0, [r0]
+    ldr r0, =my_float_1
+    vldr s1, [r0]
+    vadd.f32 s2, s0, s1
+    ldr r0, =my_float_sum
+    vstr.f32 s2, [r0]
+    ASSERT_MEMCMP(my_float_sum, my_float_sum_expect, 4)
+
+#if 0
+    /* We can't do pseudo vldr as for ldr, fails with:
+     * Error: cannot represent CP_OFF_IMM relocation in this object file format
+     * It works on ARMv8 however, so the relocation must have been added.
+     */
+    vldr s0, my_float_0
+#endif
+
     /* vmov can also move to general purpose registers.
      *
      * Just remember that we can't use float immediates with general purpose registers:
@@ -40,7 +69,7 @@ ENTRY
     vmov r1, s1
     ASSERT_EQ_REG(r0, r1)
 
-    /* Do the sum and verify it. */
+    /* Now a more complex test function. */
     ldr r0, =sum
     ldr r1, =a1
     ldr r2, =a2
