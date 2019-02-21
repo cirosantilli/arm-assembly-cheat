@@ -14,7 +14,9 @@ sum_expect:
     .float 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0
 
 ENTRY
-    /* Minimal single floating point example. */
+    /* Minimal single precision floating point example.
+     * TODO: floating point representation constraints due to 4-byte instruction?
+     */
     vmov s0, 1.5
     vmov s1, 2.5
     vadd.f32 s2, s0, s1
@@ -56,6 +58,15 @@ my_float_sum:
      */
     vldr s0, my_float_0
 #endif
+
+    /* Minimal double precision floating point example. */
+    vmov.f64 d0, 1.5
+    vmov.f64 d1, 2.5
+    vadd.f64 d2, d0, d1
+    vmov.f64 d3, 4.0
+    vcmp.f64 d2, d3
+    vmrs apsr_nzcv, fpscr
+    ASSERT(beq)
 
     /* vmov can also move to general purpose registers.
      *
