@@ -17,7 +17,7 @@ ENTRY
     /* Minimal single floating point example. */
     vmov s0, 1.5
     vmov s1, 2.5
-    fadds s2, s0, s1
+    vadd.f32 s2, s0, s1
     vmov s3, 4.0
     /* Compare two floating point registers. Stores results in fpscr:
      * (floating point status and control register).
@@ -72,7 +72,7 @@ vec_sum:
 1:
     fldmias r1!, {s8-s15}
     fldmias r2!, {s16-s23}
-    fadds s24, s8, s16
+    vadd.f32 s24, s8, s16
     fstmias r0!, {s24-s31}
     subs r3, r3, 1
     bne 1b
@@ -97,10 +97,10 @@ reconfig:
     and r1, r1, 7
     mov r0, r0, lsl 20
     orr r0, r0, r1, lsl 16
-    fmrx r2, fpscr
+    vmrs r2, fpscr
     bic r2, 55*65536
     orr r2, r2, r0
-    fmxr fpscr, r0
+    vmsr fpscr, r0
     pop {r0-r2}
     bx lr
 
