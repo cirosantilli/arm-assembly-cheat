@@ -13,6 +13,7 @@ int main(void) {
     __asm__ (
         "fmov d1, 2.5;"
         "fadd d0, d0, d1"
-        : : : "%d0", "%d1");
+        : : : "%d0", "%d1"
+    );
     assert(d0 == 4.0);
 }

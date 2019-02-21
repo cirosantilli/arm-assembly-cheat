@@ -28,6 +28,18 @@ ENTRY
     /* This branch uses the Z bit of apsr, which was set accordingly. */
     ASSERT(beq)
 
+    /* vmov can also move to general purpose registers.
+     *
+     * Just remember that we can't use float immediates with general purpose registers:
+     * https://stackoverflow.com/questions/6514537/how-do-i-specify-immediate-floating-point-numbers-with-inline-assembly/52906126#52906126
+     */
+    mov r1, 2
+    mov r0, 1
+    vmov s0, r0
+    vmov s1, s0
+    vmov r1, s1
+    ASSERT_EQ_REG(r0, r1)
+
     /* Do the sum and verify it. */
     ldr r0, =sum
     ldr r1, =a1
