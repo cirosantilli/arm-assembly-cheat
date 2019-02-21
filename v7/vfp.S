@@ -14,6 +14,20 @@ sum_expect:
     .float 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0
 
 ENTRY
+    /* Minimal single floating point example. */
+    vmov s0, 1.5
+    vmov s1, 2.5
+    fadds s2, s0, s1
+    vmov s3, 4.0
+    /* Compare two floating point registers. Stores results in fpscr:
+     * (floating point status and control register).
+     */
+    vcmp.f32 s2, s3
+    /* Move the nzcv bits from fpscr to apsr */
+    vmrs apsr_nzcv, fpscr
+    /* This branch uses the Z bit of apsr, which was set accordingly. */
+    ASSERT(beq)
+
     /* Do the sum and verify it. */
     ldr r0, =sum
     ldr r1, =a1
@@ -21,7 +35,8 @@ ENTRY
     mov r3, 8
     bl vec_sum
     /* The assert works easily because all floats used
-     * have exact base-2 representation. */
+     * have exact base-2 representation.
+     */
     ASSERT_MEMCMP(sum, sum_expect, 0x20)
 EXIT
 

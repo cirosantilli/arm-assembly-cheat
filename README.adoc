@@ -1035,9 +1035,11 @@ This can be seen from <<armarm8>> C3.2.1 "Load/Store registerthe": `ldr` simply 
 
 Vector Floating Point extension.
 
-Example: link:v7/vfp.S[]
+Examples:
 
-Basically not implemented in ARMv8, the wiki says:
+* link:v7/vfp.S[]
+
+Basically not implemented in ARMv8 which seems to have vector floating point specified in the main spec: <<armv8-floating-point-availability>>:
 
 ____
 Some devices such as the ARM Cortex-A8 have a cut-down VFPLite module instead of a full VFP module, and require roughly ten times more clock cycles per float operation.
@@ -1054,7 +1056,7 @@ When a certain version of VFP is present on a CPU, the compiler prefix typically
 
 Bibliography:
 
-* <<armarm7>> Appendix D6 "Common VFP Subarchitecture Specification". It is not part of the ISA, but just an extension.
+* <<armarm7>> Appendix D6 "Common VFP Subarchitecture Specification". It is not part of the ISA, but just an extension. TODO: that spec does not seem to have the instructions documented, and instruction like `VMOV` just live with the main instructions. Is `VMOV` part of VFP?
 * https://mindplusplus.wordpress.com/2013/06/25/arm-vfp-vector-programming-part-1-introduction/
 * https://en.wikipedia.org/wiki/ARM_architecture#Floating-point_(VFP)
 
@@ -1109,18 +1111,21 @@ Like <<vcvt>>, but the rounding mode is selected by the FPSCR.RMode field.
 
 Selecting rounding mode explicitly per instruction was apparently not possible in ARMv7, but was made possible in <<aarch32>> e.g. with <<vcvta>>.
 
+Rounding mode selection is exposed in the ANSI C standard through link:https://en.cppreference.com/w/c/numeric/fenv/feround[`fesetround`].
+
 TODO: is the initial rounding mode specified by the ELF standard? Could not find a reference.
 
 ===== vcvta
 
 Example: link:v7/vcvt.S[]
 
-Added in ARMv8 <<aarch32>> only, not present in ARMv7, likely because different rounding modes were not available back then.
+Added in ARMv8 <<aarch32>> only, not present in ARMv7.
 
-Very similar to <<vcvt>>, but:
+In ARMv7, to use a non-round-to-zero rounding mode, you had to set the rounding mode with FPSCR and use the R version of the instruction e.g. <<vcvtr>>.
 
-* can only do float to int
-* rounds to nearest with Ties to Away (from 0.0): e.g. `1.5` ties, so it goes away from `0` to `2`
+Now in aarch32 it is possible to do it explicitly per-instruction.
+
+Also there was no ties to away mode in ARMv7. This mode does not exist in C99 either.
 
 ==== SIMD interleaving
 
