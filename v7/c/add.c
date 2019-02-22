@@ -1,4 +1,4 @@
-/* 1 + 2 == 3*/
+/* 1 + 2 == 3 */
 
 #include <assert.h>
 #include <inttypes.h>
