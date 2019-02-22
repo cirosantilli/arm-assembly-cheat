@@ -43,6 +43,13 @@ pc_relative_ldr:
 1:
     ASSERT_EQ(x0, 0x123456789ABCDEF0)
 
+    /* Analogous for b with PC. */
+    mov x0, 0
+    /* Jumps over mov to ASSERT_EQ. */
+    b 8
+    mov x0, 1
+    ASSERT_EQ(x0, 0)
+
     /* Trying to use the old "LDR (immediate)" PC-relative
      * syntax does not work.
      */
