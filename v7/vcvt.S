@@ -45,4 +45,24 @@ ENTRY
     ldr r0, =vcvt_positive_float_result
     vst1.32 {d0}, [r0]
     ASSERT_MEMCMP(vcvt_positive_float_result, vcvt_positive_float_expect, 0x8)
+
+    /* Same but with immediates.
+     *
+     * Doing this mostly to illustrate the joys of vmov.i32.
+     *
+     * For some reason, there is no vmov.i32 sn, only dn.
+     * If you try to use sn, it does the same as .f32 and
+     * stores a float instead. Horrible!
+     */
+    vmov.f32 d0, 1.5
+    vmov.i32 d1, 1
+    vcvt.u32.f32 s0, s0
+    vcmp.f32 s0, s2
+    vmrs apsr_nzcv, fpscr
+    ASSERT(beq)
+    /* Check that s1 wasn't modified by vcvt. */
+    vmov.f32 s2, 1.5
+    vcmp.f32 s1, s2
+    vmrs apsr_nzcv, fpscr
+    ASSERT(beq)
 EXIT
