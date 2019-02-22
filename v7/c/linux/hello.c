@@ -5,7 +5,6 @@
  * * https://stackoverflow.com/questions/21729497/doing-a-syscall-without-libc-using-arm-inline-assembly
  */
 
-#include <assert.h>
 #include <inttypes.h>
 
 int main(void) {
