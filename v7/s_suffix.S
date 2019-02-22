@@ -1,4 +1,4 @@
-/* https://github.com/cirosantilli/arm-assembly-cheat#movs */
+/* https://github.com/cirosantilli/arm-assembly-cheat#s-suffix */
 
 #include "common.h"
 
@@ -24,7 +24,7 @@ ENTRY
 
     /* add: the result is 0. */
     mov r0, 1
-    adds r0, #-1
+    adds r0, -1
     ASSERT(beq)
 
     /* add: result non 0. */

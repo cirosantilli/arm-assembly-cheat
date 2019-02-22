@@ -809,11 +809,13 @@ Documented at: <<armarm7>> "A4.4.1 Standard data-processing instructions"
 
 ==== S suffix
 
+Example: link:v7/s_suffix.S[]
+
 The `S` suffix, present on most <<data-processing-instructions>>, makes the instruction also set the Status register flags that control conditional jumps.
 
 If the result of the operation is `0`, then it triggers `beq`, since comparison is a subtraction, with success on 0.
 
-Example: link:v7/s_suffix.S[]
+`cmp` sets the flags by default of course.
 
 ==== adr
 
