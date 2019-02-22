@@ -7,7 +7,7 @@
 
 #include <inttypes.h>
 
-int main(void) {
+void _start(void) {
     /* write */
     char msg[] = "hello syscall v7\n";
     __asm__ (
