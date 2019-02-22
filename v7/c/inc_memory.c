@@ -8,10 +8,10 @@
 int main(void) {
     uint32_t io = 1;
     __asm__ (
-        "ldr r0, %0;"
+        "ldr r0, %[io];"
         "add r0, r0, #1;"
-        "str r0, %0;"
-        : "+m" (io)
+        "str r0, %[io];"
+        : [io] "+m" (io)
         :
         : "r0"
     );

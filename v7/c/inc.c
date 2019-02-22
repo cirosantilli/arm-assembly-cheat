@@ -6,8 +6,8 @@
 int main(void) {
     uint32_t io = 1;
     __asm__ (
-        "add %0, %0, #1;"
-        : "+r" (io)
+        "add %[io], %[io], #1;"
+        : [io] "+r" (io)
         :
         :
     );
