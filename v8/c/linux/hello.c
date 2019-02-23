@@ -4,27 +4,27 @@
 
 void _start(void) {
     /* write */
-    char msg[] = "hello syscall v7\n";
+    char msg[] = "hello syscall v8\n";
     __asm__ (
-        "mov r0, #1;" /* stdout */
-        "mov r1, %[msg];"
-        "mov r2, %[len];"
-        "mov r7, #4;" /* syscall number */
-        "svc #0;"
+        "mov x0, 1;" /* stdout */
+        "mov x1, %[msg];"
+        "mov x2, %[len];"
+        "mov x8, 64;" /* syscall number */
+        "svc 0;"
         :
         : [msg] "r" (msg),
           [len] "r" (sizeof(msg))
-        : "r0", "r1", "r2", "r7"
+        : "x0", "x1", "x2", "x8"
     );
 
     /* exit */
     uint32_t exit_status = 0;
     __asm__ (
-        "ldr r0, %[exit_status];"
-        "mov r7, #1;" /* syscall number */
-        "svc #0"
+        "ldr x0, %[exit_status];"
+        "mov x8, 93;" /* syscall number */
+        "svc 0;"
         :
         : [exit_status] "m" (exit_status)
-        : "r0", "r7"
+        : "x0", "x8"
     );
 }

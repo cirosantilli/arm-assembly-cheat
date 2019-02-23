@@ -923,12 +923,24 @@ Very similar to x86, so we will just focus on giving a few basic examples and po
 * link:v7/c/inc_memory.c[]
 * link:v7/c/inc_float.c[]
 * link:v7/c/add.c[]
-* link:v7/c/linux/hello.c[]
 * link:v7/c/reg_var.c[]
 * link:v8/c/inc.c[]
 * link:v8/c/reg_var.c[]
 * link:v8/c/reg_var_float.c[]
 * link:v8/c/multiline.cpp[]
+
+=== Freestanding Linux inline assembly system calls
+
+See also<<linux-system-calls>>:
+
+* link:v7/c/linux/hello.c[]
+* link:v8/c/linux/hello.c[]
+
+Answers:
+
+* https://stackoverflow.com/questions/10831792/how-to-use-specific-register-in-arm-inline-assembler
+* https://stackoverflow.com/questions/3929442/how-to-specify-an-individual-register-as-constraint-in-arm-gcc-inline-assembly dupe
+* https://stackoverflow.com/questions/21729497/doing-a-syscall-without-libc-using-arm-inline-assembly
 
 == Linux system calls
 
