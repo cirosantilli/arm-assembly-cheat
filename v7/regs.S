@@ -19,9 +19,13 @@ ENTRY
     mov r11, 11
     mov r12, 12
 
-    /* - r13: aliased to SP (stack pointer)
-     * - r14: aliased to LR (link register)
-     * - r15: aliased to PC
+    /* * r11: aliased to FP (frame pointer, debug stack trace usage only)
+     * +
+     * I think FP is only a convention with no instruction impact, but TODO:
+     * not mentioned on AAPCS. aarch64 AAPCS mentions it though.
+     * * r13: aliased to SP (stack pointer), what push / pop use
+     * * r14: aliased to LR (link register), what bl writes the return address to
+     * * r15: aliased to PC (program counter), contains the current instruction address
      *
      * In ARMv8, SP and PC have dedicated registers in addition to
      * the 32-general purpose ones. LR is still general purpose as before.
@@ -57,4 +61,9 @@ pc_addr:
     .word 0x12345678
 1:
     ASSERT_EQ(r0, 0x12345678)
+
+    /* We can also use fp in GNU GAS assembly. */
+    mov r11, 0
+    mov fp, 1
+    ASSERT_EQ(r11, 1)
 EXIT
