@@ -4,12 +4,12 @@
 #include <inttypes.h>
 
 int main(void) {
-    uint32_t io = 1;
+    uint32_t my_local_var = 1;
     __asm__ (
-        "add %[io], %[io], #1;"
-        : [io] "+r" (io)
+        "add %[my_local_var], %[my_local_var], #1;"
+        : [my_local_var] "+r" (my_local_var)
         :
         :
     );
-    assert(io == 2);
+    assert(my_local_var == 2);
 }

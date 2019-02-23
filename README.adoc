@@ -921,6 +921,7 @@ Very similar to x86, so we will just focus on giving a few basic examples and po
 
 * link:v7/c/inc.c[]
 * link:v7/c/inc_memory.c[]
+* link:v7/c/inc_memory_global.c[]
 * link:v7/c/inc_float.c[]
 * link:v7/c/add.c[]
 * link:v7/c/reg_var.c[]
