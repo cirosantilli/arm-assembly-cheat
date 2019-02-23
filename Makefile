@@ -82,7 +82,7 @@ ifeq ($(NATIVE),y)
 endif
 
 ifeq ($(FREESTAND),y)
-  CCFLAGS_EXTRA += -nostdlib
+  CCFLAGS_EXTRA += -ffreestanding -nostdlib -static
   DRIVER_OBJ =
   COMMON_HEADER =
 endif
