@@ -1,18 +1,31 @@
-/* TODO get working. */
+/* https://stackoverflow.com/questions/53960240/armv8-floating-point-output-inline-assembly */
 
 #include <assert.h>
 
 int main(void) {
-#if 0
-    float io = 1.5;
+    float my_float = 1.5;
     __asm__ (
-        "vmov s1, 1.0;"
-        "vadd.f32 s2, s0, s1;"
-        "vmov s3, 4.0;"
-        : "+r" (io)
+        "vmov s0, 1.0;"
+        "vadd.f32 %[my_float], %[my_float], s0;"
+        : [my_float] "+t" (my_float)
         :
-        : "s1"
+        : "s0"
     );
-    assert(io == 2.5);
+    assert(my_float == 2.5);
+
+#if 0
+    /* TODO seems to be a GCC bug:
+     * selected FPU does not support instruction -- `vadd.f64 s14,s14,d0'
+     * but manual says clearly that 'w' maps to dX registers:
+     */
+    double my_double = 1.5;
+    __asm__ (
+        "vmov.f64 d0, 1.0;"
+        "vadd.f64 %[my_double], %[my_double], d0;"
+        : [my_double] "+w" (my_double)
+        :
+        : "d0"
+    );
+    assert(my_double == 2.5);
 #endif
 }
