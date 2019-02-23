@@ -14,7 +14,7 @@ void _start(void) {
         :
         : [msg] "r" (msg),
           [len] "r" (sizeof(msg))
-        : "r0", "r1", "r2", "r7"
+        : "r0", "r1", "r2", "r7", "memory"
     );
 
     /* exit */
