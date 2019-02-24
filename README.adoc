@@ -937,6 +937,7 @@ See also<<linux-system-calls>>:
 
 * link:v7/c/linux/hello.c[]
 * link:v8/c/linux/hello.c[]
+* link:v8/c/linux/hello_clobbers.c[]
 
 Answers:
 
@@ -964,6 +965,8 @@ Sources:
 
 * link:v7/linux/hello.S[]
 * link:v8/linux/hello.S[]
+
+For some C inline assembly examples, see: <<freestanding-linux-inline-assembly-system-calls>>.
 
 Unlike most our other examples, which use the C standard library for portability, examples under `linux/` be only run on Linux.
 

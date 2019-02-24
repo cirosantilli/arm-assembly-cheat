@@ -17,6 +17,7 @@ int main(void) {
     /* TODO seems to be a GCC bug:
      * selected FPU does not support instruction -- `vadd.f64 s14,s14,d0'
      * but manual says clearly that 'w' maps to dX registers:
+     * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89482
      */
     double my_double = 1.5;
     __asm__ (

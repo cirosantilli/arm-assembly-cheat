@@ -1,30 +1,35 @@
-/* https://github.com/cirosantilli/arm-assembly-cheat#freestanding-linux-inline-assembly-system-calls */
-
 #include <inttypes.h>
 
 void _start(void) {
+    uint32_t exit_status;
+
     /* write */
-    char msg[] = "hello syscall v7\n";
-    __asm__ (
-        "mov r0, #1;" /* stdout */
-        "mov r1, %[msg];"
-        "mov r2, %[len];"
-        "mov r7, #4;" /* syscall number */
-        "svc #0;"
-        :
-        : [msg] "r" (msg),
-          [len] "r" (sizeof(msg))
-        : "r0", "r1", "r2", "r7", "memory"
-    );
+    {
+        char msg[] = "hello syscall v7\n";
+        uint32_t syscall_return;
+        register uint32_t r0 __asm__ ("r0") = 1; /* stdout */
+        register char *r1 __asm__ ("r1") = msg;
+        register uint32_t r2 __asm__ ("r2") = sizeof(msg);
+        register uint32_t r8 __asm__ ("r7") = 4; /* syscall number */
+        __asm__ __volatile__ (
+            "svc 0;"
+            : "+r" (r0)
+            : "r" (r1), "r" (r2), "r" (r8)
+            : "memory"
+        );
+        syscall_return = r0;
+        exit_status = (syscall_return != sizeof(msg));
+    }
 
     /* exit */
-    uint32_t exit_status = 0;
-    __asm__ (
-        "ldr r0, %[exit_status];"
-        "mov r7, #1;" /* syscall number */
-        "svc #0"
-        :
-        : [exit_status] "m" (exit_status)
-        : "r0", "r7"
-    );
+    {
+        register uint32_t r0 __asm__ ("r0") = exit_status;
+        register uint32_t r7 __asm__ ("r7") = 1;
+        __asm__ __volatile__ (
+            "svc 0;"
+            : "+r" (r0)
+            : "r" (r7)
+            :
+        );
+    }
 }
