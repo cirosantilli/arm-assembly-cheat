@@ -684,6 +684,14 @@ Arithmetic:
 * link:v7/rev.S[]: reverse byte order
 * link:v7/tst.S[]
 
+==== cset
+
+Example: link:v8/cset.S[]
+
+Set a register conditionally depending on the condition flags:
+
+ARMv8-only, likely because in ARMv8 you can't have conditional suffixes for every instruction.
+
 ==== Bitwise
 
 * link:v7/and.S[]
