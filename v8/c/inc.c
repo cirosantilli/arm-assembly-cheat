@@ -4,7 +4,7 @@
 int main(void) {
     uint64_t io = 1;
     __asm__ (
-        "add %[io], %[io], #1;"
+        "add %[io], %[io], 1;"
         : [io] "+r" (io)
         :
         :
