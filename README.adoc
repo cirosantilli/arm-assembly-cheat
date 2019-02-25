@@ -927,31 +927,46 @@ Bibliography:
 
 Very similar to x86, so we will just focus on giving a few basic examples and pointing out any differences from x86:
 
+* link:v7/c/add.c[]
 * link:v7/c/inc.c[]
+* link:v7/c/inc_float.c[]
 * link:v7/c/inc_memory.c[]
 * link:v7/c/inc_memory_global.c[]
-* link:v7/c/inc_float.c[]
-* link:v7/c/add.c[]
-* link:v7/c/reg_var.c[]
 * link:v8/c/earlyclobber.c[]
 * link:v8/c/inc.c[]
 * link:v8/c/inc_float.c[]
+* link:v8/c/multiline.cpp[]
+
+=== Register variables
+
+Allow for potentially more efficient assembly code when you need to store values in a specific register, explained in detail at: https://stackoverflow.com/questions/3929442/how-to-specify-an-individual-register-as-constraint-in-arm-gcc-inline-assembly/54845046#54845046
+
+The following examples are just educational but useless in practice, you should just achieve them with constraints in real code:
+
+* link:v7/c/reg_var.c[]
 * link:v8/c/reg_var.c[]
 * link:v8/c/reg_var_float.c[]
-* link:v8/c/multiline.cpp[]
+
+This feature notably useful for making system calls, see also: <<freestanding-linux-inline-assembly-system-calls>>.
+
+Documentation: https://gcc.gnu.org/onlinedocs/gcc-4.4.2/gcc/Explicit-Reg-Vars.html
 
 === Freestanding Linux inline assembly system calls
 
-See also<<linux-system-calls>>:
+Examples:
 
 * link:v7/c/linux/hello.c[]
 * link:v8/c/linux/hello.c[]
 * link:v8/c/linux/hello_clobbers.c[]
 
+See also:
+
+* <<register-variables>>
+* <<linux-system-calls>>
+
 Answers:
 
 * https://stackoverflow.com/questions/10831792/how-to-use-specific-register-in-arm-inline-assembler
-* https://stackoverflow.com/questions/3929442/how-to-specify-an-individual-register-as-constraint-in-arm-gcc-inline-assembly dupe
 * https://stackoverflow.com/questions/21729497/doing-a-syscall-without-libc-using-arm-inline-assembly
 
 == Linux system calls

@@ -15,7 +15,11 @@ ENTRY
     vcvta.u32.f32 q1, q0
     ldr r0, =vcvta_positive_result
     vst1.32 {q1}, [r0]
-    ASSERT_MEMCMP(vcvta_positive_result, vcvta_positive_expect, 0x10)
+    ASSERT_MEMCMP(
+        vcvta_positive_result,
+        vcvta_positive_expect,
+        0x10
+    )
 
     /* SIMD negative. */
 .data
@@ -29,21 +33,9 @@ ENTRY
     vcvta.s32.f32 q1, q0
     ldr r0, =vcvta_negative_result
     vst1.32 {q1}, [r0]
-    ASSERT_MEMCMP(vcvta_negative_result, vcvta_negative_expect, 0x10)
-
-    /* Floating point. */
-.data
-    vcvta_positive_float_0:      .float 1.5, 2.5
-    vcvta_positive_float_expect: .word  2
-                                 .float      2.5
-.bss
-    vcvta_positive_float_result: .skip 0x8
-.text
-    ldr r0, =vcvta_positive_float_0
-    vld1.32 {d0}, [r0]
-    vcvta.u32.f32 s0, s0
-    ldr r0, =vcvta_positive_float_result
-    vst1.32 {d0}, [r0]
-    ASSERT_MEMCMP(vcvta_positive_float_result, vcvta_positive_float_expect, 0x8)
-
+    ASSERT_MEMCMP(
+        vcvta_negative_result,
+        vcvta_negative_expect,
+        0x10
+    )
 EXIT

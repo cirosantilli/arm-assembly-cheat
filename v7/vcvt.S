@@ -46,7 +46,11 @@ ENTRY
     vst1.32 {d0}, [r0]
     ASSERT_MEMCMP(vcvt_positive_float_result, vcvt_positive_float_expect, 0x8)
 
-    /* Same but with immediates.
+    /* Floating point but with immediates.
+     *
+     * You have to worry of course about representability of
+     * the immediate in 4 bytes, which is even more fun for
+     * floating point numbers :-)
      *
      * Doing this mostly to illustrate the joys of vmov.i32.
      *
@@ -55,8 +59,8 @@ ENTRY
      * stores a float instead. Horrible!
      */
     vmov.f32 d0, 1.5
-    vmov.i32 d1, 1
     vcvt.u32.f32 s0, s0
+    vmov.i32 d1, 1
     vcmp.f32 s0, s2
     vmrs apsr_nzcv, fpscr
     ASSERT(beq)
@@ -65,4 +69,23 @@ ENTRY
     vcmp.f32 s1, s2
     vmrs apsr_nzcv, fpscr
     ASSERT(beq)
+
+    /* Floating point double precision. */
+.data
+    vcvt_positive_double_0:      .double 1.5
+    vcvt_positive_double_expect: .word   1
+    .skip   4
+.bss
+    vcvt_positive_double_result: .skip 0x8
+.text
+    ldr r0, =vcvt_positive_double_0
+    vld1.64 {d0}, [r0]
+    vcvt.u32.f64 s0, d0
+    ldr r0, =vcvt_positive_double_result
+    vst1.32 {d0}, [r0]
+    ASSERT_MEMCMP(
+        vcvt_positive_double_result,
+        vcvt_positive_double_expect,
+        0x4
+    )
 EXIT
