@@ -74,7 +74,6 @@ ENTRY
 .data
     vcvt_positive_double_0:      .double 1.5
     vcvt_positive_double_expect: .word   1
-    .skip   4
 .bss
     vcvt_positive_double_result: .skip 0x8
 .text
