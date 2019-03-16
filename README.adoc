@@ -9,6 +9,24 @@
 :toclevels: 6
 :toc-title:
 
+Almost all the content in this repository has been moved to: https://github.com/cirosantilli/linux-kernel-module-cheat#arm-assembly only the core infrastructure was left here.
+
+Notable advantages of LKMC repository include:
+
+* a single unified cross arch setup for ARM and x86_64
+* gem5 support. This is because we have integration of QEMU / gem5 / buildroot setups already done there.
+* parallel testing. Mostly because the build system there is Python, which is more flexible.
+
+There is only one use case left for this repository: since this is more minimal, it is easier to upgrate to the latest binutils-gdb here, in order to get very new instructions.
+
+The initial motivation for that was link:v8/sve.S[], although that specific case will soon be covered on LKMC as well most likely.
+
+I might however start taking some risks on LKMC and upgrading binutils-gdb to master when needed anyways, or just build the latest binutils-gdb myself over there for userland only.
+
+No major new features are intended to be added here.
+
+Old README follows:
+
 ARMv7 and <<ARMv8>> assembly userland minimal examples tutorial. Runnable <<asserts,asserts>> on x86 hosts with QEMU user mode or natively on ARM targets. Nice <<gdb-step-debug>> setup. Tested on Ubuntu 18.04 host and <<rpi2,Raspberry Pi 2>> and <<rpi3,3>> targets. Baremetal setup at: https://github.com/cirosantilli/linux-kernel-module-cheat#baremetal-setup x86 cheat at: https://github.com/cirosantilli/x86-assembly-cheat
 
 toc::[]
@@ -888,41 +906,6 @@ Newer version of thumb that allows encoding almost all instructions, TODO exampl
 
 Bibliography: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0471i/CHDFEDDB.html
 
-[[aapcs]]
-== Calling convention
-
-Call C standard library functions from assembly and vice versa.
-
-Examples:
-
-* link:v7/c_from_asm.S[]
-* link:v8/c/asm_from_c.c[]
-
-`c_from_asm` usage:
-
-....
-cd v7
-./t c_from_asm
-....
-
-Output:
-
-....
-hello puts
-hello printf 12345678
-....
-
-ARM Architecture Procedure Call Standard (AAPCS) is the name that ARM Holdings gives to the calling convention.
-
-Official specification: http://infocenter.arm.com/help/topic/com.arm.doc.ihi0042f/IHI0042F_aapcs.pdf
-
-Bibliography:
-
-* https://en.wikipedia.org/wiki/Calling_convention#ARM_(A32) Wiki contains the master list as usual.
-* http://stackoverflow.com/questions/8422287/calling-c-functions-from-arm-assembly
-* http://stackoverflow.com/questions/261419/arm-to-c-calling-convention-registers-to-save
-* https://stackoverflow.com/questions/10494848/arm-whats-the-difference-between-apcs-and-aapcs-abi
-
 == Inline assembly
 
 Very similar to x86, so we will just focus on giving a few basic examples and pointing out any differences from x86:
@@ -950,62 +933,6 @@ The following examples are just educational but useless in practice, you should 
 This feature notably useful for making system calls, see also: <<freestanding-linux-inline-assembly-system-calls>>.
 
 Documentation: https://gcc.gnu.org/onlinedocs/gcc-4.4.2/gcc/Explicit-Reg-Vars.html
-
-=== Freestanding Linux inline assembly system calls
-
-Examples:
-
-* link:v7/c/linux/hello.c[]
-* link:v8/c/linux/hello.c[]
-* link:v8/c/linux/hello_clobbers.c[]
-
-See also:
-
-* <<register-variables>>
-* <<linux-system-calls>>
-
-Answers:
-
-* https://stackoverflow.com/questions/10831792/how-to-use-specific-register-in-arm-inline-assembler
-* https://stackoverflow.com/questions/21729497/doing-a-syscall-without-libc-using-arm-inline-assembly
-
-== Linux system calls
-
-Do a `write` and `exit` raw Linux system calls:
-
-....
-make -C v7/linux test
-make -C v8/linux test
-....
-
-Outcome for each:
-
-....
-hello syscall v7
-hello syscall v8
-....
-
-Sources:
-
-* link:v7/linux/hello.S[]
-* link:v8/linux/hello.S[]
-
-For some C inline assembly examples, see: <<freestanding-linux-inline-assembly-system-calls>>.
-
-Unlike most our other examples, which use the C standard library for portability, examples under `linux/` be only run on Linux.
-
-Such executables are called free-standing, because they don't execute the glibc initialization code, but rather start directly on our custom hand written assembly.
-
-The syscall numbers are defined at:
-
-* v7: https://github.com/torvalds/linux/blob/v4.17/arch/arm/tools/syscall.tbl
-* v8: https://github.com/torvalds/linux/blob/v4.17/include/uapi/asm-generic/unistd.h
-
-Bibliography:
-
-* https://stackoverflow.com/questions/12946958/what-is-the-interface-for-arm-system-calls-and-where-is-it-defined-in-the-linux
-* https://stackoverflow.com/questions/45742869/linux-syscall-conventions-for-armv8
-* https://reverseengineering.stackexchange.com/questions/16917/arm64-syscalls-table
 
 == ARMv8
 
