@@ -377,37 +377,6 @@ E.g., to pass `-static` for an emulator that does not support dynamically linked
 make CCFLAGS_CLI=-static
 ....
 
-== ARM Instruction encoding
-
-Understanding the basics of instruction encodings is fundamental to help you to remember what instructions do and why some things are possible or not.
-
-=== ARM instruction length
-
-Every ARMv7 instruction is 4 bytes long.
-
-This RISC-y design likely makes processor design easier and allows for certain optimizations, at the cost of slightly more complex assembly. Totally worth it.
-
-<<Thumb>> is an alternative encoding.
-
-=== Thumb
-
-Variable bit encoding where instructions are either 4 or 2 bytes.
-
-In general cannot encode conditional instructions, but <<thumb-2>> can.
-
-Example: link:userland/arch/arm/thumb.S[]
-
-Bibliography:
-
-* https://stackoverflow.com/questions/28669905/what-is-the-difference-between-the-arm-thumb-and-thumb-2-instruction-encodings
-* https://reverseengineering.stackexchange.com/questions/6080/how-to-detect-thumb-mode-in-arm-disassembly
-
-=== Thumb-2
-
-Newer version of thumb that allows encoding almost all instructions, TODO example.
-
-Bibliography: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0471i/CHDFEDDB.html
-
 == Floating point
 
 === VFP
@@ -470,50 +439,6 @@ Register files are documented at:
 
 Notice how Sn is very different between v7 and v8! In v7 it goes across Dn, and in v8 inside each Dn.
 
-==== vcvt
-
-Example: link:userland/arch/arm/vcvt.S[]
-
-Convert between integers and floating point.
-
-<<armarm7>> on rounding:
-
-____
-The floating-point to fixed-point operation uses the Round towards Zero rounding mode. The fixed-point to floating-point operation uses the Round to Nearest rounding mode.
-____
-
-Notice how the opcode takes two types.
-
-E.g., in our 32-bit float to 32-bit unsigned example we use:
-
-....
-vld1.32.f32
-....
-
-===== vcvtr
-
-Example: link:userland/arch/arm/vcvtr.S[]
-
-Like <<vcvt>>, but the rounding mode is selected by the FPSCR.RMode field.
-
-Selecting rounding mode explicitly per instruction was apparently not possible in ARMv7, but was made possible in <<aarch32>> e.g. with <<vcvta>>.
-
-Rounding mode selection is exposed in the ANSI C standard through link:https://en.cppreference.com/w/c/numeric/fenv/feround[`fesetround`].
-
-TODO: is the initial rounding mode specified by the ELF standard? Could not find a reference.
-
-===== vcvta
-
-Example: link:userland/arch/arm/vcvt.S[]
-
-Added in ARMv8 <<aarch32>> only, not present in ARMv7.
-
-In ARMv7, to use a non-round-to-zero rounding mode, you had to set the rounding mode with FPSCR and use the R version of the instruction e.g. <<vcvtr>>.
-
-Now in aarch32 it is possible to do it explicitly per-instruction.
-
-Also there was no ties to away mode in ARMv7. This mode does not exist in C99 either.
-
 ==== SIMD interleaving
 
 Example: link:userland/arch/aarch64/simd_interleave.S[]
@@ -528,7 +453,7 @@ TODO confirm: can load up to 4 vectors at once.
 
 ==== Advanced SIMD instructions bibliography
 
-Non-formal introductory tutorials are extrmerly scarce.
+Non-formal introductory tutorials are extremely scarce.
 
 A few good ways to get your hands on some examples include:
 
@@ -540,7 +465,7 @@ A few good ways to get your hands on some examples include:
 
 ==== NEON
 
-Just an informal name for the "Avanced SIMD instructions"? Very confusing.
+Just an informal name for the "Advanced SIMD instructions"? Very confusing.
 
 <<armarm8>> F2.9 "Additional information about Advanced SIMD and floating-point instructions" says:
 
