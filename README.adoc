@@ -9,17 +9,20 @@
 :toclevels: 6
 :toc-title:
 
-Almost all the content in this repository has been moved to: https://github.com/cirosantilli/linux-kernel-module-cheat#arm-assembly only the core infrastructure was left here.
+Almost all the content in this repository has been moved to: https://github.com/cirosantilli/linux-kernel-module-cheat#arm-assembly
 
 Notable advantages of LKMC repository include:
 
-* a single unified cross arch setup for ARM and x86_64
+* a single unified cross arch setup for ARM and x86_64, with cross arch concepts all nicely factored out
 * gem5 support. This is because we have integration of QEMU / gem5 / buildroot setups already done there.
 * parallel testing. Mostly because the build system there is Python, which is more flexible.
+* other stuff I can't remember right now. That setup just has a ton of features, and will continue to get more and more ;-)
 
-There is only one use case left for this repository: since this is more minimal, it is easier to upgrate to the latest binutils-gdb here, in order to get very new instructions.
+Only the core infrastructure of this repo was left here.
 
-The initial motivation for that was link:v8/sve.S[], although that specific case will soon be covered on LKMC as well most likely.
+There is only one use case left for this repository: since this is more minimal, it is easier to upgrate to the latest binutils-gdb here, in order to get very latest instructions.
+
+The initial motivation for that was <<sve>> although that specific case will soon be covered on LKMC as well.
 
 I might however start taking some risks on LKMC and upgrading binutils-gdb to master when needed anyways, or just build the latest binutils-gdb myself over there for userland only.
 
@@ -75,7 +78,7 @@ E.g.:
 make test-add
 ....
 
-will run link:v7/add.S[].
+will run link:userland/arch/arm/add.S[].
 
 This just tests some assertions, but does not output anything. See: <<asserts>>.
 
@@ -118,7 +121,7 @@ Almost all example don't output anything, they just assert that the computations
 
 Failures however output clear error messages.
 
-Try messing with the examples to see them fail, e.g. modify link:v7/add.S[] to contain:
+Try messing with the examples to see them fail, e.g. modify link:userland/arch/arm/add.S[] to contain:
 
 ....
 mov r0, #1
@@ -374,512 +377,11 @@ E.g., to pass `-static` for an emulator that does not support dynamically linked
 make CCFLAGS_CLI=-static
 ....
 
-== ARM assembly basics
-
-=== Registers
-
-Examples:
-
-* link:v7/regs.S[]
-* link:v8/regs.S[]
-* link:v8/pc.S[]
-
-Bibliography: <<armarm7>> A2.3 "ARM core registers".
-
-==== ARMv8 x31
-
-Example: link:v8/x31.S[]
-
-There is no `x31` name, and the encoding can have two different names depending on the instruction:
-
-* `xzr`: zero register:
-** https://stackoverflow.com/questions/42788696/why-might-one-use-the-xzr-register-instead-of-the-literal-0-on-armv8
-** https://community.arm.com/processors/f/discussions/3185/wzr-xzr-register-s-purpose
-* `sp`: stack pointer
-
-To make things more confusing, some aliases can take either name, which makes them alias to different things, e.g. `mov` accepts both:
-
-....
-mov x0, sp
-mov x0, xzr
-....
-
-and the first one is an alias to `add` while the second an alias to `orr`.
-
-The difference is documented on a per instruction basis. Instructions that encode 31 as SP say:
-
-....
-if d == 31 then
-  SP[] = result;
-else
-  X[d] = result;
-....
-
-And then those that don't say that, B1.2.1 "Registers in AArch64 state" implies the zero register:
-
-____
-In instruction encodings, the value 0b11111 (31) is used to indicate the ZR (zero register). This 
-indicates that the argument takes the value zero, but does not indicate that the ZR is implemented 
-as a physical register.
-____
-
-This is also described on <<armarm8>> C1.2.5 "Register names":
-
-____
-There is no register named W31 or X31.
-
-The name SP represents the stack pointer for 64-bit operands where an encoding of the value 31 in the
-corresponding register field is interpreted as a read or write of the current stack pointer. When instructions
-do not interpret this operand encoding as the stack pointer, use of the name SP is an error.
-
-The name XZR represents the zero register for 64-bit operands where an encoding of the value 31 in the
-corresponding register field is interpreted as returning zero when read or discarding the result when written.
-When instructions do not interpret this operand encoding as the zero register, use of the name XZR is an error
-____
-
-=== GAS syntax
-
-==== Unified syntax
-
-There are two types of ARMv7 assemblies:
-
-* `.syntax divided`
-* `.syntax unified`
-
-They are very similar, but unified is the new and better one, which we use in this tutorial.
-
-Unfortunately, for backwards compatibility, GNU AS 2.31.1 and GCC 8.2.0 still use `.syntax divided` by default.
-
-The concept of unified assembly is mentioned in ARM's official assembler documentation: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0473c/BABJIHGJ.html and is often called Unified Assembly Language (UAL).
-
-Some of the differences include:
-
-* `#` is optional in unified syntax int literals, see <<immediates>>
-* many mnemonics changed:
-** most of them are condition code position changes, e.g. `andseq` vs `andeqs`: https://stackoverflow.com/questions/51184921/wierd-gcc-behaviour-with-arm-assembler-andseq-instruction
-** but there are some more drastic ones, e.g. `swi` vs `svc`: https://stackoverflow.com/questions/8459279/are-arm-instructuons-swi-and-svc-exactly-same-thing/54078731#54078731
-* cannot have implicit destination with shift, see: <<shift-suffixes>>
-
-==== Immediates
-
-The requirement for hash `#` and dollar `$` prefixes varies across v7, where it depends on `.syntax`, and v8.
-
-Fuller explanation: https://stackoverflow.com/questions/21652884/is-the-hash-required-for-immediate-values-in-arm-assembly/51987780#51987780
-
-Examples:
-
-* link:v7/immediates.S[]
-* link:v8/immediates.S[]
-
-For the grep: integer literals.
-
-==== Comments
-
-Full explanation: https://stackoverflow.com/questions/15663280/how-to-make-the-gnu-assembler-use-a-slash-for-comments/51991349#51991349
-
-Examples:
-
-* link:v7/comments.S[]
-* link:v8/comments.S[]
-
-==== .n and .w suffixes
-
-When reading <<disassemble,disassembly>>, many instructions have either a `.n` or `.w` suffix.
-
-`.n` means narrow, and stands for the Thumb encoding of an instructions, while `.w` means wide and stands for the ARM encoding.
-
-Bibliography: https://stackoverflow.com/questions/27147043/n-suffix-to-branch-instruction
-
-== Instructions
-
-Grouping loosely based on that of the <<armarm7>> Chapter A4 "The Instruction Sets".
-
-=== Branch instructions
-
-==== b
-
-Unconditional branch.
-
-Example: link:v7/b.S[]
-
-The encoding stores `pc` offsets in 24 bits. The destination must be a multiple of 4, which is easy since all instructions are 4 bytes.
-
-This allows for 26 bit long jumps, which is 64 MiB.
-
-TODO: what to do if we want to jump longer than that?
-
-==== beq
-
-Branch if equal based on the status registers.
-
-Example: link:v7/beq.S[].
-
-The family of instructions includes:
-
-* `beq`: branch if equal
-* `bne`: branch if not equal
-* `ble`: less or equal
-* `bge`: greater or equal
-* `blt`: less than
-* `bgt`: greater than
-
-==== bl
-
-Branch with link, i.e. branch and store the return address on the `rl` register.
-
-Example: link:v7/bl.S[]
-
-This is the major way to make function calls.
-
-The current ARM / Thumb mode is encoded in the least significant bit of lr.
-
-===== bx
-
-`bx`: branch and switch between ARM / Thumb mode, encoded in the least significant bit of the given register.
-
-`bx lr` is the main way to return from function calls after a `bl` call.
-
-Since `bl` encodes the current ARM / Thumb in the register, `bx` keeps the mode unchanged by default.
-
-===== ret
-
-Example: link:v8/ret.S[]
-
-In ARMv8 aarch64:
-
-* there is no `bx` since no Thumb to worry about, so it is called just `br`
-* the `ret` instruction was added in addition to `br`, with the following differences:
-** provides a hint that this is a function call return
-** has a default argument `x30` if none is given. This is where `bl` puts the return value.
-
-See also: https://stackoverflow.com/questions/32304646/arm-assembly-branch-to-address-inside-register-or-memory/54145818#54145818
-
-==== cbz
-
-Compare and branch if zero.
-
-Example: link:v8/cbz.S[]
-
-Only in ARMv8 and ARMv7 Thumb mode, not in armv7 ARM mode.
-
-Very handy!
-
-==== Conditional execution
-
-Weirdly, <<b>> and family are not the only instructions that can execute conditionally on the flags: the same also applies to most instructions, e.g. `add`.
-
-Example: link:v7/cond.S[]
-
-Just add the usual `eq`, `ne`, etc. suffixes just as for `b`.
-
-The list of all extensions is documented at <<armarm7>> "A8.3 Conditional execution".
-
-=== Load and store instructions
-
-In ARM, there are only two instruction families that do memory access: <<ldr>>  to load and <<str>> to store.
-
-Everything else works on register and immediates.
-
-This is part of the RISC-y beauty of the ARM instruction set, unlike x86 in which several operations can read from memory, and helps to predict how to optimize for a given CPU pipeline.
-
-This kind of architecture is called a link:https://en.wikipedia.org/wiki/Load/store_architecture[Load/store architecture].
-
-==== ldr
-
-===== ldr pseudo-instruction
-
-`ldr` can be either a regular instruction that loads stuff into memory, or also a pseudo-instruction (assembler magic): http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0041c/Babbfdih.html
-
-The pseudo instruction version is when an equal sign appears on one of the operators.
-
-The `ldr` pseudo instruction can automatically create hidden variables in a place called the "literal pool", and load them from memory with PC relative loads.
-
-Example: link:v7/ldr_pseudo.S[]
-
-This is done basically because all instructions are 32-bit wide, and there is not enough space to encode 32-bit addresses in them.
-
-Bibliography:
-
-* https://stackoverflow.com/questions/37840754/what-does-an-equals-sign-on-the-right-side-of-a-ldr-instruction-in-arm-mean
-* https://stackoverflow.com/questions/17214962/what-is-the-difference-between-label-equals-sign-and-label-brackets-in-ar
-* https://stackoverflow.com/questions/14046686/why-use-ldr-over-mov-or-vice-versa-in-arm-assembly
-
-===== Addressing modes
-
-Example: link:v7/address_modes.S[]
-
-Load and store instructions can update the source register with the following modes:
-
-* offset: add an offset, don't change the address register. Notation:
-+
-....
-ldr r1, [r0, 4]
-....
-* pre-indexed: change the address register, and then use it modified. Notation:
-+
-....
-ldr r1, [r0, 4]!
-....
-* post-indexed: use the address register unmodified, and then modify it. Notation:
-+
-....
-ldr r1, [r0], 4
-....
-
-The offset itself can come from the following sources:
-
-* immediate
-* register
-* scaled register: left shift the register and use that as an offset
-
-The indexed modes are convenient to loop over arrays.
-
-Bibliography: <<armarm7>>:
-
-* A4.6.5 "Addressing modes"
-* A8.5 "Memory accesses"
-
-====== Loop over array
-
-As an application of the post-indexed addressing mode, let's increment an array.
-
-Example: link:v7/inc_array.S[]
-
-===== ldrh and ldrb
-
-There are `ldr` variants that load less than full 4 bytes:
-
-* link:v7/ldrb.S[]: load byte
-* link:v7/ldrh.S[]: load half word
-
-==== str
-
-Store from memory into registers.
-
-Example: link:v7/str.S[]
-
-Basically everything that applies to <<ldr>> also applies here so we won't go into much detail.
-
-==== ldmia
-
-Pop values form stack into the register and optionally update the address register.
-
-`stmdb` is the push version.
-
-Example: link:v7/ldmia.S[]
-
-The mnemonics stand for:
-
-* `stmdb`: STore Multiple Decrement Before
-* `ldmia`: LoaD Multiple Increment After
-
-Example: link:v7/push.S[]
-
-`push` and `pop` are just mnemonics `stdmdb` and `ldmia` using the stack pointer `sp` as address register:
-
-....
-stmdb sp!, reglist
-ldmia sp!, reglist
-....
-
-The `!` indicates that we want to update the register.
-
-The registers are encoded as single bits inside the instruction: each bit represents one register.
-
-As a consequence, the push order is fixed no matter how you write the assembly instruction: there is just not enough space to encode ordering.
-
-AArch64 loses those instructions, likely because it was not possible anymore to encode all registers: http://stackoverflow.com/questions/27941220/push-lr-and-pop-lr-in-arm-arch64 and replaces them with `stp` and `ldp`.
-
-=== Data processing instructions
-
-Arithmetic:
-
-* link:v7/add.S[]. We use this simple instruction to explain syntax common to most data processing instructions, so have a good look at that file.
-** link:v8/add.S[]
-* link:v7/mul.S[]: multiply
-* link:v7/sub.S[]: subtract
-* link:v7/rbit.S[]: reverse bit order
-* link:v7/rev.S[]: reverse byte order
-* link:v7/tst.S[]
-
-==== cset
-
-Example: link:v8/cset.S[]
-
-Set a register conditionally depending on the condition flags:
-
-ARMv8-only, likely because in ARMv8 you can't have conditional suffixes for every instruction.
-
-==== Bitwise
-
-* link:v7/and.S[]
-* `eor`: exclusive OR
-* `orr`: OR
-* link:v7/clz.S[]: count leading zeroes
-
-===== bic
-
-Bitwise Bit Clear: clear some bits.
-
-....
-dest = `left & ~right`
-....
-
-Example: link:v7/bic.S[]
-
-===== ubfm
-
-Unsigned Bitfield Move.
-
-____
-copies any number of low-order bits from a source register into the same number of adjacent bits at any position in the destination register, with zeros in the upper and lower bits.
-____
-
-Example: link:v8/ubfm.S[]
-
-TODO: explain full behaviour. Very complicated. Has several simpler to understand aliases.
-
-====== ubfx
-
-Alias for:
-
-....
-UBFM <Wd>, <Wn>, #<lsb>, #(<lsb>+<width>-1)
-....
-
-Example: link:v8/ubfx.S[]
-
-The operation:
-
-....
-UBFX dest, src, lsb, width
-....
-
-does:
-
-....
-dest = (src & ((1 << width) - 1)) >> lsb;
-....
-
-Bibliography: https://stackoverflow.com/questions/8366625/arm-bit-field-extract
-
-===== bfm
-
-TODO: explain. Similar to <<ubfm>> but leave untouched bits unmodified.
-
-====== bfi
-
-Examples:
-
-* link:v7/bfi[]
-* link:v8/bfi[]
-
-Move the lower bits of source register into any position in the destination:
-
-* ARMv8: an alias for <<bfm>>
-* ARMv7: a real instruction
-
-==== mov
-
-Move an immediate to a register, or a register to another register.
-
-Cannot load from or to memory, since only the `ldr` and `str` instruction families can do that in ARM: <<load-and-store-instructions>>
-
-Example: link:v7/mov.S[]
-
-Since every instruction <<instruction-length,has a fixed 4 byte size>>, there is not enough space to encode arbitrary 32-bit immediates in a single instruction, since some of the bits are needed to actually encode the instruction itself.
-
-The solutions to this problem are mentioned at:
-
-* https://stackoverflow.com/questions/38689886/loading-32-bit-values-to-a-register-in-arm-assembly
-* https://community.arm.com/processors/b/blog/posts/how-to-load-constants-in-assembly-for-arm-architecture
-
-Summary of solutions:
-
-* <<movw-and-movt>>
-* place it in memory. But then how to load the address, which is also a 32-bit value?
-** use pc-relative addressing if the memory is close enough
-** use `orr` encodable shifted immediates
-
-The blog article summarizes nicely which immediates can be encoded and the design rationale:
-
-____
-An Operand 2 immediate must obey the following rule to fit in the instruction: an 8-bit value rotated right by an even number of bits between 0 and 30 (inclusive). This allows for constants such as 0xFF (0xFF rotated right by 0), 0xFF00 (0xFF rotated right by 24) or 0xF000000F (0xFF rotated right by 4).
-
-In software - especially in languages like C - constants tend to be small. When they are not small they tend to be bit masks. Operand 2 immediates provide a reasonable compromise between constant coverage and encoding space; most common constants can be encoded directly.
-____
-
-Assemblers however support magic memory allocations which may hide what is truly going on: https://stackoverflow.com/questions/14046686/why-use-ldr-over-mov-or-vice-versa-in-arm-assembly Always ask your friendly disassembly for a good confirmation.
-
-==== movw and movt
-
-Set the higher or lower 16 bits of a register to an immediate in one go.
-
-Example: link:v7/movw.S[]
-
-The <<armv8>> version analogue is <<movk>>.
-
-==== Shift suffixes
-
-Most data processing instructions can also optionally shift the second register operand.
-
-Example: link:v7/shift.S[]
-
-The shift types are:
-
-* `lsr` and `lfl`: Logical Shift Right / Left. Insert zeroes.
-* `ror`: Rotate Right / Left. Wrap bits around.
-* `asr`: Arithmetic Shift Right. Keep sign.
-
-Documented at: <<armarm7>> "A4.4.1 Standard data-processing instructions"
-
-==== S suffix
-
-Example: link:v7/s_suffix.S[]
-
-The `S` suffix, present on most <<data-processing-instructions>>, makes the instruction also set the Status register flags that control conditional jumps.
-
-If the result of the operation is `0`, then it triggers `beq`, since comparison is a subtraction, with success on 0.
-
-`cmp` sets the flags by default of course.
-
-==== adr
-
-Similar rationale to the <<ldr-pseudo-instruction>>, allowing to easily store a PC-relative reachable address into a register in one go, to overcome the 4-byte fixed instruction size.
-
-Examples:
-
-* link:v7/adr.S[]
-* link:v8/adr.S[]
-* link:v8/adrp.S[]
-
-More details: https://stackoverflow.com/questions/41906688/what-are-the-semantics-of-adrp-and-adrl-instructions-in-arm-assembly/54042899#54042899
-
-===== adrl
-
-See: <<adr>>.
-
-=== Miscellaneous instructions
-
-==== nop
-
-There are a few different ways to encode `nop`, notably `mov` a register into itself, and a dedicated miscellaneous instruction.
-
-Example: link:v7/nop.S[]
-
-Try disassembling the executable to see what the assembler is emitting:
-
-....
-gdb-multiarch -batch -ex 'arch arm' -ex "file v7/nop.out" -ex "disassemble/rs asm_main_after_prologue"
-....
-
-Bibliography: https://stackoverflow.com/questions/1875491/nop-for-iphone-binaries
-
-== Instruction encoding
+== ARM Instruction encoding
 
 Understanding the basics of instruction encodings is fundamental to help you to remember what instructions do and why some things are possible or not.
 
-=== Instruction length
+=== ARM instruction length
 
 Every ARMv7 instruction is 4 bytes long.
 
@@ -893,7 +395,7 @@ Variable bit encoding where instructions are either 4 or 2 bytes.
 
 In general cannot encode conditional instructions, but <<thumb-2>> can.
 
-Example: link:v7/thumb.S[]
+Example: link:userland/arch/arm/thumb.S[]
 
 Bibliography:
 
@@ -906,102 +408,6 @@ Newer version of thumb that allows encoding almost all instructions, TODO exampl
 
 Bibliography: http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0471i/CHDFEDDB.html
 
-== Inline assembly
-
-Very similar to x86, so we will just focus on giving a few basic examples and pointing out any differences from x86:
-
-* link:v7/c/add.c[]
-* link:v7/c/inc.c[]
-* link:v7/c/inc_float.c[]
-* link:v7/c/inc_memory.c[]
-* link:v7/c/inc_memory_global.c[]
-* link:v8/c/earlyclobber.c[]
-* link:v8/c/inc.c[]
-* link:v8/c/inc_float.c[]
-* link:v8/c/multiline.cpp[]
-
-=== Register variables
-
-Allow for potentially more efficient assembly code when you need to store values in a specific register, explained in detail at: https://stackoverflow.com/questions/3929442/how-to-specify-an-individual-register-as-constraint-in-arm-gcc-inline-assembly/54845046#54845046
-
-The following examples are just educational but useless in practice, you should just achieve them with constraints in real code:
-
-* link:v7/c/reg_var.c[]
-* link:v8/c/reg_var.c[]
-* link:v8/c/reg_var_float.c[]
-
-This feature notably useful for making system calls, see also: <<freestanding-linux-inline-assembly-system-calls>>.
-
-Documentation: https://gcc.gnu.org/onlinedocs/gcc-4.4.2/gcc/Explicit-Reg-Vars.html
-
-== ARMv8
-
-In this repository we will document only points where ARMv8 differs from ARMv7 behaviour: so you should likely learn ARMv7 first.
-
-ARMv8 is the 64 bit version of the ARM architecture.
-
-It has two states:
-
-* <<aarch32>>
-* AArch64: 64-bit mode, the main mode of operation
-
-Great summary of differences from AArch32: <https://en.wikipedia.org/wiki/ARM_architecture#AArch64_features>
-
-ARMv8 was link:https://developer.arm.com/docs/den0024/latest/preface[released in 2013].
-
-Some random ones, TODO create clean examples of them:
-
-* the stack has to 16-byte aligned. Therefore, the main way to push things to stack is `ldp` and  `stp`, which push two 8 byte registers at a time
-
-=== AArch32
-
-32-bit mode of operation of ARMv8.
-
-Userland is highly / fully backwards compatible with ARMv7:
-
-* https://stackoverflow.com/questions/42972096/armv8-backward-compatibility-with-armv7-snapdragon-820-vs-cortex-a15
-* https://stackoverflow.com/questions/31848185/does-armv8-aarch32-mode-has-backward-compatible-with-armv4-armv5-or-armv6
-
-For this reason, QEMU and GAS seems to enable both AArch32 and ARMv7 under `arm` rather than `aarch64`.
-
-There are however some extensions over ARMv7, many of them are functionality that ARMv8 has and that designers decided to expose on AArch32 as well, e.g.:
-
-* <<vcvta>>
-
-=== movk
-
-Fill a 64 bit register with 4 16-bit instructions one at a time.
-
-Similar to <<movw-and-movt>> in v7.
-
-Example: link:v8/movk.S[]
-
-Bibliography: https://stackoverflow.com/questions/27938768/moving-a-32-bit-constant-in-arm-arch64-register
-
-==== movn
-
-Set 16-bits negated and the rest to `1`.
-
-Example: link:v8/movn.S[]
-
-=== stp
-
-Push a pair of registers to the stack.
-
-TODO minimal example. Currently used on link:v8/commmon_arch.h[] since it is the main way to restore register state.
-
-=== ARMv8 str
-
-PC-relative `str` is not possibl in ARMv8.
-
-For `ldr` it works <<ldr,as in ARMv7>>.
-
-As a result, it is not possible to load from the literal pool for `str`.
-
-Example: link:v8/str.S[]
-
-This can be seen from <<armarm8>> C3.2.1 "Load/Store registerthe": `ldr` simply has on extra PC encoding that `str` does not.
-
 == Floating point
 
 === VFP
@@ -1010,7 +416,7 @@ Vector Floating Point extension.
 
 Examples:
 
-* link:v7/vfp.S[]
+* link:userland/arch/arm/vfp.S[]
 
 Basically not implemented in ARMv8 which seems to have vector floating point specified in the main spec: <<armv8-floating-point-availability>>:
 
@@ -1035,7 +441,7 @@ Bibliography:
 
 ==== fadd vs vadd
 
-It is very confusing, but `fadds` and `faddd` in ARMv7 and Aarch32 are <<unified-syntax,pre-UAL>> for `vadd.f32` and `vadd.f64`.
+It is very confusing, but `fadds` and `faddd` in ARMv7 and Aarch32 are <<gnu-gas-assembler-arm-unified-syntax,pre-UAL>> for `vadd.f32` and `vadd.f64`.
 
 The same goes for most ARMv7 mnemonics: `f*` is old, and `v*` is the newer better syntax.
 
@@ -1047,9 +453,7 @@ Also keep in mind that fused multiply add is `fmadd`.
 
 Examples:
 
-* link:v7/simd.S[]
-* link:v8/floating_point.S[]
-* link:v8/simd.S[]
+* link:userland/arch/aarch64/floating_point.S[]
 
 The <<armarm8>> specifies floating point support in the main architecture at A1.5 "Advanced SIMD and floating-point support".
 
@@ -1068,7 +472,7 @@ Notice how Sn is very different between v7 and v8! In v7 it goes across Dn, and 
 
 ==== vcvt
 
-Example: link:v7/vcvt.S[]
+Example: link:userland/arch/arm/vcvt.S[]
 
 Convert between integers and floating point.
 
@@ -1088,7 +492,7 @@ vld1.32.f32
 
 ===== vcvtr
 
-Example: link:v7/vcvtr.S[]
+Example: link:userland/arch/arm/vcvtr.S[]
 
 Like <<vcvt>>, but the rounding mode is selected by the FPSCR.RMode field.
 
@@ -1100,7 +504,7 @@ TODO: is the initial rounding mode specified by the ELF standard? Could not find
 
 ===== vcvta
 
-Example: link:v7/vcvt.S[]
+Example: link:userland/arch/arm/vcvt.S[]
 
 Added in ARMv8 <<aarch32>> only, not present in ARMv7.
 
@@ -1112,7 +516,7 @@ Also there was no ties to away mode in ARMv7. This mode does not exist in C99 ei
 
 ==== SIMD interleaving
 
-Example: link:v8/simd_interleave.S[]
+Example: link:userland/arch/aarch64/simd_interleave.S[]
 
 We can load multiple vectors from memory in one instruction.
 
@@ -1128,7 +532,6 @@ Non-formal introductory tutorials are extrmerly scarce.
 
 A few good ways to get your hands on some examples include:
 
-* disassemble some minimal floating-point C code
 * look through GAS tests under link:https://sourceware.org/git/gitweb.cgi?p=binutils-gdb.git;a=tree;f=gas/testsuite/gas/aarch64;hb=00f223631fa9803b783515a2f667f86997e2cdbe[`gas/testsuite/gas/aarch64`]
 * https://stackoverflow.com/questions/2851421/is-there-a-good-reference-for-arm-neon-intrinsics
 * look into existing assembly optimized libraries:
@@ -1224,6 +627,8 @@ We then download the zip from: https://developer.arm.com/docs/ddi0584/latest/arm
 
 That document then describes the SVE instructions and registers.
 
+== Theory
+
 === Architecture of this repo
 
 `qemu-arm-static` is used for emulation on x86 hosts. It translates ARM to x86, and forwards system calls to the host kernel.
@@ -1232,12 +637,12 @@ OS portability is achieved with the C standard library which makes system calls 
 
 Using the standard library also allows us to use its convenient functionality such as `printf` formatting and `memcpy` to check memory.
 
-Non-OS portable examples will be clearly labeled with their OS, e.g.: <<linux-system-calls>>.
+Non-OS portable examples will be clearly labeled with their OS.
 
 These examples show how our infrastructure works:
 
 * link:fail.S[]
-* link:v7/hello_driver.S[]
+* link:userland/arch/arm/hello_driver.S[]
 * link:hello_common.S[]
 
 ==== C driver
@@ -1253,36 +658,6 @@ arm-linux-gnueabihf-gcc -o 'sub.out' 'sub.o' main.o
 The C driver then just calls `asm_main`, which each `.S` example implements.
 
 This allows us to easily use the C standard library portably: from the point of view of GCC, everything looks like a regular C program, which does the required glibc initialization before `main()`.
-
-=== Introduction to ARM
-
-The link:https://en.wikipedia.org/wiki/ARM_architecture[ARM architecture] is has been used on the vast majority of mobile phones in the 2010's, and on a large fraction of micro controllers.
-
-It competes with x86 because its implementations are designed for low power consumption, which is a major requirement of the cell phone market.
-
-ARM is generally considered a RISC instruction set, although there are some more complex instructions which would not generally be classified as purely RISC.
-
-ARM is developed by the British funded company ARM Holdings: https://en.wikipedia.org/wiki/Arm_Holdings which originated as a joint venture between Acorn Computers, Apple  and VLSI Technology in 1990.
-
-=== Free implementations
-
-The ARM instruction set is itself protected by patents / copyright / whatever, and you have to pay ARM Holdings a licence to implement it with their own custom Verilog code.
-
-This is the case of many major customers, including many Apple's Ax and Qualcomm Snapdragon chips.
-
-ARM has already sued people in the past for implementing ARM ISA: http://www.eetimes.com/author.asp?section_id=36&doc_id=1287452
-
-http://semiengineering.com/an-alternative-to-x86-arm-architectures/ mentions that:
-
-____
-Asanovic joked that the shortest unit of time is not the moment between a traffic light turning green in New York City and the cab driver behind the first vehicle blowing the horn; it’s someone announcing that they have created an open-source, ARM-compatible core and receiving a “cease and desist” letter from a law firm representing ARM.
-____
-
-This licensing however does have the following fairness to it: ARM Holdings invents a lot of money in making a great open source software environment for the ARM ISA, so it is only natural that it should be able to get some money from hardware manufacturers for using their ISA.
-
-Patents for very old ISAs however have expired, Amber is one implementation of those: https://en.wikipedia.org/wiki/Amber_%28processor_core%29 TODO does it have any application?
-
-Bibliography: https://www.quora.com/Why-is-it-that-you-need-a-license-from-ARM-to-design-an-ARM-CPU-How-are-the-instruction-sets-protected
 
 == CONTRIBUTING
 
@@ -1307,53 +682,6 @@ Then make sure that the tests still pass:
 ....
 make test
 ....
-
-== Bibliography
-
-ISA quick references can be found in some places however:
-
-- <https://web.archive.org/web/20161009122630/http://infocenter.arm.com/help/topic/com.arm.doc.qrc0001m/QRC0001_UAL.pdf>
-
-Getting started tutorials:
-
-* http://www.davespace.co.uk/arm/introduction-to-arm/
-* https://azeria-labs.com/writing-arm-assembly-part-1/
-* https://thinkingeek.com/arm-assembler-raspberry-pi/
-* http://bob.cs.sonoma.edu/IntroCompOrg-RPi/app-make.html
-
-=== Official manuals
-
-The official manuals were stored in http://infocenter.arm.com but as of 2017 they started to slowly move to link:https://developer.arm.com[].
-
-Each revision of a document has a "ARM DDI" unique document identifier.
-
-The "ARM Architecture Reference Manuals" are the official canonical ISA documentation document. In this repository, we always reference the following revisions:
-
-Bibliography: https://www.quora.com/Where-can-I-find-the-official-documentation-of-ARM-instruction-set-architectures-ISAs
-
-[[armarm7]]
-==== ARMv7 architecture reference manual
-
-ARMv7: https://developer.arm.com/products/architecture/a-profile/docs/ddi0406/latest/arm-architecture-reference-manual-armv7-a-and-armv7-r-edition
-
-We use: DDI 0406C.d: https://static.docs.arm.com/ddi0406/cd/DDI0406C_d_armv7ar_arm.pdf
-
-[[armarm8]]
-==== ARMv8 architecture reference manual
-
-https://developer.arm.com/docs/ddi0487/latest/arm-architecture-reference-manual-armv8-for-armv8-a-architecture-profile
-
-We use: ARM DDI 0487C.a: https://static.docs.arm.com/ddi0487/ca/DDI0487C_a_armv8_arm.pdf
-
-==== Programmer's Guide for ARMv8-A
-
-https://developer.arm.com/docs/den0024/latest/preface
-
-A more terse human readable introduction to the ARM architecture than the reference manuals.
-
-Does not have as many assembly code examples as you'd hope however...
-
-We use: DEN0024A https://static.docs.arm.com/den0024/a/DEN0024A_v8_architecture_PG.pdf
 
 === Bare metal
 
