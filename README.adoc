@@ -9,7 +9,7 @@
 :toclevels: 6
 :toc-title:
 
-Almost all the content in this repository has been moved to: https://github.com/cirosantilli/linux-kernel-module-cheat#arm-assembly
+Almost all the content in this repository has been moved to: https://github.com/cirosantilli/linux-kernel-module-cheat#userland-assembly
 
 Notable advantages of LKMC repository include:
 
@@ -376,140 +376,6 @@ E.g., to pass `-static` for an emulator that does not support dynamically linked
 ....
 make CCFLAGS_CLI=-static
 ....
-
-== Floating point
-
-=== VFP
-
-Vector Floating Point extension.
-
-Examples:
-
-* link:userland/arch/arm/vfp.S[]
-
-Basically not implemented in ARMv8 which seems to have vector floating point specified in the main spec: <<armv8-floating-point-availability>>:
-
-____
-Some devices such as the ARM Cortex-A8 have a cut-down VFPLite module instead of a full VFP module, and require roughly ten times more clock cycles per float operation.
-____
-
-VFP has several revisions, named as VFPv1, VFPv2, etc. TODO: announcement dates.
-
-As mentioned at: https://stackoverflow.com/questions/37790029/what-is-difference-between-arm64-and-armhf/48954012#48954012 the Linux kernel shows those capabilities in `/proc/cpuinfo` with flags such as `vfp`, `vfpv3` and others, see:
-
-* https://github.com/torvalds/linux/blob/v4.18/arch/arm/kernel/setup.c#L1199
-* https://github.com/torvalds/linux/blob/v4.18/arch/arm64/kernel/cpuinfo.c#L95
-
-When a certain version of VFP is present on a CPU, the compiler prefix typically contains the `hf` characters which stands for Hard Float, e.g.: `arm-linux-gnueabihf`. This means that the compiler will emit VFP instructions instead of just using software implementations.
-
-Bibliography:
-
-* <<armarm7>> Appendix D6 "Common VFP Subarchitecture Specification". It is not part of the ISA, but just an extension. TODO: that spec does not seem to have the instructions documented, and instruction like `VMOV` just live with the main instructions. Is `VMOV` part of VFP?
-* https://mindplusplus.wordpress.com/2013/06/25/arm-vfp-vector-programming-part-1-introduction/
-* https://en.wikipedia.org/wiki/ARM_architecture#Floating-point_(VFP)
-
-==== fadd vs vadd
-
-It is very confusing, but `fadds` and `faddd` in ARMv7 and Aarch32 are <<gnu-gas-assembler-arm-unified-syntax,pre-UAL>> for `vadd.f32` and `vadd.f64`.
-
-The same goes for most ARMv7 mnemonics: `f*` is old, and `v*` is the newer better syntax.
-
-But then, in ARMv8, they decided to use `fadd` as the main floating point add name, and get rid of `vadd`!
-
-Also keep in mind that fused multiply add is `fmadd`.
-
-=== Advanced SIMD instructions
-
-Examples:
-
-* link:userland/arch/aarch64/floating_point.S[]
-
-The <<armarm8>> specifies floating point support in the main architecture at A1.5 "Advanced SIMD and floating-point support".
-
-The feature is often refered to simply as "SIMD&FP" throughout the manual.
-
-The Linux kernel shows `/proc/cpuinfo` compatibility as `neon`.
-
-Vs <<vfp>>: https://stackoverflow.com/questions/4097034/arm-cortex-a8-whats-the-difference-between-vfp-and-neon
-
-Register files are documented at:
-
-* v8: <<armarm8>> B1.2.1 "Registers in AArch64 state" Figure B1-2 "SIMD and floating-point register naming"
-* v7: <<armarm8>> E1.3.1 "The SIMD and floating-point register file" Figure E1-1 "SIMD and floating-point register file, AArch32 operation":
-
-Notice how Sn is very different between v7 and v8! In v7 it goes across Dn, and in v8 inside each Dn.
-
-==== SIMD interleaving
-
-Example: link:userland/arch/aarch64/simd_interleave.S[]
-
-We can load multiple vectors from memory in one instruction.
-
-Note how the vectors are loaded in an interleaved manner: one int for each.
-
-This is why the `ldN` instructions take an argument list denoted by `{}` for the registers, much like armv7 <<ldmia>>.
-
-TODO confirm: can load up to 4 vectors at once.
-
-==== Advanced SIMD instructions bibliography
-
-Non-formal introductory tutorials are extremely scarce.
-
-A few good ways to get your hands on some examples include:
-
-* look through GAS tests under link:https://sourceware.org/git/gitweb.cgi?p=binutils-gdb.git;a=tree;f=gas/testsuite/gas/aarch64;hb=00f223631fa9803b783515a2f667f86997e2cdbe[`gas/testsuite/gas/aarch64`]
-* https://stackoverflow.com/questions/2851421/is-there-a-good-reference-for-arm-neon-intrinsics
-* look into existing assembly optimized libraries:
-** https://github.com/projectNe10/Ne10
-* https://people.xiph.org/~tterribe/daala/neon_tutorial.pdf tutorial by Mozilla employee, v7 integer only
-
-==== NEON
-
-Just an informal name for the "Advanced SIMD instructions"? Very confusing.
-
-<<armarm8>> F2.9 "Additional information about Advanced SIMD and floating-point instructions" says:
-
-____
-The Advanced SIMD architecture, its associated implementations, and supporting software, are commonly referred to as NEON technology.
-____
-
-https://developer.arm.com/technologies/neon mentions that is is present on both ARMv7 and ARMv8:
-
-____
-NEON technology was introduced to the Armv7-A and Armv7-R profiles. It is also now an extension to the Armv8-A and Armv8-R profiles.
-____
-
-==== ARMv8 floating point availability
-
-Support is semi-mandatory:
-
-____
-No floating-point or SIMD support. This option is licensed only for implementations targeting specialized markets.
-____
-
-Therefore it is in theory optional, but highly available.
-
-This is unlike ARMv7, where floating point is completely optional through <<vfp>>.
-
-==== ARMv7 advanced floating point registers
-
-32 64-bit registers `d0` to `d31`.
-
-Can also be interpreted as 16 128-bit registers: `q0` to `q15`.
-
-==== ARMv8 advanced floating point registers
-
-<<armarm8>> B1.2.1 "Registers in AArch64" describes the registers:
-
-____
-32 SIMD&FP registers, `V0` to `V31`. Each register can be accessed as:
-
-* A 128-bit register named `Q0` to `Q31`.
-* A 64-bit register named `D0` to `D31`.
-* A 32-bit register named `S0` to `S31`.
-* A 16-bit register named `H0` to `H31`.
-* An 8-bit register named `B0` to `B31`.
-____
 
 === SVE
 
