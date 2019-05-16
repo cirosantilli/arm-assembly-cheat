@@ -11,24 +11,24 @@
 
 Almost all the content in this repository has been moved to: https://github.com/cirosantilli/linux-kernel-module-cheat#userland-assembly
 
+Only the core infrastructure of this repo was left here. No major new features are intended to be added here.
+
 Notable advantages of LKMC repository include:
 
 * a single unified cross arch setup for ARM and x86_64, with cross arch concepts all nicely factored out
-* gem5 support. This is because we have integration of QEMU / gem5 / buildroot setups already done there.
+* gem5 support. This is because we have integration of QEMU / gem5 / buildroot setups already done there
 * parallel testing. Mostly because the build system there is Python, which is more flexible.
 * other stuff I can't remember right now. That setup just has a ton of features, and will continue to get more and more ;-)
 
-Only the core infrastructure of this repo was left here.
-
-There is only one use case left for this repository: since this is more minimal, it is easier to upgrate to the latest binutils-gdb here, in order to get very latest instructions.
+There is only one use case left for this repository: since this is more minimal, it is easier to upgrate to the latest binutils-gdb here without breaking unrelated stuff, in order to get very latest instructions.
 
 The initial motivation for that was <<sve>> although that specific case will soon be covered on LKMC as well.
 
 I might however start taking some risks on LKMC and upgrading binutils-gdb to master when needed anyways, or just build the latest binutils-gdb myself over there for userland only.
 
-No major new features are intended to be added here.
+== Old README
 
-Old README follows:
+Here is the old README with only infrastructure sections left.
 
 ARMv7 and <<ARMv8>> assembly userland minimal examples tutorial. Runnable <<asserts,asserts>> on x86 hosts with QEMU user mode or natively on ARM targets. Nice <<gdb-step-debug>> setup. Tested on Ubuntu 18.04 host and <<rpi2,Raspberry Pi 2>> and <<rpi3,3>> targets. Baremetal setup at: https://github.com/cirosantilli/linux-kernel-module-cheat#baremetal-setup x86 cheat at: https://github.com/cirosantilli/x86-assembly-cheat
 
